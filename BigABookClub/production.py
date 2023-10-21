@@ -6,9 +6,9 @@ from .settings import BASE_DIR
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = (
-    [os.environ["WEBSITE_HOSTNAME"], "0.0.0.0"]
+    [os.environ["WEBSITE_HOSTNAME"], ".azurewebsites.net"]
     if "WEBSITE_HOSTNAME" in os.environ
-    else ["0.0.0.0"]
+    else []
 )
 CSRF_TRUSTED_ORIGINS = (
     ["https://" + os.environ["WEBSITE_HOSTNAME"]]
@@ -16,6 +16,19 @@ CSRF_TRUSTED_ORIGINS = (
     else []
 )
 DEBUG = False
+
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
+    "compressor",
+    "home",
+    "books",
+]
 
 # WhiteNoise configuration
 MIDDLEWARE = [
@@ -28,10 +41,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, "./static/")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Configure Postgres database based on connection string of the libpq Keyword/Value form
 # https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
