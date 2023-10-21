@@ -40,9 +40,11 @@ conn_str_params = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+        "OPTIONS": {"sslmode": conn_str_params["sslmode"]},
         "NAME": conn_str_params["dbname"],
         "HOST": conn_str_params["host"],
         "USER": conn_str_params["user"],
         "PASSWORD": conn_str_params["password"],
-    }
+        "PORT": conn_str_params["port"],
+    },
 }
