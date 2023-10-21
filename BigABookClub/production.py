@@ -41,10 +41,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "./static/")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Configure Postgres database based on connection string of the libpq Keyword/Value form
