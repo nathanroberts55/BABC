@@ -15,7 +15,7 @@ CSRF_TRUSTED_ORIGINS = (
     if "WEBSITE_HOSTNAME" in os.environ
     else []
 )
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
