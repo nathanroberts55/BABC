@@ -11,6 +11,13 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BigABookClub.settings')
+# Check for the WEBSITE_HOSTNAME environment variable to see if we are running in Azure Ap Service
+# If so, then load the settings from production.py
+settings_module = (
+    "BigABookClub.production"
+    if "WEBSITE_HOSTNAME" in os.environ
+    else "BigABookClub.settings"
+)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
 application = get_wsgi_application()
