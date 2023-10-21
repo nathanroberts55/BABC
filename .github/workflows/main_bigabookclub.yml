@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'bigabookclub'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7A6FF31C0F3E4943881F0EB869CB3803 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D14C22993E3F483B88A459AF84CE0592 }}
