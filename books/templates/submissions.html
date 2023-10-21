@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="content">
+    {% if form.errors %}
+    {% for field,error in form.errors.items %}
+    <div class="my-2 alert alert-danger" role="alert">
+        Unable to Submit: {{ error|striptags }}
+    </div>
+    {% endfor %}
+    {%endif%}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="my-2 alert {{ message.tags }} text-center" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {%endif%}
+    <div class="px-4 py-5 my-5 text-center" id="header">
+        <h1 class="display-3 fw-bold text-body-emphasis mb-3">Submissions</h1>
+        <p class="h3">Have any Book Recommendations?</p>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-2 fs-4">Use the form below to submit books that you have seen from stream or have read
+                yourself
+                and want to share with the community.</p>
+        </div>
+    </div>
+    <div class="container col-xxl-8 px-4 py-2">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-2">
+            <div class="col-10 col-sm-8 col-lg-6">
+                <img src="{% static 'img/book-collection-submissions.jpg' %}"
+                    class="d-block mx-lg-auto img-fluid rounded-circle" alt="Bootstrap Themes" width="300" height="300"
+                    loading="lazy">
+            </div>
+            <div class="col-lg-6">
+                <p class="lead fs-3">Type in Book Title then press "Enter" to get dropdown of matching books. If no
+                    results, click in the search box to reveal drop down or please try again.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container col-xxl-8 px-4 py-2">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-2">
+            <div class="col-lg-6">
+                <p class="lead fs-3">Then select whether the book is a recommendation from <strong>Chat</strong> or
+                    <strong>Atrioc</strong>. If from <strong>Chat
+                        include your username</strong>, and if from <strong>Atrioc include a clip
+                        from stream</strong> of him talking about the book.
+                </p>
+            </div>
+            <div class="col-10 col-sm-8 col-lg-6">
+                <img src="{% static 'img/book-return-submissions.jpg' %}"
+                    class="d-block mx-lg-auto img-fluid rounded-circle" alt="Bootstrap Themes" width="300" height="300"
+                    loading="lazy">
+            </div>
+        </div>
+    </div>
+    <!-- TODO: Implement when able to consistently get cover image  -->
+    <!-- <div class="text-center">
+        <div id="cover-image">
+            <img src="" alt="Cover Image Art">
+        </div>
+        <div id="book-info">
+            <p class="h5" id="selected-book-title"></p>
+            <p class="" id="selected-book-author"></p>
+        </div>
+    </div> -->
+    <div class="container col-xxl-lg-8 px-2 py-3">
+        <div class="row justify-content-center g-5 py-3">
+            <div class="col-lg-6 text-center">
+                <div class="mb-3">
+                    <p class="h4">Share with Us!</p>
+                    <div class="dropdown">
+                        <input class="form-control dropdown-toggle" type="text" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false" placeholder="Enter Book Title">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
+                        </ul>
+                    </div>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/submission_search.js' %}"></script>
+<script src="{% static 'js/submission_validation.js' %}"></script>
+{% endblock content %}

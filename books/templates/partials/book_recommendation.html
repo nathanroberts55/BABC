@@ -1,0 +1,39 @@
+{% load static %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4 text-end">
+            <p class="fs-5 ">Recommendations by:</p>
+        </div>
+        <div class="col-4">
+            <select class="form-select" id="recommendations-select" aria-label="Recommedation Select">
+                <option selected value="ATRIOC">Atrioc</option>
+                <option value="CHAT">Chat</option>
+            </select>
+        </div>
+    </div>
+    {% for book in books %}
+    <div class="row align-items-center book-recommendation" data-source="{{ book.source }}">
+        <div class="col-8 mx-auto">
+            <p class="lead display-6">{{ book.title }} <small class="fs-5"> by {{ book.author }}</small></p>
+            <p class="fw-lighter">
+                {% if book.source == 'CHAT' %}
+                Submitted by: {{ book.submitter }}
+                {% endif %}
+            </p>
+            {% if book.stream_link %}
+            <a href="{{book.stream_link}}" target="_blank"><button type='button' class=" btn btn-primary btn-sm">Twitch
+                    Stream</button></a>
+            {% endif %}
+            {% if book.amazon_link %}
+            <a href="{{book.amazon_link}}" target="_blank"><button type='button'
+                    class=" btn btn-outline-primary btn-sm">Buy on
+                    Amazon</button></a>
+            {% endif %}
+            {% if not forloop.last %}
+            <hr>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor%}
+    <script src="{% static 'js/recommendation_filtering.js' %}"></script>
+</div>

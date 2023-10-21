@@ -1,0 +1,8 @@
+// Information from: https://www.accordbox.com/blog/how-use-scss-sass-your-django-project-python-way/
+/* custom.scss */    
+
+/* ------- customize primary buttons -------- */   
+$primary:#6f42c1;
+
+/* import the necessary Bootstrap files */
+@import "../bootstrap/scss/bootstrap";

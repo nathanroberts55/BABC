@@ -1,0 +1,13 @@
+/* Classes  */
+footer {
+    position: flex;
+    height: 2.5rem;
+    bottom: 0;
+    width: 100%;
+}
+
+/* ID's */
+#content {
+    padding-top: 60px;
+}
+
