@@ -45,7 +45,7 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = (
     [os.environ["SITE_HOSTNAME"], ".azurewebsites.net"]
-    if "SITE_HOSTNAME" in os.environ
+    if "WEBSITE_HOSTNAME" in os.environ
     else []
 )
 CSRF_TRUSTED_ORIGINS = (
@@ -172,3 +172,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_OFFLINE = True
+LIBSASS_OUTPUT_STYLE = "compressed"

@@ -15,21 +15,21 @@ from pathlib import Path
 import os
 import logging
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+#         },
+#     },
+# }
 
 MESSAGE_TAGS = {
     messages.DEBUG: "alert-secondary",
@@ -57,18 +57,13 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = (
-    [os.environ["SITE_HOSTNAME"], ".azurewebsites.net"]
-    if "SITE_HOSTNAME" in os.environ
+    [os.environ["WEBSITE_HOSTNAME"], ".azurewebsites.net"]
+    if "WEBSITE_HOSTNAME" in os.environ
     else []
 )
 CSRF_TRUSTED_ORIGINS = (
     ["https://" + os.environ["SITE_HOSTNAME"]] if "SITE_HOSTNAME" in os.environ else []
 )
-
-if "CODESPACE_NAME" in os.environ:
-    CSRF_TRUSTED_ORIGINS = [
-        f'https://{os.getenv("CODESPACE_NAME")}-8000.{os.getenv("GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN")}'
-    ]
 
 # Application definition
 
@@ -121,12 +116,12 @@ WSGI_APPLICATION = "BigABookClub.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     },
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
+}
 
 # DATABASES = {
 #     "default": {
@@ -141,21 +136,21 @@ WSGI_APPLICATION = "BigABookClub.wsgi.application"
 
 # Configure Postgres database based on connection string of the libpq Keyword/Value form
 # https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
-conn_str = os.environ["AZURE_POSTGRESQL_CONNECTIONSTRING"]
-conn_str_params = {
-    pair.split("=")[0]: pair.split("=")[1] for pair in conn_str.split(" ")
-}
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {"sslmode": conn_str_params["sslmode"]},
-        "NAME": conn_str_params["dbname"],
-        "HOST": conn_str_params["host"],
-        "USER": conn_str_params["user"],
-        "PASSWORD": conn_str_params["password"],
-        "PORT": conn_str_params["port"],
-    },
-}
+# conn_str = os.environ["AZURE_POSTGRESQL_CONNECTIONSTRING"]
+# conn_str_params = {
+#     pair.split("=")[0]: pair.split("=")[1] for pair in conn_str.split(" ")
+# }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "OPTIONS": {"sslmode": conn_str_params["sslmode"]},
+#         "NAME": conn_str_params["dbname"],
+#         "HOST": conn_str_params["host"],
+#         "USER": conn_str_params["user"],
+#         "PASSWORD": conn_str_params["password"],
+#         "PORT": conn_str_params["port"],
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -199,10 +194,10 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",
 ]
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_STORAGE = "BigABookClub.storage.WhiteNoiseStaticFilesStorage"
+# STATICFILES_STORAGE = "BigABookClub.storage.WhiteNoiseStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -214,5 +209,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_ROOT = STATIC_ROOT
 # PROD SETTINGS
-COMPRESS_OFFLINE = True
-LIBSASS_OUTPUT_STYLE = "compressed"
+# COMPRESS_OFFLINE = True
+# LIBSASS_OUTPUT_STYLE = "compressed"
