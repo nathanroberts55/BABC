@@ -58,16 +58,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-STATICFILES_FINDERS = [
-    "compressor.finders.CompressorFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_STORAGE = "BigABookClub.storage.WhiteNoiseStaticFilesStorage"
-
 # Configure Postgres database based on connection string of the libpq Keyword/Value form
 # https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
 conn_str = os.environ["AZURE_POSTGRESQL_CONNECTIONSTRING"]
@@ -85,3 +75,13 @@ DATABASES = {
         "PORT": conn_str_params["port"],
     },
 }
+
+STATICFILES_FINDERS = [
+    "compressor.finders.CompressorFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATICFILES_STORAGE = "BigABookClub.storage.WhiteNoiseStaticFilesStorage"
