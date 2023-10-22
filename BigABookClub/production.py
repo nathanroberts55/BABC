@@ -44,14 +44,12 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = (
-    [os.environ["WEBSITE_HOSTNAME"], ".azurewebsites.net"]
-    if "WEBSITE_HOSTNAME" in os.environ
+    [os.environ["SITE_HOSTNAME"], ".azurewebsites.net"]
+    if "SITE_HOSTNAME" in os.environ
     else []
 )
 CSRF_TRUSTED_ORIGINS = (
-    ["https://" + os.environ["WEBSITE_HOSTNAME"]]
-    if "WEBSITE_HOSTNAME" in os.environ
-    else []
+    ["https://" + os.environ["SITE_HOSTNAME"]] if "SITE_HOSTNAME" in os.environ else []
 )
 
 # Application definition
