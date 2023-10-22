@@ -2,6 +2,23 @@ import os
 
 from .settings import *  # noqa
 from .settings import BASE_DIR
+import logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+        },
+    },
+}
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
@@ -41,12 +58,15 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+STATICFILES_FINDERS = [
+    "compressor.finders.CompressorFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+]
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATICFILES_STORAGE = "BigABookClub.storage.WhiteNoiseStaticFilesStorage"
 
 # Configure Postgres database based on connection string of the libpq Keyword/Value form
 # https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
@@ -65,5 +85,3 @@ DATABASES = {
         "PORT": conn_str_params["port"],
     },
 }
-
-STATIC_ROOT = STATIC_ROOT = BASE_DIR / "staticfiles"
