@@ -15,9 +15,9 @@ from django.core.wsgi import get_wsgi_application
 # If so, then load the settings from production.py
 settings_module = (
     "BigABookClub.production"
-    if os.environ["DJANGO_ENV"] == "production"
+    if "WEBSITE_HOSTNAME" in os.environ
     else "BigABookClub.settings"
 )
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BigABookClub.production")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
 application = get_wsgi_application()
