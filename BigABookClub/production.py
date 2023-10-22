@@ -41,7 +41,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STORAGES = {
     "staticfiles": {
@@ -66,3 +65,5 @@ DATABASES = {
         "PORT": conn_str_params["port"],
     },
 }
+
+STATIC_ROOT = STATIC_ROOT = BASE_DIR / "staticfiles"
