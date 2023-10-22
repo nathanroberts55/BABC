@@ -85,3 +85,8 @@ STATICFILES_FINDERS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = "BigABookClub.storage.WhiteNoiseStaticFilesStorage"
+
+# SCSS/SASS Configuration Settings
+
+COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
+COMPRESS_ROOT = STATIC_ROOT
