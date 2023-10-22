@@ -154,8 +154,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATICFILES_FINDERS = [
     "compressor.finders.CompressorFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # "django.contrib.staticfiles.finders.FileSystemFinder",
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
