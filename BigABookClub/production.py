@@ -170,7 +170,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # SCSS/SASS Configuration Settings
 
-COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
+COMPRESS_PRECOMPILERS = (("text/css", "django_libsass.SassCompiler"),)
 COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_OFFLINE = True
 LIBSASS_OUTPUT_STYLE = "compressed"
