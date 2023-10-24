@@ -77,12 +77,18 @@
                         </ul>
                     </div>
                 </div>
-                <form method="post">
+                <form method="post" class="">
                     {% csrf_token %}
                     {% for field in form %}
+                    {% if not forloop.last %}
                     <div class="mb-3">
                         {{ field }}
                     </div>
+                    {% else %}
+                    <div class="mb-3 d-flex justify-content-center">
+                        {{ field }}
+                    </div>
+                    {% endif %}
                     {% endfor %}
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

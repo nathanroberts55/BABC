@@ -25,9 +25,18 @@ def submissions(request):
     context = {}
     if request.method == "POST":
         form = BookForm(request.POST)
-        print(f"{datetime.now()}: Form Submission - {form}")
-
         if form.is_valid():
+            print("Successful Form Submission Content:")
+            print(f'title: {form.cleaned_data["title"]}'),
+            print(f'author: {form.cleaned_data["author"]}'),
+            print(f'isbn: {form.cleaned_data["isbn"]}'),
+            print(f'source: {form.cleaned_data["source"]}'),
+            print(
+                f'submitter: {form.cleaned_data["submitter"] if form.cleaned_data["submitter"] else None}'
+            ),
+            print(
+                f'stream_link: {form.cleaned_data["stream_link"] if form.cleaned_data["stream_link"] else None}'
+            ),
             form.save()
             messages.success(request=request, message="Successfully Submitted Book")
             form = BookForm()

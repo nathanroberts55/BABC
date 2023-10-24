@@ -1,9 +1,13 @@
 from django.utils.translation import gettext_lazy as _
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from django import forms
 from .models import Book
 
 
 class BookForm(forms.ModelForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+
     def clean_title(self):
         return self.cleaned_data["title"]
 
@@ -29,15 +33,19 @@ class BookForm(forms.ModelForm):
 
     def clean_stream_link(self):
         stream_link = self.cleaned_data["stream_link"]
-        if (
-            stream_link != ""
-            and "https://www.twitch.tv/atrioc/clip/" not in stream_link
+        if stream_link != "" and not any(
+            url in stream_link
+            for url in [
+                "https://clips.twitch.tv/",
+                "https://www.twitch.tv/atrioc/clip/",
+            ]
         ):
             raise forms.ValidationError(
                 _(
-                    "Invalid stream link. The link must contain 'https://www.twitch.tv/atrioc/clip/'"
+                    "Invalid stream link. The link must contain 'https://www.twitch.tv/atrioc/clip/' or 'https://clips.twitch.tv/'"
                 )
             )
+
         return stream_link
 
     def clean_unique_book(self):
@@ -138,4 +146,5 @@ class BookForm(forms.ModelForm):
                     "id": "form-book-streamlink",
                 },
             ),
+            "captcha": ReCaptchaField(widget=ReCaptchaV2Checkbox),
         }
