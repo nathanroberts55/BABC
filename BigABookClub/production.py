@@ -42,7 +42,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
 
 # Configure the domain name using the environment variable
-# that Azure automatically creates for us.
+# that Azure automatically creates for us. Included custom domains
 ALLOWED_HOSTS = (
     [
         os.environ["SITE_HOSTNAME"],
