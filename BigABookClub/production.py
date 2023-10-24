@@ -46,7 +46,8 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
 ALLOWED_HOSTS = (
     [
         os.environ["SITE_HOSTNAME"],
-        os.environ["CUSTOM_DOMAIN_NAME"],
+        os.environ["CUSTOM_DOMAIN_CNAME"],
+        os.environ["CUSTOM_DOMAIN_ANAME"],
         ".azurewebsites.net",
     ]
     if "WEBSITE_HOSTNAME" in os.environ
@@ -55,7 +56,8 @@ ALLOWED_HOSTS = (
 CSRF_TRUSTED_ORIGINS = (
     [
         "https://" + os.environ["SITE_HOSTNAME"],
-        "https://" + os.environ["CUSTOM_DOMAIN_NAME"],
+        "https://" + os.environ["CUSTOM_DOMAIN_CNAME"],
+        "https://" + os.environ["CUSTOM_DOMAIN_ANAME"],
     ]
     if "SITE_HOSTNAME" in os.environ
     else []
