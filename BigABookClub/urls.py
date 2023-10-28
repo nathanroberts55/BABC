@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import handler404, handler403, handler500
 import home
 import books
+
+handler404 = "home.views.custom_404"
+handler403 = "home.views.custom_403"
+handler500 = "home.views.custom_500"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
