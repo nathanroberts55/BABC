@@ -51,10 +51,5 @@
 - Amazon Link: URL/str
 - Approved: bool
 
-## 5. Books to Add from Atrioc
-- Makers by Cory Doctorow | 2009
-- Red Rising by by Pierce Brown, Tim Gerard Reynolds, et al. | 2013
-- The Wager: A Tale of Shipwreck, Mutiny and Murder by David Grann | 2023
-
-## 6. Image Prompt
+## 5. Image Prompt
 "Can you generate images similar in both the look and style of the reference image provided. Keeping the animated/cartoon drawing style. However, changing the main color to purple on a white background, without the references to calendars or writing. I would like the new content of the image to be..."
