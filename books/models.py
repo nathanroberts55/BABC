@@ -20,8 +20,8 @@ class Book(models.Model):
         help_text=_("Select Chatter or Atrioc Recommendation"),
     )
     submitter = models.CharField(max_length=50, blank=True)
-    stream_link = models.URLField(max_length=200, blank=True)
-    amazon_link = models.URLField(max_length=200, blank=True)
+    stream_link = models.URLField(max_length=500, blank=True)
+    amazon_link = models.URLField(max_length=500, blank=True)
     approved = models.BooleanField(default=False)
 
     class Meta:
