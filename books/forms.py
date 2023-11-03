@@ -20,19 +20,19 @@ class BookForm(forms.ModelForm):
     def clean_source(self):
         source = self.cleaned_data["source"]
 
-        if not (source == Book.Sources.ATRIOC or source == Book.Sources.CHAT):
-            raise forms.ValidationError(
-                _(
-                    f"Invalid Option: Recommendation must be Chatter or Atrioc. You submitted {source}"
-                )
-            )
+        if not (source == Book.Sources.CHAT or source == Book.Sources.ATRIOC):
+            raise forms.ValidationError(_("Recommendation MUST be from CHAT or ATRIOC"))
+
         return source
 
     def clean_submitter(self):
-        return self.cleaned_data["submitter"]
+        cleaned_data = self.cleaned_data
+        return cleaned_data["submitter"]
 
     def clean_stream_link(self):
-        stream_link = self.cleaned_data["stream_link"]
+        cleaned_data = self.cleaned_data
+
+        stream_link = cleaned_data["stream_link"]
         if stream_link != "" and not any(
             url in stream_link
             for url in [
@@ -59,31 +59,43 @@ class BookForm(forms.ModelForm):
                 _("Duplicate Record: This book has already been submitted")
             )
 
-        return cleaned_data
-
     def clean_atrioc_streamlink(self):
         cleaned_data = self.cleaned_data
 
-        if not (
-            cleaned_data["source"] == Book.Sources.ATRIOC
+        if (
+            "source" in cleaned_data
+            and cleaned_data["source"] == Book.Sources.ATRIOC
+            and "stream_link" in cleaned_data
             and cleaned_data["stream_link"] == ""
         ):
             raise forms.ValidationError(
                 _("Stream Link MUST be submitted if Atrioc Recommendation")
             )
 
-        return cleaned_data
+        return cleaned_data.get("stream_link")  # use get() to avoid KeyError
 
     def clean_chat_username(self):
         cleaned_data = self.cleaned_data
 
-        if not (
-            cleaned_data["source"] == Book.Sources.CHAT
+        if (
+            "source" in cleaned_data
+            and cleaned_data["source"] == Book.Sources.CHAT
+            and "submitter" in cleaned_data
             and cleaned_data["submitter"] == ""
         ):
             raise forms.ValidationError(
                 _("Username MUST be submitted if Chatter Recommendation")
             )
+
+        return cleaned_data.get("submitter")  # use get() to avoid KeyError
+
+    def clean(self):
+        cleaned_data = super().clean()  # call the parent class's clean method
+
+        # Call your custom validation methods
+        self.clean_unique_book()
+        self.clean_atrioc_streamlink()
+        self.clean_chat_username()
 
         return cleaned_data
 

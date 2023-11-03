@@ -9,8 +9,11 @@ class BookTestModels(TestCase):
         author="Book Author",
         isbn="123456789012",
         source=Book.Sources.CHAT,
+        **kwargs,
     ):
-        return Book.objects.create(title=title, author=author, isbn=isbn, source=source)
+        return Book.objects.create(
+            title=title, author=author, isbn=isbn, source=source, **kwargs
+        )
 
     def test_book_creation(self):
         test_book = self.create_book()
