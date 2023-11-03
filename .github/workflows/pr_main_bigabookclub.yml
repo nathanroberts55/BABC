@@ -34,11 +34,11 @@ jobs:
       - name: Run Django tests
         run: |
           coverage run --source='.' manage.py test 
-          coverage xml results/tests/coverage.xml
+          coverage xml
 
       - name: Get Cover
         uses: orgoro/coverage@v3.1
         with:
-          coverageFile: results/tests/coverage.xml
+          coverageFile: coverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           thresholdAll: 0.85
