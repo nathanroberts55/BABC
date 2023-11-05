@@ -26,8 +26,7 @@ class BookForm(forms.ModelForm):
         return source
 
     def clean_submitter(self):
-        cleaned_data = self.cleaned_data
-        return cleaned_data["submitter"]
+        return self.cleaned_data["submitter"]
 
     def clean_stream_link(self):
         cleaned_data = self.cleaned_data
@@ -90,7 +89,8 @@ class BookForm(forms.ModelForm):
         return cleaned_data.get("submitter")  # use get() to avoid KeyError
 
     def clean(self):
-        cleaned_data = super().clean()  # call the parent class's clean method
+        # call the parent class's clean method
+        cleaned_data = super().clean()
 
         # Call your custom validation methods
         self.clean_unique_book()
