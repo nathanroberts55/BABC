@@ -1,5 +1,5 @@
 # Book Search Feature Update
-- [ ] Give Book Search a Dropdown to Search By: [Example](https://getbootstrap.com/docs/5.0/forms/input-group/#buttons-with-dropdowns)
+- [x] Give Book Search a Dropdown to Search By: [Example](https://getbootstrap.com/docs/5.0/forms/input-group/#buttons-with-dropdowns)
   - ISBN
   - Author
   - Title

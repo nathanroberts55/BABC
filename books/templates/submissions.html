@@ -34,7 +34,8 @@
                     loading="lazy">
             </div>
             <div class="col-lg-6">
-                <p class="lead fs-3">Type in Book Title then press "Enter" to get dropdown of matching books. If no
+                <p class="lead fs-3">Select then type in Book Title, Author, or ISBN then press "Enter" to get dropdown
+                    of matching books. If no
                     results, click in the search box to reveal drop down or please try again.</p>
             </div>
         </div>
@@ -71,10 +72,20 @@
                 <div class="mb-3">
                     <p class="h4">Share with Us!</p>
                     <div class="dropdown">
-                        <input class="form-control dropdown-toggle" type="text" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-expanded="false" placeholder="Enter Book Title">
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
-                        </ul>
+                        <div class="input-group d-flex" id="bookSearchInputGroup">
+                            <select class="form-select input-group-text" aria-label="Search Select Option"
+                                style="flex: 0 0 27%;" id="searchKey">
+                                <option value="title" selected>Title</option>
+                                <option value="author">Author</option>
+                                <option value="isbn">ISBN</option>
+                            </select>
+                            <input class="form-control dropdown-toggle" type="text" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false" placeholder="Enter Book Title"
+                                style="flex: 1;">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownMenu">
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
                 <form method="post" class="">
