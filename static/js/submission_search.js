@@ -12,9 +12,12 @@ searchBar.addEventListener('keydown', (e) => {
 		}
 
 		let searchTerm = e.target.value;
-		encodedSearchTerm = searchTerm.replace(/ /g, '+');
+		let searchKey = document.querySelector('#searchKey').value;
+		let encodedSearchTerm = searchTerm.replace(/ /g, '+');
 
-		fetch(`https://openlibrary.org/search.json?&title=${encodedSearchTerm}`)
+		fetch(
+			`https://openlibrary.org/search.json?&${searchKey}=${encodedSearchTerm}`
+		)
 			.then((res) => res.json())
 			.then((data) => {
 				const books = data.docs;
@@ -35,7 +38,15 @@ searchBar.addEventListener('keydown', (e) => {
 					// Add data attributes that will be used later to save to database
 					newOption.setAttribute('data-title', book.title);
 					newOption.setAttribute('data-author', book.author_name);
-					newOption.setAttribute('data-isbn', book.isbn[0]);
+					// Check if book.isbn is defined
+					if (book.isbn) {
+						// Find an ISBN-13 if one is available, otherwise use the first ISBN
+						let isbn13 = book.isbn.find((isbn) => isbn.length === 13);
+						newOption.setAttribute('data-isbn', isbn13 || book.isbn[0]);
+					} else {
+						// If not, set the data-isbn attribute to a default value
+						newOption.setAttribute('data-isbn', 'N/A');
+					}
 
 					// Add event listener to each new option
 					newOption.addEventListener('click', (e) => {
