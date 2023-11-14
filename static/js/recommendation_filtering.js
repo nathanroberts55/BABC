@@ -3,7 +3,12 @@ const recommendationSearchBar = document.getElementById('recommendationSearch');
 
 const checkSelectValue = (value) => {
 	const books = document.querySelectorAll('div.book-recommendation');
+	const submitterOption = document.querySelector(
+		'#recommendationSearchKey option[value="submitter"]'
+	);
+
 	if (value === 'CHAT') {
+		submitterOption.style.display = '';
 		books.forEach((book) => {
 			if (book.getAttribute('data-source') !== value) {
 				book.style.display = 'none';
@@ -12,6 +17,7 @@ const checkSelectValue = (value) => {
 			}
 		});
 	} else if (value === 'ATRIOC') {
+		submitterOption.style.display = 'none';
 		books.forEach((book) => {
 			if (book.getAttribute('data-source') !== value) {
 				book.style.display = 'none';
@@ -33,17 +39,17 @@ const filterRecommendations = (value) => {
 			book.style.display = 'none';
 		} else if (
 			searchKeyValue === 'title' &&
-			!book.getAttribute('data-title').includes(value)
+			!book.getAttribute('data-title').toLowerCase().includes(value)
 		) {
 			book.style.display = 'none';
 		} else if (
 			searchKeyValue === 'author' &&
-			!book.getAttribute('data-author').includes(value)
+			!book.getAttribute('data-author').toLowerCase().includes(value)
 		) {
 			book.style.display = 'none';
 		} else if (
 			searchKeyValue === 'submitter' &&
-			!book.getAttribute('data-submitter').includes(value)
+			!book.getAttribute('data-submitter').toLowerCase().includes(value)
 		) {
 			book.style.display = 'none';
 		} else {
