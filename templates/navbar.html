@@ -19,8 +19,8 @@
                         Books
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item {% if 'submissions' in request.path %} active {% endif %}" {% if 'submissions' in request.path %} aria-current="true" {% endif %}href="/books/submissions">Submissions</a></li>
-                        <li><a class="dropdown-item {% if 'recommendations' in request.path %} active {% endif %}" {% if 'recommendations' in request.path %} aria-current="true" {% endif %}href="/books/recommendations">Recommendations</a></li>
+                        <li><a class="dropdown-item {% if 'submissions' in request.path %} active {% endif %}" {% if 'submissions' in request.path %} aria-current="true" {% endif %}href="{% url 'submissions' %}">Submissions</a></li>
+                        <li><a class="dropdown-item {% if 'recommendations' in request.path %} active {% endif %}" {% if 'recommendations' in request.path %} aria-current="true" {% endif %}href="{% url 'recommendations' %}">Recommendations</a></li>
                     </ul>
                 </li>
             </ul>
