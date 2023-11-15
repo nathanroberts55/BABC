@@ -6,9 +6,10 @@
 
 # Recommendation Search
 Search bar that filters the recommendations 
-- [ ] Filter By Book Title
-- [ ] Filter By Book Author
-- [ ] Filter By Submitter?
+- [x] Filter is NOT case sensitive
+- [x] Filter By Book Title
+- [x] Filter By Book Author
+- [x] Filter By Submitter?
 
 # Update Form Validation for Youtube
 Stream VODs on Twitch have an expiration date, so need way to accept youtube links
@@ -35,3 +36,12 @@ Books have tags based on topic/genre (for filtering)
 - [ ] Genre Tagging (Database)
 - [ ] Tags (UI Element)
   
+
+# Resources Page
+Legit
+- [ ] [Libby](https://libbyapp.com/), 
+- [ ] [OpenLibrary](https://openlibrary.org/), 
+- [ ] [Library Finders | US](https://www.careeronestop.org/LocalHelp/CommunityServices/find-libraries.aspx)
+
+Gray Area
+- [ ] Libgen.is
