@@ -1,7 +1,7 @@
 {% load static %}
 {% load compress %}
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-xl">
+    <div class="container-fluid">
         <a class="navbar-brand" href="/">
             <img src="{% static 'img/logo-white.png' %}" alt="" width="40" height="40">
         </a>
@@ -10,9 +10,9 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <ul class="navbar-nav me-auto mb-md-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if 'books' not in request.path %} active {% endif %}" {% if 'books' not in request.path %} aria-current="page" {% endif %} href="/">Home</a>
+                    <a class="nav-link {% if request.path == '/' %} active {% endif %}" {% if request.path == '/' %} aria-current="page" {% endif %} href="/">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle {% if 'books' in request.path %} active {% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" {% if 'books' in request.path %} aria-current="page" {% endif %}>
@@ -24,6 +24,26 @@
                     </ul>
                 </li>
             </ul>
+            <ul class="navbar-nav ml-auto mb-2 mb-md-0"> <!-- Add this line -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'books' in request.path %} active {% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" {% if 'books' in request.path %} aria-current="page" {% endif %}>
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item {% if 'account' in request.path %} active {% endif %}" {% if 'account ' in request.path %} aria-current="true" {% endif %}href="{% url 'account' %}">Profile</a></li>
+                            <li><a class="dropdown-item " href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'register' in request.path %} active {% endif %}" {% if 'register' in request.path %} aria-current="true" {% endif %} href="{% url 'register' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'login' in request.path %} active {% endif %}" {% if 'login' in request.path %} aria-current="true" {% endif %} href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
+            </ul> <!-- Add this line -->
         </div>
     </div>
 </nav>

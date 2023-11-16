@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="content">
+    {% if form.errors %}
+    {% for field,error in form.errors.items %}
+    <div class="my-2 alert alert-danger" role="alert">
+        Unable to Submit: {{ error|striptags }}
+    </div>
+    {% endfor %}
+    {%endif%}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="my-2 alert {{ message.tags }} alert-dismissible fade show text-center" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {%endif%}
+    <div class="px-4 p-5 my-5 text-center" id="header">
+        <p class="display-5 fw-bold text-body-emphasis">
+            Welcome Back to the Club
+        </p>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Login to access your Book Club Membership Features
+            </p>
+        </div>
+        <img src="{% static 'img/welcome-to-bookclub-login.jpg' %}" alt="" width="400" height="400">
+    </div>
+    <div class="container px-4 pb-5 text-center">
+        <div class="col-lg-8 mx-auto">
+            <p class="display-6">Login to Your Account Here</p>
+            <p class="mb-4">
+                Enter Your Username and Password.
+            </p>
+            <div class="col-lg-6 mx-auto">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.username }}
+                    {{ form.password1 }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

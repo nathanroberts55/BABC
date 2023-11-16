@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls import handler404, handler403, handler500
 import home
 import books
+import accounts
 
 handler404 = "home.views.custom_404"
 handler403 = "home.views.custom_403"
@@ -28,4 +29,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("home.urls")),
     path("books/", include("books.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
