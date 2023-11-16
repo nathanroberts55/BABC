@@ -28,7 +28,8 @@ const checkSelectValue = (value) => {
 	}
 };
 
-const filterRecommendations = (value) => {
+const filterRecommendations = (inputValue) => {
+	const value = inputValue.toLowerCase();
 	const searchKeyValue = document.getElementById(
 		'recommendationSearchKey'
 	).value;
@@ -38,18 +39,13 @@ const filterRecommendations = (value) => {
 		if (book.getAttribute('data-source') !== sourceValue) {
 			book.style.display = 'none';
 		} else if (
-			searchKeyValue === 'title' &&
-			!book.getAttribute('data-title').toLowerCase().includes(value)
-		) {
-			book.style.display = 'none';
-		} else if (
-			searchKeyValue === 'author' &&
-			!book.getAttribute('data-author').toLowerCase().includes(value)
-		) {
-			book.style.display = 'none';
-		} else if (
-			searchKeyValue === 'submitter' &&
-			!book.getAttribute('data-submitter').toLowerCase().includes(value)
+			value !== '' &&
+			((searchKeyValue === 'title' &&
+				!book.getAttribute('data-title').toLowerCase().includes(value)) ||
+				(searchKeyValue === 'author' &&
+					!book.getAttribute('data-author').toLowerCase().includes(value)) ||
+				(searchKeyValue === 'submitter' &&
+					!book.getAttribute('data-submitter').toLowerCase().includes(value)))
 		) {
 			book.style.display = 'none';
 		} else {
