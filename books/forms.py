@@ -9,12 +9,25 @@ class BookForm(forms.ModelForm):
     captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def clean_title(self):
+        if self.cleaned_data["title"] == "":
+            raise forms.ValidationError(
+                _("Title is Required. Please ensure Book was selected from dropdown")
+            )
+
         return self.cleaned_data["title"]
 
     def clean_author(self):
+        if self.cleaned_data["author"] == "":
+            raise forms.ValidationError(
+                _("Author is Required. Please ensure Book was selected from dropdown")
+            )
         return self.cleaned_data["author"]
 
     def clean_isbn(self):
+        if self.cleaned_data["isbn"] == "":
+            raise forms.ValidationError(
+                _("ISBN is Required. Please ensure Book was selected from dropdown")
+            )
         return self.cleaned_data["isbn"]
 
     def clean_source(self):
@@ -46,17 +59,6 @@ class BookForm(forms.ModelForm):
             )
 
         return stream_link
-
-    def clean_unique_book(self):
-        cleaned_data = self.cleaned_data
-        found_book = Book.objects.filter(
-            title=cleaned_data["title"], author=cleaned_data["author"]
-        )
-
-        if found_book:
-            raise forms.ValidationError(
-                _("Duplicate Record: This book has already been submitted")
-            )
 
     def clean_atrioc_streamlink(self):
         cleaned_data = self.cleaned_data
@@ -93,7 +95,6 @@ class BookForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         # Call your custom validation methods
-        self.clean_unique_book()
         self.clean_atrioc_streamlink()
         self.clean_chat_username()
 
@@ -117,23 +118,43 @@ class BookForm(forms.ModelForm):
             "submitter": "",
             "stream_link": "",
         }
+        error_messages = {
+            "title": {
+                "required": _(
+                    "Title is Required. Please ensure Book was selected from dropdown"
+                ),
+            },
+            "author": {
+                "required": _(
+                    "Author is Required. Please ensure Book was selected from dropdown"
+                ),
+            },
+            "isbn": {
+                "required": _(
+                    "ISBN is Required. Please ensure Book was selected from dropdown"
+                ),
+            },
+        }
         widgets = {
             "title": forms.HiddenInput(
                 attrs={
                     "class": "form-control form-select invisible",
                     "id": "form-book-title",
+                    "required": True,
                 },
             ),
             "author": forms.HiddenInput(
                 attrs={
                     "class": "form-control form-select invisible",
                     "id": "form-book-author",
+                    "required": True,
                 },
             ),
             "isbn": forms.HiddenInput(
                 attrs={
                     "class": "form-control form-select invisible",
                     "id": "form-book-isbn",
+                    "required": True,
                 },
             ),
             "source": forms.Select(
