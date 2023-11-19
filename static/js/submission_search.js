@@ -3,6 +3,10 @@ const dropdownMenu = document.querySelector('#dropdownMenu');
 const titleInput = document.querySelector('#form-book-title');
 const authorInput = document.querySelector('#form-book-author');
 const isbnInput = document.querySelector('#form-book-isbn');
+const submitButton = document.querySelector('button[type="submit"]'); // assuming your submit button has type="submit"
+
+// Disable the submit button initially
+submitButton.disabled = true;
 
 searchBar.addEventListener('keydown', (e) => {
 	if (e.key === 'Enter') {
@@ -59,10 +63,10 @@ searchBar.addEventListener('keydown', (e) => {
 						isbnInput.value = e.target.getAttribute('data-isbn');
 
 						/*
-				    Eventually want to be able to show a preview of the book cover for book selected.
-					However, the current API's that I have been using are very inconsistent with 
-					returning usable image sources.
-					*/
+						Eventually want to be able to show a preview of the book cover for book selected.
+						However, the current API's that I have been using are very inconsistent with 
+						returning usable image sources.
+						*/
 
 						// TODO: Update image source and remove hidden property
 						// const coverImage = document.querySelector('#cover-image img');
@@ -76,9 +80,14 @@ searchBar.addEventListener('keydown', (e) => {
 						// 	e.target.getAttribute('data-title');
 						// document.querySelector('#selected-book-author').textContent =
 						// 	e.target.getAttribute('data-author');
+
+						// Enable the submit button
+						submitButton.disabled = false;
 					});
 					dropdownMenu.appendChild(newOption);
 				});
+				// Show the dropdown after it has been populated
+				$('#dropdownMenuButton').dropdown('show');
 			})
 			.catch((error) => {
 				console.error('Error:', error);
