@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div id="content">
+    {% if form.errors %}
+    {% for field,error in form.errors.items %}
+    <div class="my-2 alert alert-danger alert-dismissible fade show" role="alert">
+        Unable to Submit: {{ error|striptags }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {%endif%}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="my-2 alert {{ message.tags }} alert-dismissible fade show text-center" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {%endif%}
+    <div class="container-xxl px-4 pb-5">
+        <div class="px-4 my-5 col-lg-8 mx-auto">
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-primary" class><i
+                    class="fa-solid fa-arrow-left"></i>
+                Back</a>
+        </div>
+        <div class="px-4 p-5 my-5 text-center">
+            {% if image_url %}
+            <div class="mx-auto" id="cover-image-div">
+                <img src="{{ image_url }}" alt="Cover Image Art" width="150px">
+            </div>
+            {% endif %}
+            <p class="display-5 fw-bold text-body-emphasis" id="title">
+                {{ book.title }}
+            </p>
+            <p class="lead mb-4" id="author">
+                {{ book.author }}
+            </p>
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+
+                    {% if request.user in book.favorites.all %}
+                    <a href="{% url 'favorite' book.id %}" class="btn btn-primary btn-sm"><i
+                            class="fas fa-star"></i></a>
+                    {% else %}
+                    <a href="{% url 'favorite' book.id %}" class="btn btn-outline-primary btn-sm"><i
+                            class="fas fa-star"></i></a>
+                    {% endif %}
+
+                    {% if book.stream_link %}
+                    <a href="{{book.stream_link}}" target="_blank"><button type='button'
+                            class=" btn btn-primary btn-sm">Twitch Stream</button></a>
+                    {% endif %}
+                    {% if book.amazon_link %}
+                    <a href="{{book.amazon_link}}" target="_blank"><button type='button'
+                            class=" btn btn-outline-primary btn-sm">Buy on Amazon</button></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8  text-center mx-auto">
+            <p id="book_description">
+                {% if description %}
+                {{ description }}
+                {% else %}
+                No Summary/Description Available. Please feel free to checkout the Amazon Link for more details.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <!-- <script src="{% static 'js/scroll_position.js' %}"></script> -->
+</div>
+{% endblock content %}

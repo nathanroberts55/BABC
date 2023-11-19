@@ -1,5 +1,5 @@
 {% load static %}
-<div class="container">
+<div class="container-xxl">
     <div class="row justify-content-center mb-3">
         <div class="col-lg-3">
             <div class="input-group mb-3">
@@ -23,31 +23,31 @@
             </div>
         </div>
     </div>
-</div>
-{% for book in books %}
-<div class="row align-items-center book-recommendation" data-source="{{ book.source }}" data-title="{{ book.title }}"
-    data-author="{{ book.author }}" data-submitter="{{ book.submitter }}">
-    <div class="col-8 mx-auto">
-        <p class="lead display-6">{{ book.title }} <small class="fs-5"> by {{ book.author }}</small></p>
-        <p class="fw-lighter submitter">
-            {% if book.source == 'CHAT' %}
-            Submitted by: {{ book.submitter }}
+    {% for book in books %}
+    <div class="row align-items-center book-recommendation" data-source="{{ book.source }}"
+        data-title="{{ book.title }}" data-author="{{ book.author }}" data-submitter="{{ book.submitter }}">
+        <div class="col-lg-9 mx-auto">
+            <p class="lead display-6"><a style="text-decoration: none; color: inherit;" href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{ book.author }}</small></p>
+            <p class="fw-lighter submitter">
+                {% if book.source == 'CHAT' %}
+                Submitted by: {{ book.submitter }}
+                {% endif %}
+            </p>
+            {% if book.stream_link %}
+            <a href="{{book.stream_link}}" target="_blank"><button type='button' class=" btn btn-primary btn-sm">Twitch
+                    Stream</button></a>
             {% endif %}
-        </p>
-        {% if book.stream_link %}
-        <a href="{{book.stream_link}}" target="_blank"><button type='button' class=" btn btn-primary btn-sm">Twitch
-                Stream</button></a>
-        {% endif %}
-        {% if book.amazon_link %}
-        <a href="{{book.amazon_link}}" target="_blank"><button type='button' class=" btn btn-outline-primary btn-sm">Buy
-                on
-                Amazon</button></a>
-        {% endif %}
-        {% if not forloop.last %}
-        <hr>
-        {% endif %}
+            {% if book.amazon_link %}
+            <a href="{{book.amazon_link}}" target="_blank"><button type='button'
+                    class=" btn btn-outline-primary btn-sm">Buy on Amazon</button></a>
+            {% endif %}
+            {% if not forloop.last %}
+            <hr>
+            {% endif %}
+        </div>
     </div>
+    {% endfor%}
 </div>
-{% endfor%}
 <script src="{% static 'js/recommendation_filtering.js' %}"></script>
+<script src="{% static 'js/scroll_position.js' %}"></script>
 </div>

@@ -23,37 +23,42 @@
         <p class="display-5 fw-bold text-body-emphasis">
             Account Details
         </p>
-        <!-- <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">
-                Register for to join the book club and gain acess to member features (e.g. liking/upvoting, etc.). Come
-                join the Big A Book Club today!
-            </p>
-        </div> -->
     </div>
-    <!-- <div class="container px-4 pb-5 text-center">
-        <div class="col-lg-8 mx-auto">
-            <p class="display-6">Register Here</p>
-            <p class="mb-4">
-                Create an account below.
-            </p>
+    <div class="container px-4 pb-5">
+        <div class="col-lg-8 mx-auto text-center">
             <div class="col-lg-6 mx-auto">
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.username }}
-                    {{ form.password1 }}
-                    <div id="password1HelpBlock" class="form-text mb-1">
-                        {% for help_text in form.password1.help_text %}
-                        <p class="my-1 py-0">{{ help_text }}</p>
-                        {% endfor %}
-                    </div>
-                    {{ form.password2 }}
-                    <div id="password2HelpBlock2" class="form-text mb-3">
-                        {{ form.password2.help_text }}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                <p class="display-6 mb-4">
+                    Your Favorite Books
+                </p>
             </div>
         </div>
-    </div> -->
+        {% for book in books %}
+        <div class="row align-items-center book-recommendation" data-source="{{ book.source }}"
+            data-title="{{ book.title }}" data-author="{{ book.author }}" data-submitter="{{ book.submitter }}">
+            <div class="col-lg-9 mx-auto">
+                <p class="lead display-6"><a style="text-decoration: none; color: inherit;"
+                        href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{ book.author }}</small></p>
+                <p class="fw-lighter submitter">
+                    {% if book.source == 'CHAT' %}
+                    Submitted by: {{ book.submitter }}
+                    {% endif %}
+                </p>
+                {% if book.stream_link %}
+                <a href="{{book.stream_link}}" target="_blank"><button type='button'
+                        class=" btn btn-primary btn-sm">Twitch
+                        Stream</button></a>
+                {% endif %}
+                {% if book.amazon_link %}
+                <a href="{{book.amazon_link}}" target="_blank"><button type='button'
+                        class=" btn btn-outline-primary btn-sm">Buy on Amazon</button></a>
+                {% endif %}
+                {% if not forloop.last %}
+                <hr>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+    <script src="{% static 'js/scroll_position.js' %}"></script>
 </div>
 {% endblock content %}

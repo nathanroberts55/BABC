@@ -11,6 +11,35 @@ Search bar that filters the recommendations
 - [x] Filter By Book Author
 - [x] Filter By Submitter?
 
+# User Accounts
+Users want to be able to favorite or upvote books. So having accounts to prevent unlimited voting.
+- [x] Register Users Form
+  - [x] Form
+  - [x] View
+  - [x] URL
+  - [x] HTML
+- [x] Login Users
+  - [x] Form
+  - [x] URL
+  - [x] View
+  - [x] HTML
+- [x] Logout Users
+  - [x] View
+  - [x] URL
+- [ ] Favorites - Books
+  - [ ] View
+  - [ ] Model
+  - [ ] URL
+- [ ] Profile Page
+  - [ ] View
+  - [ ] URL
+  - [ ] HTML
+  - [ ] Favorites
+- [ ] Up/Down Votes - Books
+  - [ ] View
+  - [ ] Model
+  - [ ] URL
+
 # Update Form Validation for Youtube
 Stream VODs on Twitch have an expiration date, so need way to accept youtube links
 - [ ] Accept Youtube Links
@@ -42,6 +71,8 @@ Legit
 - [ ] [Libby](https://libbyapp.com/), 
 - [ ] [OpenLibrary](https://openlibrary.org/), 
 - [ ] [Library Finders | US](https://www.careeronestop.org/LocalHelp/CommunityServices/find-libraries.aspx)
+- [ ] Spotify Audio Books
+- [ ] [Graphic Audio](https://www.graphicaudio.net/)
 
 Gray Area
 - [ ] Libgen.is

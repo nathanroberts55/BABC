@@ -27,12 +27,12 @@
             <ul class="navbar-nav ml-auto mb-2 mb-md-0"> <!-- Add this line -->
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if 'books' in request.path %} active {% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" {% if 'books' in request.path %} aria-current="page" {% endif %}>
+                        <a class="nav-link dropdown-toggle {% if request.path == '/accounts/' %} active {% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" {% if request.path == '/accounts/' %} aria-current="page" {% endif %}>
                             {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item {% if 'account' in request.path %} active {% endif %}" {% if 'account ' in request.path %} aria-current="true" {% endif %}href="{% url 'account' %}">Profile</a></li>
-                            <li><a class="dropdown-item " href="{% url 'logout' %}">Logout</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/accounts/' %} active {% endif %}" {% if request.path == '/accounts/' %} aria-current="true" {% endif %} href="{% url 'account' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
                     </li>
                 {% else %}
