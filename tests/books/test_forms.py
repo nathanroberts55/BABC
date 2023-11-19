@@ -40,6 +40,39 @@ class TestBooksForm(TestCase):
         form = TestingBookForm(self.book_data)
         self.assertTrue(form.is_valid())
 
+    def test_title_validation(self):
+        # Test with empty title
+        data = self.book_data.copy()
+        data.update({"title": ""})
+        form = TestingBookForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["title"],
+            [_("Title is Required. Please ensure Book was selected from dropdown")],
+        )
+
+    def test_author_validation(self):
+        # Test with empty author
+        data = self.book_data.copy()
+        data.update({"author": ""})
+        form = TestingBookForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["author"],
+            [_("Author is Required. Please ensure Book was selected from dropdown")],
+        )
+
+    def test_isbn_validation(self):
+        # Test with empty isbn
+        data = self.book_data.copy()
+        data.update({"isbn": ""})
+        form = TestingBookForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["isbn"],
+            [_("ISBN is Required. Please ensure Book was selected from dropdown")],
+        )
+
     def test_unique_book_validation(self):
         # Create the first book
         form1 = TestingBookForm(data=self.book_data)
@@ -54,7 +87,6 @@ class TestBooksForm(TestCase):
         self.assertEqual(
             form2.errors["__all__"],
             [
-                _("Duplicate Record: This book has already been submitted"),
                 _("Book with this Title and Author already exists."),
             ],
         )

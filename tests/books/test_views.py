@@ -3,7 +3,17 @@ from books.models import Book
 from books.forms import BookForm
 from django.urls import reverse
 from unittest.mock import patch
-from .test_forms import TestingBookForm
+
+# from .test_forms import TestingBookForm
+from django import forms
+
+
+# Create a subclass of BookForm that overrides clean_captcha
+class TestingBookForm(BookForm):
+    captcha = forms.CharField(required=False)
+
+    def clean_captcha(self):
+        return True
 
 
 class RecommendationsViewTest(TestCase):

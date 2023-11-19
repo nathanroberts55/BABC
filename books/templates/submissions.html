@@ -4,8 +4,8 @@
 <div id="content">
     {% if form.errors %}
     {% for field,error in form.errors.items %}
-    <div class="my-2 alert alert-danger alert-dismissible fade show" role="alert">
-        Unable to Submit: {{ error|striptags }}
+    <div class="my-2 alert alert-danger alert-dismissible fade show text-center" role="alert">
+        Please ensure a book was selected from dropdown under the search to submit.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
