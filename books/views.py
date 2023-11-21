@@ -11,22 +11,22 @@ import requests
 #                     https://webservices.amazon.com/paapi5/documentation/item-info.html#contentinfo
 # Amazon PA API Repo: https://github.com/sergioteula/python-amazon-paapi
 
-from amazon_paapi import AmazonApi
-from BigABookClub.settings import (
-    AMAZON_API_ACCESS_KEY,
-    AMAZON_API_SECRET_KEY,
-    AMAZON_API_PARTNER_TAG,
-    AMAZON_API_COUNTRY,
-)
+# from amazon_paapi import AmazonApi
+# from BigABookClub.settings import (
+#     AMAZON_API_ACCESS_KEY,
+#     AMAZON_API_SECRET_KEY,
+#     AMAZON_API_PARTNER_TAG,
+#     AMAZON_API_COUNTRY,
+# )
 
-# Amazon API
-amazon = AmazonApi(
-    AMAZON_API_ACCESS_KEY,
-    AMAZON_API_SECRET_KEY,
-    AMAZON_API_PARTNER_TAG,
-    AMAZON_API_COUNTRY,
-    throttling=2,
-)
+# # Amazon API
+# amazon = AmazonApi(
+#     AMAZON_API_ACCESS_KEY,
+#     AMAZON_API_SECRET_KEY,
+#     AMAZON_API_PARTNER_TAG,
+#     AMAZON_API_COUNTRY,
+#     throttling=2,
+# )
 
 
 # Create your views here.
