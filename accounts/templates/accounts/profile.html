@@ -28,7 +28,7 @@
         <div class="col-lg-8 mx-auto text-center">
             <div class="col-lg-6 mx-auto">
                 <p class="display-6 mb-4">
-                    Your Favorite Books
+                    Your Bookmarks
                 </p>
             </div>
         </div>
@@ -37,7 +37,8 @@
             data-title="{{ book.title }}" data-author="{{ book.author }}" data-submitter="{{ book.submitter }}">
             <div class="col-lg-9 mx-auto">
                 <p class="lead display-6"><a style="text-decoration: none; color: inherit;"
-                        href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{ book.author }}</small></p>
+                        href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{
+                        book.author }}</small></p>
                 <p class="fw-lighter submitter">
                     {% if book.source == 'CHAT' %}
                     Submitted by: {{ book.submitter }}

@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     "captcha",
     "home",
     "books",
+    "accounts",
 ]
 
 # WhiteNoise configuration

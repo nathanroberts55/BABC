@@ -26,19 +26,19 @@ Users want to be able to favorite or upvote books. So having accounts to prevent
 - [x] Logout Users
   - [x] View
   - [x] URL
-- [ ] Favorites - Books
-  - [ ] View
-  - [ ] Model
-  - [ ] URL
-- [ ] Profile Page
-  - [ ] View
-  - [ ] URL
-  - [ ] HTML
-  - [ ] Favorites
-- [ ] Up/Down Votes - Books
-  - [ ] View
-  - [ ] Model
-  - [ ] URL
+- [x] Bookmarks - Books
+  - [x] View
+  - [x] Model
+  - [x] URL
+- [x] Profile Page
+  - [x] View
+  - [x] URL
+  - [x] HTML
+  - [x] Bookmarks
+- [x] Likes - Books
+  - [x] View
+  - [x] Model
+  - [x] URL
 
 # Update Form Validation for Youtube
 Stream VODs on Twitch have an expiration date, so need way to accept youtube links
@@ -50,9 +50,10 @@ Stream VODs on Twitch have an expiration date, so need way to accept youtube lin
 
 # Book Details Page
 Ability to click on Recommendation to get details on Individual Book
-- [ ] URL for Book Details
-- [ ] View for Book Details
-- [ ] UI for Book Details
+- [x] URL for Book Details
+- [x] View for Book Details
+- [x] UI for Book Details
+- [x] Google API for Details
 - [ ] Database Fields for Book Details
   - [ ] Slug?: str
   - [ ] Description: str
