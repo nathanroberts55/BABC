@@ -27,6 +27,7 @@ class Book(models.Model):
     favorites = models.ManyToManyField(
         User, related_name="favorite", default=None, blank=True
     )
+    likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
 
     class Meta:
         unique_together = ("title", "author")

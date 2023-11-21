@@ -9,6 +9,14 @@ from books.models import Book
 # Create your views here.
 @login_required
 def account_profile(request) -> None:
+    # Only set back_url if it's not set yet, or if it's not a favorite_book or like_book URL
+    if (
+        "back_url" not in request.session
+        or "/favorite/" not in request.session["back_url"]
+        and "/like/" not in request.session["back_url"]
+    ):
+        request.session["back_url"] = request.META.get("HTTP_REFERER", "/")
+
     context = {}
     books = Book.objects.filter(favorites=request.user)
     context["books"] = books
@@ -86,5 +94,17 @@ def favorite_book(request, id) -> None:
         book.favorites.remove(request.user)
     else:
         book.favorites.add(request.user)
+
+    return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+
+@login_required
+def like_book(request, id) -> None:
+    book = get_object_or_404(Book, id=id)
+
+    if book.likes.filter(id=request.user.id).exists():
+        book.likes.remove(request.user)
+    else:
+        book.likes.add(request.user)
 
     return HttpResponseRedirect(request.META["HTTP_REFERER"])

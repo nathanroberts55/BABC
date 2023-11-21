@@ -1,3 +1,4 @@
+from django.db.models import Count
 from datetime import datetime
 from django.contrib import messages
 from django.http import HttpResponse
@@ -10,22 +11,22 @@ import requests
 #                     https://webservices.amazon.com/paapi5/documentation/item-info.html#contentinfo
 # Amazon PA API Repo: https://github.com/sergioteula/python-amazon-paapi
 
-# from amazon_paapi import AmazonApi
-# from BigABookClub.settings import (
-#     AMAZON_API_ACCESS_KEY,
-#     AMAZON_API_SECRET_KEY,
-#     AMAZON_API_PARTNER_TAG,
-#     AMAZON_API_COUNTRY,
-# )
+from amazon_paapi import AmazonApi
+from BigABookClub.settings import (
+    AMAZON_API_ACCESS_KEY,
+    AMAZON_API_SECRET_KEY,
+    AMAZON_API_PARTNER_TAG,
+    AMAZON_API_COUNTRY,
+)
 
 # Amazon API
-# amazon = AmazonApi(
-#     AMAZON_API_ACCESS_KEY,
-#     AMAZON_API_SECRET_KEY,
-#     AMAZON_API_PARTNER_TAG,
-#     AMAZON_API_COUNTRY,
-#     throttling=2,
-# )
+amazon = AmazonApi(
+    AMAZON_API_ACCESS_KEY,
+    AMAZON_API_SECRET_KEY,
+    AMAZON_API_PARTNER_TAG,
+    AMAZON_API_COUNTRY,
+    throttling=2,
+)
 
 
 # Create your views here.
@@ -34,9 +35,17 @@ def books(request):
 
 
 def book_details(request, id):
+    # Only set back_url if it's not set yet, or if it's not a favorite_book or like_book URL
+    if (
+        "back_url" not in request.session
+        or "/favorite/" not in request.session["back_url"]
+        and "/like/" not in request.session["back_url"]
+    ):
+        request.session["back_url"] = request.META.get("HTTP_REFERER", "/")
+
     context = {}
 
-    book = Book.objects.filter(id=id).first()
+    book = Book.objects.filter(id=id).annotate(likes_count=Count("likes")).first()
     context["book"] = book
 
     try:
@@ -73,20 +82,25 @@ def book_details(request, id):
     # try:
     #     book_results = amazon.search_items(
     #         item_count=1,
-    #         keywords=book.title,
+    #         # keywords=book.isbn,
     #         title=book.title,
     #         author=book.author[0],
     #         search_index="Books",
     #     )
-    #     book_asin = amazon.get_items(book_results.items[0].asin)[0]
-    #     book = amazon.get_items(book_asin)[0]
-    #     description =  book.item_info.content_info
-    #     book_image = book.images.primary.medium.url
-    #     item = amazon.get_items("B01N5IB20Q")[0]
-    #     print(item)
+    #     if book_results:
+    #         book_details = amazon.get_items(book_results.items[0].asin)
+    #     print(f"Book Details: {book_details}")
+
+    #     if book_details:
+    #         # book = amazon.get_items(book_asin)[0]
+    #         # book_description = book_details.item_info
+    #         book_description = book_details.images.primary.medium.url
+    #         print(f"Book Description: {book_description}")
+    #         print(f"Book Image URL: {book_description}")
+
     # except Exception as e:
     #     print(f"Error Requesting from the Amazon API with error: {e}")
-    #     print(f"TraceBack: {e.__traceback__}")
+    #     # print(f"TraceBack: {e.}")
 
     return render(request, "book_details.html", context=context)
 
@@ -94,9 +108,13 @@ def book_details(request, id):
 def recommendations(request):
     context = {}
 
-    book = Book.objects.filter(approved=True)
+    books = (
+        Book.objects.filter(approved=True)
+        .annotate(likes_count=Count("likes"))
+        .order_by("title")
+    )
 
-    context["books"] = book
+    context["books"] = books
 
     return render(request, "recommendations.html", context=context)
 

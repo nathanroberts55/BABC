@@ -10,6 +10,17 @@
                 </select>
             </div>
         </div>
+        {% if user.is_authenticated%}
+        <div class="col-lg-2">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Sort By:</span>
+                <select class="form-control form-select" id="recommendations-sort" aria-label="Recommedation Sort">
+                    <option selected value="title">Title</option>
+                    <option value="likes">Likes</option>
+                </select>
+            </div>
+        </div>
+        {% endif %}
         <div class="col-lg-6">
             <div class="input-group d-flex" id="recommendationSearchInputGroup">
                 <select class="form-select input-group-text" aria-label="Search Select Option" style="flex: 0 0 27%;"
@@ -23,30 +34,41 @@
             </div>
         </div>
     </div>
-    {% for book in books %}
-    <div class="row align-items-center book-recommendation" data-source="{{ book.source }}"
-        data-title="{{ book.title }}" data-author="{{ book.author }}" data-submitter="{{ book.submitter }}">
-        <div class="col-lg-9 mx-auto">
-            <p class="lead display-6"><a style="text-decoration: none; color: inherit;" href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{ book.author }}</small></p>
-            <p class="fw-lighter submitter">
-                {% if book.source == 'CHAT' %}
-                Submitted by: {{ book.submitter }}
+    <div id="book_list">
+        {% for book in books %}
+        <div class="row align-items-center book-recommendation" data-source="{{ book.source }}"
+            data-title="{{ book.title }}" data-author="{{ book.author }}" data-submitter="{{ book.submitter }}"
+            data-likes="{{ book.likes_count }}">
+            <div class="col-lg-9 mx-auto">
+                <p class="lead display-6"><a style="text-decoration: none; color: inherit;"
+                        href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{ book.author }}</small></p>
+                <p class="fw-lighter submitter">
+                    {% if book.source == 'CHAT' %}
+                    Submitted by: {{ book.submitter }}
+                    {% endif %}
+                </p>
+                <div class="d-flex align-items-center">
+                    {% if book.stream_link %}
+                    <a href="{{book.stream_link}}" target="_blank"><button type='button'
+                            class="btn btn-primary btn-sm mx-1">Twitch
+                            Stream</button></a>
+                    {% endif %}
+                    {% if book.amazon_link %}
+                    <a href="{{book.amazon_link}}" target="_blank"><button type='button'
+                            class=" btn btn-outline-primary btn-sm mx-1">Buy on Amazon</button></a>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <a class="btn-md px-2 mx-1"><i class="fa-solid fa-thumbs-up"></i></a>
+                    {{ book.likes_count }}
+                    {% endif %}
+                </div>
+                {% if not forloop.last %}
+                <hr>
                 {% endif %}
-            </p>
-            {% if book.stream_link %}
-            <a href="{{book.stream_link}}" target="_blank"><button type='button' class=" btn btn-primary btn-sm">Twitch
-                    Stream</button></a>
-            {% endif %}
-            {% if book.amazon_link %}
-            <a href="{{book.amazon_link}}" target="_blank"><button type='button'
-                    class=" btn btn-outline-primary btn-sm">Buy on Amazon</button></a>
-            {% endif %}
-            {% if not forloop.last %}
-            <hr>
-            {% endif %}
+            </div>
         </div>
+        {% endfor%}
     </div>
-    {% endfor%}
 </div>
 <script src="{% static 'js/recommendation_filtering.js' %}"></script>
 <script src="{% static 'js/scroll_position.js' %}"></script>
