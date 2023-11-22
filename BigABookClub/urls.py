@@ -31,7 +31,7 @@ urlpatterns = [
     path("", include("home.urls")),
     path("books/", include("books.urls")),
     path("accounts/", include("accounts.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("", include("social_django.urls", namespace="social")),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
