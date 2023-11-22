@@ -1,7 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponseRedirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth.decorators import login_required
 from books.models import Book
 
