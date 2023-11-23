@@ -65,3 +65,28 @@ class SubmissionsViewTest(TestCase):
         response = self.client.post(self.submissions_url, data=self.form_data)
 
         self.assertEquals(response.status_code, 200)
+
+
+class BookDetailsViewTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        # Create a test book
+        self.book = Book.objects.create(
+            title="Test Title",
+            author="Test Author",
+            isbn="1234567890",
+            source="Test Source",
+            submitter="Test Submitter",
+            stream_link="Test Stream Link",
+            approved=True,
+        )
+
+        self.book_details_url = reverse("book_details", args=[self.book.id])
+
+    def test_book_details_GET(self):
+        response = self.client.get(self.book_details_url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "book_details.html")
+        self.assertEquals(response.context["book"].id, self.book.id)

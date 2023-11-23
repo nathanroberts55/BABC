@@ -11,6 +11,35 @@ Search bar that filters the recommendations
 - [x] Filter By Book Author
 - [x] Filter By Submitter?
 
+# User Accounts
+Users want to be able to favorite or upvote books. So having accounts to prevent unlimited voting.
+- [x] Register Users Form
+  - [x] Form
+  - [x] View
+  - [x] URL
+  - [x] HTML
+- [x] Login Users
+  - [x] Form
+  - [x] URL
+  - [x] View
+  - [x] HTML
+- [x] Logout Users
+  - [x] View
+  - [x] URL
+- [x] Bookmarks - Books
+  - [x] View
+  - [x] Model
+  - [x] URL
+- [x] Profile Page
+  - [x] View
+  - [x] URL
+  - [x] HTML
+  - [x] Bookmarks
+- [x] Likes - Books
+  - [x] View
+  - [x] Model
+  - [x] URL
+
 # Update Form Validation for Youtube
 Stream VODs on Twitch have an expiration date, so need way to accept youtube links
 - [ ] Accept Youtube Links
@@ -21,9 +50,10 @@ Stream VODs on Twitch have an expiration date, so need way to accept youtube lin
 
 # Book Details Page
 Ability to click on Recommendation to get details on Individual Book
-- [ ] URL for Book Details
-- [ ] View for Book Details
-- [ ] UI for Book Details
+- [x] URL for Book Details
+- [x] View for Book Details
+- [x] UI for Book Details
+- [x] Google API for Details
 - [ ] Database Fields for Book Details
   - [ ] Slug?: str
   - [ ] Description: str
@@ -42,6 +72,8 @@ Legit
 - [ ] [Libby](https://libbyapp.com/), 
 - [ ] [OpenLibrary](https://openlibrary.org/), 
 - [ ] [Library Finders | US](https://www.careeronestop.org/LocalHelp/CommunityServices/find-libraries.aspx)
+- [ ] Spotify Audio Books
+- [ ] [Graphic Audio](https://www.graphicaudio.net/)
 
 Gray Area
 - [ ] Libgen.is

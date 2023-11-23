@@ -66,6 +66,23 @@ CSRF_TRUSTED_ORIGINS = (
     else []
 )
 
+# Authentication Options
+
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.discord.DiscordOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
+SOCIAL_AUTH_DISCORD_KEY = os.getenv("SOCIAL_AUTH_DISCORD_OAUTH_KEY")
+SOCIAL_AUTH_DISCORD_SECRET = os.getenv("SOCIAL_AUTH_DISCORD_OAUTH_SECRET")
+
+SOCIAL_AUTH_DISCORD_SCOPE = ["identify"]
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/"
+
+# Social Auth for PostgreSQL
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -79,6 +96,8 @@ INSTALLED_APPS = [
     "captcha",
     "home",
     "books",
+    "accounts",
+    "social_django",
 ]
 
 # WhiteNoise configuration
@@ -108,6 +127,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },

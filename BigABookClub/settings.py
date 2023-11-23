@@ -51,6 +51,20 @@ CSRF_TRUSTED_ORIGINS = (
     ["https://" + os.environ["SITE_HOSTNAME"]] if "SITE_HOSTNAME" in os.environ else []
 )
 
+# Authentication Options
+
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.discord.DiscordOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
+SOCIAL_AUTH_DISCORD_KEY = os.getenv("SOCIAL_AUTH_DISCORD_KEY")
+SOCIAL_AUTH_DISCORD_SECRET = os.getenv("SOCIAL_AUTH_DISCORD_SECRET")
+
+SOCIAL_AUTH_DISCORD_SCOPE = ["identify"]
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -64,6 +78,8 @@ INSTALLED_APPS = [
     "captcha",
     "home",
     "books",
+    "accounts",
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -92,6 +108,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -174,3 +192,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # SCSS/SASS Configuration Settings
 COMPRESS_PRECOMPILERS = (("text/css", "django_libsass.SassCompiler"),)
 COMPRESS_ROOT = STATIC_ROOT
+
+# AMAZON API
+# AMAZON_API_ACCESS_KEY = os.getenv("AMAZON_API_ACCESS_KEY")
+# AMAZON_API_SECRET_KEY = os.getenv("AMAZON_API_SECRET_KEY")
+# AMAZON_API_PARTNER_TAG = os.getenv("AMAZON_API_PARTNER_TAG")
+# AMAZON_API_COUNTRY = "US"

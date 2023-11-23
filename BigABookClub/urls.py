@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import TemplateView
 from django.conf.urls import handler404, handler403, handler500
 import home
 import books
+import accounts
 
 handler404 = "home.views.custom_404"
 handler403 = "home.views.custom_403"
@@ -28,4 +30,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("home.urls")),
     path("books/", include("books.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("", include("social_django.urls", namespace="social")),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+    ),
 ]

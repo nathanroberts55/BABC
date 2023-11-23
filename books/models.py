@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
@@ -23,6 +24,10 @@ class Book(models.Model):
     stream_link = models.URLField(max_length=500, blank=True)
     amazon_link = models.URLField(max_length=500, blank=True)
     approved = models.BooleanField(default=False)
+    favorites = models.ManyToManyField(
+        User, related_name="favorite", default=None, blank=True
+    )
+    likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
 
     class Meta:
         unique_together = ("title", "author")

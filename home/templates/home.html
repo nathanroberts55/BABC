@@ -2,6 +2,14 @@
 {% load static %}
 {% block content %}
 <div id="content">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="my-2 alert {{ message.tags }} alert-dismissible fade show text-center" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {%endif%}
     <div class="px-4 py-5 my-5 text-center">
         <img src="{% static 'img/logo-purple.png' %}" alt="" width="125" height="125">
         <h1 class="display-5 fw-bold text-body-emphasis">Big A Book Club</h1>
