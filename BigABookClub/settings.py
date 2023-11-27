@@ -79,7 +79,9 @@ INSTALLED_APPS = [
     "home",
     "books",
     "accounts",
+    "api",
     "social_django",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [

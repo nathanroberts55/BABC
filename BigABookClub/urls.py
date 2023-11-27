@@ -31,6 +31,7 @@ urlpatterns = [
     path("", include("home.urls")),
     path("books/", include("books.urls")),
     path("accounts/", include("accounts.urls")),
+    path("api/", include("api.urls")),
     path("", include("social_django.urls", namespace="social")),
     path(
         "robots.txt",
