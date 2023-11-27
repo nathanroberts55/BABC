@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     "books",
     "accounts",
     "api",
+    "frontend",
     "social_django",
     "rest_framework",
 ]
