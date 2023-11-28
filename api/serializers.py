@@ -6,3 +6,9 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = "__all__"
+
+
+class CreateBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ("title", "author", "isbn", "source", "submitter", "stream_link")
