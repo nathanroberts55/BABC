@@ -1,14 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import SubmissionsPage from './pages/SubmissionsPage';
-import RecommendationsPage from './pages/RecommendationsPage';
-import Footer from './footer/Footer';
-import BookDetailsPage from './books/recommendations/BooksDetailsPage';
-import AccountsPage from './pages/AccountsPage';
-import NavBar from './navigation/NavBar';
+import HomePage from './components/pages/HomePage';
+import SubmissionsPage from './components/pages/SubmissionsPage';
+import RecommendationsPage from './components/pages/RecommendationsPage';
+import Footer from './components/footer/Footer';
+import BookDetailsPage from './components/books/recommendations/BooksDetailsPage';
+import AccountsPage from './components/pages/AccountsPage';
+import NavBar from './components/navigation/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../static/scss/App.scss';
+import '../static/scss/App.scss';
 
 function App() {
 	return (
@@ -16,7 +16,7 @@ function App() {
 			<NavBar />
 			<Routes>
 				<Route
-					path='/react'
+					path='/'
 					element={<HomePage />}
 				/>
 				<Route
@@ -35,10 +35,6 @@ function App() {
 					path='/accounts'
 					element={<AccountsPage />}
 				/>
-				{/*<Route
-					path='/login/discord'
-					element={<Login />}
-				/> */}
 			</Routes>
 			<Footer />
 		</div>

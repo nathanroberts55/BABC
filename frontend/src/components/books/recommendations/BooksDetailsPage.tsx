@@ -1,12 +1,37 @@
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import BookDetails from './BookDetails';
-import React from 'react';
-import testBookData from '../../../../static/data/testBooks.json';
+import AuthContext from '../../../contexts/authContext';
+
+type Book = {
+	id: number;
+	date_created: string;
+	date_modified: string;
+	title: string;
+	author: string;
+	isbn: string;
+	source: string;
+	submitter: string;
+	stream_link?: string;
+	amazon_link: string;
+	approved: boolean;
+	favorites: number[];
+	likes: number[];
+};
 
 function BookDetailsPage() {
 	const { id } = useParams<{ id: string }>();
 
-	const book = testBookData.find((book) => book.id === Number(id));
+	const { isAuthenticated } = useContext(AuthContext);
+
+	const [book, setBook] = useState<Book>();
+
+	useEffect(() => {
+		fetch(`/api/books/${id}`)
+			.then((response) => response.json())
+			.then((data) => setBook(data))
+			.catch((error) => console.error('Error:', error));
+	}, []);
 
 	if (!book) {
 		return <div>Book not found</div>;
@@ -16,7 +41,6 @@ function BookDetailsPage() {
 		<BookDetails
 			recommendationsUrl={'/books/recommendations'}
 			accountUrl={'/accounts/'}
-			isAuthenticated={true}
 			book={book}
 			favoriteUrl={''}
 			likeUrl={''}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -11,11 +11,11 @@ import {
 	faArrowLeft,
 	faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
+import AuthContext from '../../../contexts/authContext';
 
 interface BookDetailsProps {
 	recommendationsUrl: string;
 	accountUrl: string;
-	isAuthenticated: boolean;
 	book: {
 		title: string;
 		author: string;
@@ -34,14 +34,9 @@ interface Context {
 }
 
 function BookDetails(props: BookDetailsProps) {
-	const {
-		recommendationsUrl,
-		accountUrl,
-		isAuthenticated,
-		book,
-		favoriteUrl,
-		likeUrl,
-	} = props;
+	const { recommendationsUrl, accountUrl, book, favoriteUrl, likeUrl } = props;
+
+	const { isAuthenticated } = useContext(AuthContext);
 
 	const [context, setContext] = useState<Context>({
 		description: null,
@@ -78,6 +73,32 @@ function BookDetails(props: BookDetailsProps) {
 				console.error(`Exception getting book details: ${error}`);
 			});
 	}, []);
+
+	const handleFavorite = async () => {
+		const response = await fetch(`/api/favorite/${book.id}/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				// include your authentication headers, e.g. Bearer token
+			},
+		});
+		if (!response.ok) {
+			// handle error
+		}
+	};
+
+	const handleLike = async () => {
+		const response = await fetch(`/api/like/${book.id}/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				// include your authentication headers, e.g. Bearer token
+			},
+		});
+		if (!response.ok) {
+			// handle error
+		}
+	};
 
 	return (
 		<Container
@@ -172,6 +193,7 @@ function BookDetails(props: BookDetailsProps) {
 										variant='link'
 										size='lg'
 										className='px-4'
+										onClick={handleFavorite}
 									>
 										<FontAwesomeIcon icon={faBookmark} />
 									</Button>
@@ -180,6 +202,7 @@ function BookDetails(props: BookDetailsProps) {
 										variant='link'
 										size='lg'
 										className='px-4'
+										onClick={handleLike}
 									>
 										<FontAwesomeIcon icon={faThumbsUp} />
 									</Button>

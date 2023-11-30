@@ -5,9 +5,11 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Image from 'react-bootstrap/Image';
 import logo_purple from '../../../../static/img/logo-purple.png';
-import React from 'react';
+import React, { useContext } from 'react';
+import AuthContext from '../../contexts/authContext';
 
 function NavBar() {
+	const { isAuthenticated, user } = useContext(AuthContext);
 	return (
 		<Navbar
 			expand='lg'
@@ -54,12 +56,22 @@ function NavBar() {
 						</NavDropdown>
 					</Nav>
 					<Nav className='ml-auto'>
-						<Nav.Link
-							as={Link}
-							to={'/login/discord'}
-						>
-							Login
-						</Nav.Link>
+						{isAuthenticated ? (
+							<NavDropdown
+								title={user ? user.username : 'Loading...'}
+								id='nav-dropdown'
+							>
+								<NavDropdown.Item
+									as={Link}
+									to={'/accounts'}
+								>
+									Profile
+								</NavDropdown.Item>
+								<NavDropdown.Item href='/api/logout/'>Logout</NavDropdown.Item>
+							</NavDropdown>
+						) : (
+							<Nav.Link href='/login/discord/'>Login</Nav.Link>
+						)}
 					</Nav>
 				</Navbar.Collapse>
 			</Container>

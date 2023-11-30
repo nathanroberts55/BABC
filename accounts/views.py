@@ -21,7 +21,7 @@ def account_logout(request) -> None:
 
     logout(request=request)
     messages.success(request, "You have successfully logged out.")
-    return redirect("home")
+    return redirect("/")
 
 
 # Create your views here.

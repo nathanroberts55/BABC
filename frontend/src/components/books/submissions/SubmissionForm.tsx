@@ -7,6 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { FormControl } from 'react-bootstrap';
+import getCookie from '../../../utils/csrftokens';
 
 type DropdownItem = {
 	title: string;
@@ -112,7 +113,34 @@ const SubmissionForm: React.FC = () => {
 			stream_link: streamLink,
 		};
 
-		console.log(bookToSubmit);
+		let csrftoken: string | null = getCookie('csrftoken');
+
+		if (csrftoken === null) {
+			// Handle the error here. For example, you can throw an error:
+			throw new Error('CSRF token not found');
+		}
+
+		// Now TypeScript knows that csrftoken is not null here
+		fetch('/api/books/create', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrftoken,
+			},
+			body: JSON.stringify(bookToSubmit),
+		})
+			.then((response) => {
+				if (response.ok) {
+					// The book was created successfully
+					console.log('Book created successfully');
+				} else {
+					// Handle any errors
+					console.log('Error creating book');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 
 		setSearchValue('');
 		setTitleInput('');

@@ -28,12 +28,12 @@ handler500 = "home.views.custom_500"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("home.urls")),
-    path("books/", include("books.urls")),
-    path("accounts/", include("accounts.urls")),
-    path("api/", include("api.urls")),
-    path("react/", include("frontend.urls")),
+    # path("", include("home.urls")),
+    # path("books/", include("books.urls")),
+    # path("accounts/", include("accounts.urls")),
     path("", include("social_django.urls", namespace="social")),
+    path("", include("frontend.urls")),
+    path("api/", include("api.urls")),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

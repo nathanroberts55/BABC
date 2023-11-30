@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -7,13 +7,42 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import testBooks from '../../../../static/data/testBooks.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import AuthContext from '../../../contexts/authContext';
+
+const API_BASE_URL =
+	process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+
+type Book = {
+	id: number;
+	date_created: string;
+	date_modified: string;
+	title: string;
+	author: string;
+	isbn: string;
+	source: string;
+	submitter: string;
+	stream_link?: string;
+	amazon_link: string;
+	approved: boolean;
+	favorites: number[];
+	likes: number[];
+};
 
 function Recommendations() {
-	const [isAuthenticated, setIsAuthenticated] = useState(true);
 	const [bookSource, setBookSource] = useState('ATRIOC');
 	const [sortKey, setSortKey] = useState('title');
 	const [searchKey, setSearchKey] = useState('title');
 	const [searchValue, setSearchValue] = useState('');
+	const [books, setBooks] = useState<Book[]>([]);
+
+	const { isAuthenticated } = useContext(AuthContext);
+
+	useEffect(() => {
+		fetch(`${API_BASE_URL}/api/books/`)
+			.then((response) => response.json())
+			.then((data) => setBooks(data))
+			.catch((error) => console.error('Error:', error));
+	}, []);
 
 	const handleBookSourceChange = (
 		event: React.ChangeEvent<HTMLSelectElement>
@@ -95,7 +124,7 @@ function Recommendations() {
 				</Col>
 			</Row>
 			<div id='BookList'>
-				{testBooks
+				{books
 					.filter((book) => book.source === bookSource)
 					.filter((book) => {
 						if (searchKey === 'title') {
