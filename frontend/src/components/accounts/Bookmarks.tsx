@@ -6,6 +6,9 @@ import Button from 'react-bootstrap/Button';
 
 type Book = {
 	id: number;
+	is_bookmarked: boolean;
+	is_liked: boolean;
+	num_likes: number;
 	source: string;
 	title: string;
 	author: string;

@@ -6,17 +6,25 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faThumbsUp,
-	faBookmark,
+	faThumbsUp as fasThumbsUp,
+	faBookmark as fasBookmark,
 	faArrowLeft,
 	faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
+import {
+	faThumbsUp as farThumbsUp,
+	faBookmark as farBookmark,
+} from '@fortawesome/free-regular-svg-icons';
 import AuthContext from '../../../contexts/authContext';
+import getCookie from '../../../utils/csrftokens';
 
 interface BookDetailsProps {
 	recommendationsUrl: string;
 	accountUrl: string;
 	book: {
+		is_bookmarked: boolean;
+		is_liked: boolean;
+		num_likes: number;
 		title: string;
 		author: string;
 		stream_link?: string;
@@ -38,6 +46,8 @@ function BookDetails(props: BookDetailsProps) {
 
 	const { isAuthenticated } = useContext(AuthContext);
 
+	const [liked, setLiked] = useState(book.is_liked);
+	const [bookmarked, setBookmarked] = useState(book.is_bookmarked);
 	const [context, setContext] = useState<Context>({
 		description: null,
 		image_url: null,
@@ -75,28 +85,44 @@ function BookDetails(props: BookDetailsProps) {
 	}, []);
 
 	const handleFavorite = async () => {
-		const response = await fetch(`/api/favorite/${book.id}/`, {
+		let csrftoken: string | null = getCookie('csrftoken');
+
+		if (csrftoken === null) {
+			// Handle the error here. For example, you can throw an error:
+			throw new Error('CSRF token not found');
+		}
+
+		const response = await fetch(`/api/books/favorite/${book.id}/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'X-CSRFToken': csrftoken,
 				// include your authentication headers, e.g. Bearer token
 			},
 		});
-		if (!response.ok) {
-			// handle error
+		if (response.status === 204) {
+			setBookmarked(!bookmarked);
 		}
 	};
 
 	const handleLike = async () => {
-		const response = await fetch(`/api/like/${book.id}/`, {
+		let csrftoken: string | null = getCookie('csrftoken');
+
+		if (csrftoken === null) {
+			// Handle the error here. For example, you can throw an error:
+			throw new Error('CSRF token not found');
+		}
+
+		const response = await fetch(`/api/books/like/${book.id}/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'X-CSRFToken': csrftoken,
 				// include your authentication headers, e.g. Bearer token
 			},
 		});
-		if (!response.ok) {
-			// handle error
+		if (response.status === 204) {
+			setLiked(!liked);
 		}
 	};
 
@@ -189,22 +215,24 @@ function BookDetails(props: BookDetailsProps) {
 							{isAuthenticated && (
 								<>
 									<Button
-										href={favoriteUrl}
+										// href={favoriteUrl}
 										variant='link'
 										size='lg'
 										className='px-4'
 										onClick={handleFavorite}
 									>
-										<FontAwesomeIcon icon={faBookmark} />
+										<FontAwesomeIcon
+											icon={bookmarked ? fasBookmark : farBookmark}
+										/>
 									</Button>
 									<Button
-										href={likeUrl}
+										// href={likeUrl}
 										variant='link'
 										size='lg'
 										className='px-4'
 										onClick={handleLike}
 									>
-										<FontAwesomeIcon icon={faThumbsUp} />
+										<FontAwesomeIcon icon={liked ? fasThumbsUp : farThumbsUp} />
 									</Button>
 								</>
 							)}

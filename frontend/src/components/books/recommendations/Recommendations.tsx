@@ -6,7 +6,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import testBooks from '../../../../static/data/testBooks.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as fasThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as farThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import AuthContext from '../../../contexts/authContext';
 
 const API_BASE_URL =
@@ -14,6 +15,9 @@ const API_BASE_URL =
 
 type Book = {
 	id: number;
+	is_bookmarked: boolean;
+	is_liked: boolean;
+	num_likes: number;
 	date_created: string;
 	date_modified: string;
 	title: string;
@@ -24,8 +28,6 @@ type Book = {
 	stream_link?: string;
 	amazon_link: string;
 	approved: boolean;
-	favorites: number[];
-	likes: number[];
 };
 
 function Recommendations() {
@@ -147,7 +149,7 @@ function Recommendations() {
 						if (sortKey === 'title') {
 							return a.title.localeCompare(b.title);
 						} else if (sortKey === 'likes') {
-							return b.likes.length - a.likes.length;
+							return b.num_likes - a.num_likes;
 						} else {
 							return 0;
 						}
@@ -211,9 +213,13 @@ function Recommendations() {
 												variant='link'
 												className='btn-md px-2 mx-1'
 											>
-												<FontAwesomeIcon icon={faThumbsUp} />
+												{book.is_liked ? (
+													<FontAwesomeIcon icon={fasThumbsUp} />
+												) : (
+													<FontAwesomeIcon icon={farThumbsUp} />
+												)}
 											</Button>
-											{book.likes.length}
+											{book.num_likes}
 										</>
 									)}
 								</div>

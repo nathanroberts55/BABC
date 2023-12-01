@@ -5,6 +5,9 @@ import AuthContext from '../../../contexts/authContext';
 
 type Book = {
 	id: number;
+	is_bookmarked: boolean;
+	is_liked: boolean;
+	num_likes: number;
 	date_created: string;
 	date_modified: string;
 	title: string;
@@ -15,8 +18,6 @@ type Book = {
 	stream_link?: string;
 	amazon_link: string;
 	approved: boolean;
-	favorites: number[];
-	likes: number[];
 };
 
 function BookDetailsPage() {

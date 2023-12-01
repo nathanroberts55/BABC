@@ -19,11 +19,17 @@ class ListBooksView(generics.ListAPIView):
     queryset = Book.objects.filter(approved=True).all()
     serializer_class = BookSerializer
 
+    def get_serializer_context(self):
+        return {"request": self.request}
+
 
 class SingleBookView(generics.RetrieveAPIView):
     queryset = Book.objects.filter(approved=True)
     serializer_class = BookSerializer
     lookup_field = "id"
+
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 
 class CreateBookView(generics.CreateAPIView):
@@ -48,10 +54,14 @@ class ListBookmarks(APIView):
 
     def get(self, request):
         books = Book.objects.filter(favorites=request.user).all()
-
+        context = {"request": request}
         return Response(
-            BookSerializer(books, many=True).data, status=status.HTTP_200_OK
+            BookSerializer(books, many=True, context=context).data,
+            status=status.HTTP_200_OK,
         )
+
+    def get_serializer_context(self, request):
+        return {"request": request}
 
 
 class FavoriteBook(APIView):

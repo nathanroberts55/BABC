@@ -6,6 +6,9 @@ import testBooks from '../../../static/data/testBooks.json';
 function AccountsPage() {
 	type Book = {
 		id: number;
+		is_bookmarked: boolean;
+		is_liked: boolean;
+		num_likes: number;
 		date_created: string;
 		date_modified: string;
 		title: string;
@@ -16,8 +19,6 @@ function AccountsPage() {
 		stream_link?: string;
 		amazon_link: string;
 		approved: boolean;
-		favorites: number[];
-		likes: number[];
 	};
 
 	const [bookmarks, setBookmarks] = useState<Book[]>([]);
