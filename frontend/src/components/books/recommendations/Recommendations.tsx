@@ -10,9 +10,6 @@ import { faThumbsUp as fasThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as farThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import AuthContext from '../../../contexts/authContext';
 
-const API_BASE_URL =
-	process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
-
 type Book = {
 	id: number;
 	is_bookmarked: boolean;
@@ -40,7 +37,7 @@ function Recommendations() {
 	const { isAuthenticated } = useContext(AuthContext);
 
 	useEffect(() => {
-		fetch(`${API_BASE_URL}/api/books/`)
+		fetch(`/api/books/`)
 			.then((response) => response.json())
 			.then((data) => setBooks(data))
 			.catch((error) => console.error('Error:', error));
