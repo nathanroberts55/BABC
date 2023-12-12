@@ -29,6 +29,10 @@ function AccountsPage() {
 			.then((data) => setBookmarks(data));
 	}, []);
 
+	useEffect(() => {
+		document.title = 'Big A Book Club | Profile';
+	}, []);
+
 	return (
 		<>
 			<Hero />

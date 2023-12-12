@@ -19,8 +19,6 @@ import AuthContext from '../../../contexts/authContext';
 import getCookie from '../../../utils/csrftokens';
 
 interface BookDetailsProps {
-	recommendationsUrl: string;
-	accountUrl: string;
 	book: {
 		is_bookmarked: boolean;
 		is_liked: boolean;
@@ -32,8 +30,6 @@ interface BookDetailsProps {
 		isbn?: string;
 		id: number;
 	};
-	favoriteUrl: string;
-	likeUrl: string;
 }
 
 interface Context {
@@ -42,7 +38,7 @@ interface Context {
 }
 
 function BookDetails(props: BookDetailsProps) {
-	const { recommendationsUrl, accountUrl, book, favoriteUrl, likeUrl } = props;
+	const { book } = props;
 
 	const { isAuthenticated } = useContext(AuthContext);
 
@@ -137,14 +133,14 @@ function BookDetails(props: BookDetailsProps) {
 					className='mx-auto d-flex align-items-center justify-content-between'
 				>
 					<Button
-						href={recommendationsUrl}
+						href={'/books/recommendations/'}
 						variant='primary'
 					>
 						<FontAwesomeIcon icon={faArrowLeft} /> Recommendations
 					</Button>
 					{isAuthenticated && (
 						<Button
-							href={accountUrl}
+							href={'/accounts/'}
 							variant='primary'
 						>
 							<FontAwesomeIcon icon={faArrowRight} /> Profile

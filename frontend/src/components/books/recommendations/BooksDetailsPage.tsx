@@ -38,15 +38,7 @@ function BookDetailsPage() {
 		return <div>Book not found</div>;
 	}
 
-	return (
-		<BookDetails
-			recommendationsUrl={'/books/recommendations'}
-			accountUrl={'/accounts/'}
-			book={book}
-			favoriteUrl={''}
-			likeUrl={''}
-		/>
-	);
+	return <BookDetails book={book} />;
 }
 
 export default BookDetailsPage;

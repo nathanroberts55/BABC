@@ -41,6 +41,13 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js'],
+		alias: {
+			Static: path.resolve(__dirname, './static/'),
+			Images: path.resolve(__dirname, './static/img/'),
+			Contexts: path.resolve(__dirname, './src/contexts/'),
+			Providers: path.resolve(__dirname, './src/providers/'),
+			Utils: path.resolve(__dirname, './src/providers/'),
+		},
 	},
 	optimization: {
 		minimize: true,
