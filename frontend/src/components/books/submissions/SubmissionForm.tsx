@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import { FormControl } from 'react-bootstrap';
 import getCookie from '../../../utils/csrftokens';
@@ -16,7 +17,7 @@ type DropdownItem = {
 	text: string;
 };
 
-const SubmissionForm: React.FC = () => {
+function SubmissionForm() {
 	const [searchKey, setSearchKey] = useState('title');
 	const [searchValue, setSearchValue] = useState('');
 	const [bookSource, setBookSource] = useState('ATRIOC');
@@ -28,7 +29,16 @@ const SubmissionForm: React.FC = () => {
 	const [authorInput, setAuthorInput] = useState('');
 	const [isbnInput, setIsbnInput] = useState('');
 
+	const [showAlert, setShowAlert] = useState(false);
+	const [alertMessage, setAlertMessage] = useState('');
+	const [alertVariant, setAlertVariant] = useState('success');
+
 	const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+	const handleApiResponse = (
+		message: string,
+		variant: 'success' | 'danger'
+	): void => {};
 
 	useEffect(() => {
 		if (searchValue) {
@@ -132,14 +142,33 @@ const SubmissionForm: React.FC = () => {
 			.then((response) => {
 				if (response.ok) {
 					// The book was created successfully
-					console.log('Book created successfully');
-				} else {
+					// console.log('Book created successfully');
+					setAlertMessage('Successfully Submitted Book, Thanks!');
+					setAlertVariant('success');
+					setShowAlert(true);
+				} else if (response.status === 400) {
 					// Handle any errors
-					console.log('Error creating book');
+					response.json().then((data) => {
+						let errorMessage = 'Book Unable to be Submitted';
+						if (data.non_field_errors) {
+							errorMessage = 'Book Already Submitted, Please Try Another One';
+						} else {
+							// Concatenate all error messages from different fields
+							Object.keys(data).forEach((key) => {
+								errorMessage += `${key}: ${data[key].join(' ')}`;
+							});
+						}
+						setAlertMessage(errorMessage);
+						setAlertVariant('danger');
+						setShowAlert(true);
+					});
 				}
 			})
 			.catch((error) => {
 				console.error('Error:', error);
+				setAlertMessage('Successfully Submitted Book, Thanks!');
+				setAlertVariant('danger');
+				setShowAlert(true);
 			});
 
 		setSearchValue('');
@@ -161,6 +190,15 @@ const SubmissionForm: React.FC = () => {
 				>
 					<div className='mb-3'>
 						<p className='h4'>Share with Us!</p>
+						{showAlert && (
+							<Alert
+								variant={alertVariant}
+								onClose={() => setShowAlert(false)}
+								dismissible
+							>
+								<p>{alertMessage}</p>
+							</Alert>
+						)}
 						<InputGroup
 							className='d-flex'
 							id='bookSearchInputGroup'
@@ -270,6 +308,6 @@ const SubmissionForm: React.FC = () => {
 			</Row>
 		</Container>
 	);
-};
+}
 
 export default SubmissionForm;

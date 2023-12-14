@@ -24,13 +24,13 @@ function AccountsPage() {
 	const [bookmarks, setBookmarks] = useState<Book[]>([]);
 
 	useEffect(() => {
-		fetch('/api/books/bookmarks')
-			.then((response) => response.json())
-			.then((data) => setBookmarks(data));
+		document.title = 'Big A Book Club | Profile';
 	}, []);
 
 	useEffect(() => {
-		document.title = 'Big A Book Club | Profile';
+		fetch('/api/books/bookmarks')
+			.then((response) => response.json())
+			.then((data) => setBookmarks(data));
 	}, []);
 
 	return (
