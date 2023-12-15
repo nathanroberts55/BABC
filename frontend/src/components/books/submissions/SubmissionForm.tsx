@@ -79,18 +79,30 @@ function SubmissionForm() {
 										author_name: any;
 										isbn: any[];
 										publish_year: any[];
-									}) => ({
-										title: book.title,
-										author: book.author_name ? book.author_name[0] : 'N/A',
-										isbn: book.isbn
-											? book.isbn.find(
-													(isbn: string | any[]) => isbn.length === 13
-											  ) || book.isbn[0]
-											: 'N/A',
-										text: `${book.title} by ${book.author_name} | ${
-											book.publish_year ? book.publish_year[0] : 'N/A'
-										}`,
-									})
+									}) => {
+										let words = book.title.split(' ');
+										let truncatedTitle = words.slice(0, 3).join(' ');
+
+										if (words.length > 3) {
+											truncatedTitle += '...';
+										}
+
+										let author = book.author_name ? book.author_name[0] : 'N/A';
+										if (author.length > 20) {
+											author = author.substring(0, 20) + '...';
+										}
+
+										return {
+											title: book.title,
+											author: author,
+											isbn: book.isbn
+												? book.isbn.find(
+														(isbn: string | any[]) => isbn.length === 13
+												  ) || book.isbn[0]
+												: 'N/A',
+											text: `${truncatedTitle} by ${author}`,
+										};
+									}
 								)
 							);
 						}
