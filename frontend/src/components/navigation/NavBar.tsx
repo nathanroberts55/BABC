@@ -56,6 +56,12 @@ function NavBar() {
 						</NavDropdown>
 					</Nav>
 					<Nav className='ml-auto'>
+						<Nav.Link
+							href='https://discord.gg/aclu'
+							target='_blank'
+						>
+							Join the Club
+						</Nav.Link>
 						{isAuthenticated ? (
 							<NavDropdown
 								title={user ? user.username : 'Loading...'}

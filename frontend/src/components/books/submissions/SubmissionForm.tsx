@@ -287,6 +287,7 @@ function SubmissionForm() {
 								type='url'
 								id='recommendationLink'
 								placeholder='Enter Clip Link'
+								value={streamLink}
 								aria-label='Recommendation Username'
 								onInput={(e) => {
 									setStreamLink((e.target as HTMLInputElement).value);
