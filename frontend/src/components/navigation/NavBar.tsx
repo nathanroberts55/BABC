@@ -14,6 +14,7 @@ function NavBar() {
 		<Navbar
 			expand='lg'
 			className='bg-body-tertiary'
+			sticky='top'
 		>
 			<Container fluid>
 				<Navbar.Brand
