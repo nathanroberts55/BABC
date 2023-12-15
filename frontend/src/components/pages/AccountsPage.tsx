@@ -27,7 +27,7 @@ function AccountsPage() {
 
 	useEffect(() => {
 		if (!isAuthenticated) {
-			navigate('/403');
+			navigate('/Forbidden');
 		}
 	}, [isAuthenticated, navigate]);
 

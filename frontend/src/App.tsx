@@ -42,7 +42,7 @@ function App() {
 					element={<AccountsPage />}
 				/>
 				<Route
-					path='/403'
+					path='/Forbidden'
 					element={<Forbidden />}
 				/>
 			</Routes>
