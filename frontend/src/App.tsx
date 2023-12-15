@@ -6,6 +6,8 @@ import RecommendationsPage from './components/pages/RecommendationsPage';
 import Footer from './components/footer/Footer';
 import BookDetailsPage from './components/books/recommendations/BooksDetailsPage';
 import AccountsPage from './components/pages/AccountsPage';
+import NotFound from './components/pages/NotFound';
+import Forbidden from './components/pages/Forbidden';
 import NavBar from './components/navigation/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../static/scss/App.scss';
@@ -15,6 +17,10 @@ function App() {
 		<div className='App'>
 			<NavBar />
 			<Routes>
+				<Route
+					path='*'
+					element={<NotFound />}
+				/>
 				<Route
 					path='/'
 					element={<HomePage />}
@@ -34,6 +40,10 @@ function App() {
 				<Route
 					path='/accounts'
 					element={<AccountsPage />}
+				/>
+				<Route
+					path='/403'
+					element={<Forbidden />}
 				/>
 			</Routes>
 			<Footer />
