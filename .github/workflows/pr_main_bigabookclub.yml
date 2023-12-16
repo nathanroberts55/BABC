@@ -33,7 +33,7 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Build Production Bundle
+      - name: Build React Production Bundle
         run: |
           cd frontend/
           npm install
