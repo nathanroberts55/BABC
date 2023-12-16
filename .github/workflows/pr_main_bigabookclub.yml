@@ -36,6 +36,7 @@ jobs:
       - name: Build Production Bundle
         run: |
           cd frontend/
+          npm install
           npm run build
 
       - name: Set up environment variables
