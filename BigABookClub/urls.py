@@ -21,17 +21,20 @@ from django.conf.urls import handler404, handler403, handler500
 import home
 import books
 import accounts
+import frontend
 
-handler404 = "home.views.custom_404"
-handler403 = "home.views.custom_403"
-handler500 = "home.views.custom_500"
+handler404 = "frontend.views.custom_404"
+handler403 = "frontend.views.custom_403"
+handler500 = "frontend.views.custom_500"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("home.urls")),
-    path("books/", include("books.urls")),
-    path("accounts/", include("accounts.urls")),
+    # path("", include("home.urls")),
+    # path("books/", include("books.urls")),
+    # path("accounts/", include("accounts.urls")),
     path("", include("social_django.urls", namespace="social")),
+    path("", include("frontend.urls")),
+    path("api/", include("api.urls")),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

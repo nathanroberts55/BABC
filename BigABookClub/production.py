@@ -98,7 +98,10 @@ INSTALLED_APPS = [
     "home",
     "books",
     "accounts",
+    "api",
+    "frontend",
     "social_django",
+    "rest_framework",
 ]
 
 # WhiteNoise configuration
