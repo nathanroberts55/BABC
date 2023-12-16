@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
@@ -34,6 +34,11 @@ function BookListItem(props: BookListProps) {
 	const { isAuthenticated } = useContext(AuthContext);
 	const [liked, setLiked] = useState(book.is_liked);
 	const [numLikes, setNumLikes] = useState(book.num_likes);
+
+	useEffect(() => {
+		setLiked(book.is_liked);
+		setNumLikes(book.num_likes);
+	}, [book]);
 
 	const handleLike = async () => {
 		let csrftoken: string | null = getCookie('csrftoken');
