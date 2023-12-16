@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import BookDetails from './BookDetails';
-import AuthContext from '../../../contexts/authContext';
+import BookDetails from '../books/recommendations/BookDetails';
+import AuthContext from '../../contexts/authContext';
 
 type Book = {
 	id: number;

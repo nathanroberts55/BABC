@@ -1,14 +1,32 @@
 // authProvider.tsx
 import React, { useState, useEffect, ReactNode } from 'react';
+import { useQuery } from 'react-query';
 import AuthContext, { AuthContextType } from '../contexts/authContext';
 
 type AuthProviderProps = {
 	children: ReactNode;
 };
 
+const fetchUser = async () => {
+	const response = await fetch(`/api/user/`);
+	if (!response.ok) {
+		throw new Error('Network response was not ok');
+	}
+	return response.json();
+};
+
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+	const { data, isLoading, isError } = useQuery('user', fetchUser);
+
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [user, setUser] = useState(null);
+
+	useEffect(() => {
+		if (data) {
+			setIsAuthenticated(true);
+			setUser(data);
+		}
+	}, [data]);
 
 	const login = async () => {
 		// Redirect the user to the Discord authentication page
@@ -33,24 +51,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			// Handle any errors
 		}
 	};
-
-	useEffect(() => {
-		// Fetch the user data when the component mounts
-		const fetchUser = async () => {
-			const response = await fetch(`/api/user/`);
-			const data = await response.json();
-
-			if (response.ok) {
-				setIsAuthenticated(true);
-				setUser(data);
-			} else {
-				setIsAuthenticated(false);
-				setUser(null);
-			}
-		};
-
-		fetchUser();
-	}, []);
 
 	const authContextValue: AuthContextType = {
 		isAuthenticated,
