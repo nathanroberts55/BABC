@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useQuery, QueryObserverResult, UseQueryResult } from 'react-query';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
@@ -28,16 +29,35 @@ function Recommendations() {
 	const [sortKey, setSortKey] = useState('title');
 	const [searchKey, setSearchKey] = useState('title');
 	const [searchValue, setSearchValue] = useState('');
-	const [books, setBooks] = useState<Book[]>([]);
 
 	const { isAuthenticated } = useContext(AuthContext);
 
-	useEffect(() => {
-		fetch(`/api/books/`)
-			.then((response) => response.json())
-			.then((data) => setBooks(data))
-			.catch((error) => console.error('Error:', error));
-	}, []);
+	const fetchBooks = async () => {
+		const res = await fetch(`/api/books/`);
+		if (!res.ok) {
+			throw new Error('Network response was not ok');
+		}
+		return res.json();
+	};
+
+	const {
+		data: books,
+		error,
+		isLoading,
+	}: UseQueryResult<Book[], Error> = useQuery('books', fetchBooks);
+
+	if (isLoading) {
+		return (
+			<div className='container-xxl'>
+				<Row className='justify-content-center mb-3'>
+					<h3 className='display-6 fw-bold text-body-emphasis mb-3'>
+						Getting the Books off the Shelf... Please Wait
+					</h3>
+				</Row>
+			</div>
+		);
+	}
+	if (error) return 'An error has occurred: ' + error.message;
 
 	const handleBookSourceChange = (
 		event: React.ChangeEvent<HTMLSelectElement>
@@ -119,37 +139,36 @@ function Recommendations() {
 				</Col>
 			</Row>
 			<div id='BookList'>
-				{books
-					.filter((book) => book.source === bookSource)
-					.filter((book) => {
-						if (searchKey === 'title') {
-							return book.title
-								.toLowerCase()
-								.includes(searchValue.toLowerCase());
-						} else if (searchKey === 'author') {
-							return book.author
-								.toLowerCase()
-								.includes(searchValue.toLowerCase());
-						} else if (bookSource === 'CHAT' && searchKey === 'submitter') {
-							return book.submitter
-								.toLowerCase()
-								.includes(searchValue.toLowerCase());
-						} else {
-							return 0;
-						}
-					})
-					.sort((a, b) => {
-						if (sortKey === 'title') {
-							return a.title.localeCompare(b.title);
-						} else if (sortKey === 'likes') {
-							return b.num_likes - a.num_likes;
-						} else {
-							return 0;
-						}
-					})
-					.map((book, index) => (
-						<BookListItem book={book} />
-					))}
+				{books &&
+					books
+						.filter((book: Book) => book.source === bookSource)
+						.filter((book: Book) => {
+							if (searchKey === 'title') {
+								return book.title
+									.toLowerCase()
+									.includes(searchValue.toLowerCase());
+							} else if (searchKey === 'author') {
+								return book.author
+									.toLowerCase()
+									.includes(searchValue.toLowerCase());
+							} else if (bookSource === 'CHAT' && searchKey === 'submitter') {
+								return book.submitter
+									.toLowerCase()
+									.includes(searchValue.toLowerCase());
+							} else {
+								return 0;
+							}
+						})
+						.sort((a: Book, b: Book) => {
+							if (sortKey === 'title') {
+								return a.title.localeCompare(b.title);
+							} else if (sortKey === 'likes') {
+								return b.num_likes - a.num_likes;
+							} else {
+								return 0;
+							}
+						})
+						.map((book: Book, index: number) => <BookListItem book={book} />)}
 			</div>
 		</div>
 	);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useQuery } from 'react-query';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -17,6 +18,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import AuthContext from '../../../contexts/authContext';
 import getCookie from '../../../utils/csrftokens';
+import { Link } from 'react-router-dom';
 
 interface BookDetailsProps {
 	book: {
@@ -37,6 +39,16 @@ interface Context {
 	image_url: string | null;
 }
 
+const fetchBookDetails = async (isbn: string) => {
+	const response = await fetch(
+		`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`
+	);
+	if (!response.ok) {
+		throw new Error('Network response was not ok');
+	}
+	return response.json();
+};
+
 function BookDetails(props: BookDetailsProps) {
 	const { book } = props;
 
@@ -49,36 +61,27 @@ function BookDetails(props: BookDetailsProps) {
 		image_url: null,
 	});
 
+	const { data, isLoading, isError } = useQuery(
+		['bookDetails', book.isbn!],
+		() => fetchBookDetails(book.isbn!)
+	);
+
 	useEffect(() => {
-		const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn}`;
-		console.log(`Making Request for Book Details for ${book.title} at: ${url}`);
+		if (data) {
+			const items = data.items || [];
+			if (items.length > 0) {
+				const bookInfo = items[0];
+				const volumeInfo = bookInfo.volumeInfo || {};
+				const description = volumeInfo.description || null;
+				const imageLinks = volumeInfo.imageLinks || {};
+				const imageUrl = imageLinks.thumbnail || null;
 
-		fetch(url)
-			.then((response) => response.json())
-			.then((data) => {
-				console.log('Getting Books');
-				const items = data.items || [];
-
-				if (items.length > 0) {
-					const bookInfo = items[0];
-					const volumeInfo = bookInfo.volumeInfo || {};
-
-					console.log(`Attempting to retrieve ${book.title} Description`);
-					const description = volumeInfo.description || null;
-
-					console.log(`Attempting to retrieve ${book.title} Cover Image`);
-					const imageLinks = volumeInfo.imageLinks || {};
-					const imageUrl = imageLinks.thumbnail || null;
-
-					setContext({ description, image_url: imageUrl });
-				} else {
-					setContext({ description: null, image_url: null });
-				}
-			})
-			.catch((error) => {
-				console.error(`Exception getting book details: ${error}`);
-			});
-	}, []);
+				setContext({ description, image_url: imageUrl });
+			} else {
+				setContext({ description: null, image_url: null });
+			}
+		}
+	}, [data]);
 
 	const handleFavorite = async () => {
 		let csrftoken: string | null = getCookie('csrftoken');
@@ -139,12 +142,11 @@ function BookDetails(props: BookDetailsProps) {
 						<FontAwesomeIcon icon={faArrowLeft} /> Recommendations
 					</Button>
 					{isAuthenticated && (
-						<Button
-							href={'/accounts/'}
-							variant='primary'
-						>
-							<FontAwesomeIcon icon={faArrowRight} /> Profile
-						</Button>
+						<Link to='/accounts'>
+							<Button variant='primary'>
+								<FontAwesomeIcon icon={faArrowRight} /> Profile
+							</Button>
+						</Link>
 					)}
 				</Col>
 			</Row>

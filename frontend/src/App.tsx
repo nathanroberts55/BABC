@@ -4,7 +4,7 @@ import HomePage from './components/pages/HomePage';
 import SubmissionsPage from './components/pages/SubmissionsPage';
 import RecommendationsPage from './components/pages/RecommendationsPage';
 import Footer from './components/footer/Footer';
-import BookDetailsPage from './components/books/recommendations/BooksDetailsPage';
+import BookDetailsPage from './components/pages/BooksDetailsPage';
 import AccountsPage from './components/pages/AccountsPage';
 import NotFound from './components/pages/NotFound';
 import Forbidden from './components/pages/Forbidden';
