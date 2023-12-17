@@ -7,6 +7,7 @@ import { faThumbsUp as fasThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as farThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import AuthContext from '../../contexts/authContext';
 import getCookie from '../../utils/csrftokens';
+import { Link } from 'react-router-dom';
 
 type Book = {
 	id: number;
@@ -76,12 +77,12 @@ function BookListItem(props: BookListProps) {
 				className='mx-auto'
 			>
 				<p className='lead display-6'>
-					<a
+					<Link
 						style={{ textDecoration: 'none', color: 'inherit' }}
-						href={`/books/details/${book.id}`}
+						to={`/books/details/${book.id}`}
 					>
 						{book.title}
-					</a>
+					</Link>
 					<small className='fs-5'> by {book.author}</small>
 				</p>
 				<p className='fw-lighter submitter'>

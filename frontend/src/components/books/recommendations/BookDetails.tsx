@@ -138,12 +138,11 @@ function BookDetails(props: BookDetailsProps) {
 					lg={8}
 					className='mx-auto d-flex align-items-center justify-content-between'
 				>
-					<Button
-						href={'/books/recommendations/'}
-						variant='primary'
-					>
-						<FontAwesomeIcon icon={faArrowLeft} /> Recommendations
-					</Button>
+					<Link to='/books/recommendations'>
+						<Button variant='primary'>
+							<FontAwesomeIcon icon={faArrowLeft} /> Recommendations
+						</Button>
+					</Link>
 					{isAuthenticated && (
 						<Link to='/accounts'>
 							<Button variant='primary'>
