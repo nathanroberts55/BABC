@@ -63,7 +63,10 @@ function BookDetails(props: BookDetailsProps) {
 
 	const { data, isLoading, isError } = useQuery(
 		['bookDetails', book.isbn!],
-		() => fetchBookDetails(book.isbn!)
+		() => fetchBookDetails(book.isbn!),
+		{
+			staleTime: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
+		}
 	);
 
 	useEffect(() => {
