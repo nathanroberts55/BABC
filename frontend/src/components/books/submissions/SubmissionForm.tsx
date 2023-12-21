@@ -193,6 +193,23 @@ function SubmissionForm() {
 						setAlertVariant('danger');
 						setShowAlert(true);
 					});
+				} else {
+					// Handle any errors
+					response.json().then((data) => {
+						let errorMessage =
+							'An error occurred while submitting the book. Please try again.';
+						if (data.non_field_errors) {
+							errorMessage = 'Book Already Submitted, Please Try Another One';
+						} else {
+							// Concatenate all error messages from different fields
+							Object.keys(data).forEach((key) => {
+								errorMessage += `${key}: ${data[key].join(' ')}`;
+							});
+						}
+						setAlertMessage(errorMessage);
+						setAlertVariant('danger');
+						setShowAlert(true);
+					});
 				}
 			})
 			.catch((error) => {
