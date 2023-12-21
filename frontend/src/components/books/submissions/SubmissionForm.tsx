@@ -35,11 +35,6 @@ function SubmissionForm() {
 
 	const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-	const handleApiResponse = (
-		message: string,
-		variant: 'success' | 'danger'
-	): void => {};
-
 	useEffect(() => {
 		if (searchValue) {
 			if (debounceRef.current) {
@@ -123,9 +118,33 @@ function SubmissionForm() {
 		setSubmitDisabled(false);
 	};
 
+	const validateForm = () => {
+		if (bookSource === 'CHAT' && submitterName.trim() === '') {
+			setAlertMessage(
+				'Submitter field must not be null or empty when source is CHAT.'
+			);
+			setAlertVariant('danger');
+			setShowAlert(true);
+			return false;
+		} else if (bookSource === 'ATRIOC' && streamLink.trim() === '') {
+			setAlertMessage(
+				'Stream link must not be null or empty when source is ATRIOC.'
+			);
+			setAlertVariant('danger');
+			setShowAlert(true);
+			return false;
+		}
+
+		return true;
+	};
+
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
 		// Handle form submission here
+
+		if (!validateForm()) {
+			return;
+		}
 
 		const bookToSubmit = {
 			title: titleInput,
@@ -313,6 +332,7 @@ function SubmissionForm() {
 							className='btn btn-primary'
 							disabled={submitDisabled}
 							onClick={handleSubmit}
+							style={{ cursor: 'pointer' }}
 						>
 							Submit
 						</Button>
