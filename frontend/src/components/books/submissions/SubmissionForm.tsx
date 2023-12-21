@@ -145,7 +145,7 @@ function SubmissionForm() {
 		if (!validateForm()) {
 			return;
 		}
-
+		console.log('Form Valid');
 		const bookToSubmit = {
 			title: titleInput,
 			author: authorInput,
@@ -153,7 +153,7 @@ function SubmissionForm() {
 			submitter: submitterName,
 			stream_link: streamLink,
 		};
-
+		console.log('Created Book Object');
 		let csrftoken: string | null = getCookie('csrftoken');
 
 		if (csrftoken === null) {
@@ -165,7 +165,7 @@ function SubmissionForm() {
 			setShowAlert(true);
 			throw new Error('CSRF token not found');
 		}
-
+		console.log('CSRF Token Found');
 		// Now TypeScript knows that csrftoken is not null here
 		fetch('/api/books/create', {
 			method: 'POST',
@@ -199,6 +199,7 @@ function SubmissionForm() {
 						setShowAlert(true);
 					});
 				} else {
+					console.log('Response Not a 200 or 400');
 					// Handle any errors
 					response.json().then((data) => {
 						let errorMessage =
