@@ -157,7 +157,12 @@ function SubmissionForm() {
 		let csrftoken: string | null = getCookie('csrftoken');
 
 		if (csrftoken === null) {
-			// Handle the error here. For example, you can throw an error:
+			// Display a simple error message
+			setAlertMessage(
+				'Unable to get the CSRF Token from the Browser, please try again using another device/browser.'
+			);
+			setAlertVariant('danger');
+			setShowAlert(true);
 			throw new Error('CSRF token not found');
 		}
 		console.log('CSRF Token Found');
