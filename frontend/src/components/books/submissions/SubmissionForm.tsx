@@ -154,24 +154,24 @@ function SubmissionForm() {
 			stream_link: streamLink,
 		};
 
-		let csrftoken: string | null = getCookie('csrftoken');
+		// let csrftoken: string | null = getCookie('csrftoken');
 
-		if (csrftoken === null) {
-			// Display a simple error message
-			setAlertMessage(
-				'Unable to get the CSRF Token from the Browser, please try again using another device/browser.'
-			);
-			setAlertVariant('danger');
-			setShowAlert(true);
-			throw new Error('CSRF token not found');
-		}
+		// if (csrftoken === null) {
+		// 	// Display a simple error message
+		// 	setAlertMessage(
+		// 		'Unable to get the CSRF Token from the Browser, please try again using another device/browser.'
+		// 	);
+		// 	setAlertVariant('danger');
+		// 	setShowAlert(true);
+		// 	throw new Error('CSRF token not found');
+		// }
 
 		// Now TypeScript knows that csrftoken is not null here
 		fetch('/api/books/create', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-CSRFToken': csrftoken,
+				// 'X-CSRFToken': csrftoken,
 			},
 			body: JSON.stringify(bookToSubmit),
 		})
