@@ -332,6 +332,7 @@ function SubmissionForm() {
 							className='btn btn-primary'
 							disabled={submitDisabled}
 							onClick={handleSubmit}
+							style={{ cursor: 'pointer' }}
 						>
 							Submit
 						</Button>
