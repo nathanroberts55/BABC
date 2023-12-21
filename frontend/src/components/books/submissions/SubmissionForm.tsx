@@ -197,7 +197,18 @@ function SubmissionForm() {
 			})
 			.catch((error) => {
 				console.error('Error:', error);
-				setAlertMessage('Successfully Submitted Book, Thanks!');
+				// If the error is an instance of Error, you can print its name and message
+				if (error instanceof Error) {
+					console.error('Error name:', error.name);
+					console.error('Error message:', error.message);
+				}
+				// You can also print the error stack trace
+				console.error('Error stack:', error.stack);
+
+				// Display a simple error message
+				setAlertMessage(
+					'An error occurred while submitting the book. Please try again.'
+				);
 				setAlertVariant('danger');
 				setShowAlert(true);
 			});
