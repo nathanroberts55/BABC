@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import { FormControl } from 'react-bootstrap';
-import getCookie from '../../../utils/csrftokens';
 
 type DropdownItem = {
 	title: string;
@@ -154,24 +153,11 @@ function SubmissionForm() {
 			stream_link: streamLink,
 		};
 
-		// let csrftoken: string | null = getCookie('csrftoken');
-
-		// if (csrftoken === null) {
-		// 	// Display a simple error message
-		// 	setAlertMessage(
-		// 		'Unable to get the CSRF Token from the Browser, please try again using another device/browser.'
-		// 	);
-		// 	setAlertVariant('danger');
-		// 	setShowAlert(true);
-		// 	throw new Error('CSRF token not found');
-		// }
-
 		// Now TypeScript knows that csrftoken is not null here
 		fetch('/api/books/create', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				// 'X-CSRFToken': csrftoken,
 			},
 			body: JSON.stringify(bookToSubmit),
 		})
