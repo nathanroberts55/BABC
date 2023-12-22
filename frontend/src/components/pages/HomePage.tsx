@@ -1,7 +1,8 @@
+import React, { useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Hero from '../home/Hero';
 import About from '../home/About';
-import React, { useEffect } from 'react';
+import ReactionClip from '../home/Reaction';
 
 function HomePage() {
 	useEffect(() => {
@@ -11,6 +12,7 @@ function HomePage() {
 	return (
 		<Container fluid>
 			<Hero />
+			<ReactionClip />
 			<About />
 		</Container>
 	);
