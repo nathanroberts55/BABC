@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from books.models import Book
 from goals.models import ReadingGoal, ReadingGoalBook
 from .auth import CsrfExemptSessionAuthentication
@@ -18,11 +17,6 @@ from .serializers import (
     ReadingGoalSerializer,
     ReadingGoalBookSerializer,
 )
-
-
-class CsrfExemptSessionAuthentication(SessionAuthentication):
-    def enforce_csrf(self, request):
-        return  # To not perform the csrf check previously happening
 
 
 # Create your views here.
