@@ -7,7 +7,9 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import BasicAuthentication
 from books.models import Book
+from .auth import CsrfExemptSessionAuthentication
 from .serializers import BookSerializer, CreateBookSerializer, UserSerializer
 
 
@@ -36,6 +38,7 @@ class SingleBookView(generics.RetrieveAPIView):
 
 @method_decorator(csrf_exempt, name="dispatch")
 class CreateBookView(generics.CreateAPIView):
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
     serializer_class = CreateBookSerializer
 
     def create(self, request, *args, **kwargs):
