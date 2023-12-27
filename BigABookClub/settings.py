@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     "accounts",
     "api",
     "frontend",
+    "goals",
     "social_django",
     "rest_framework",
 ]

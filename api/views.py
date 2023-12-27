@@ -3,12 +3,26 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.utils.timezone import now
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from books.models import Book
-from .serializers import BookSerializer, CreateBookSerializer, UserSerializer
+from goals.models import ReadingGoal, ReadingGoalBook
+from .serializers import (
+    BookSerializer,
+    CreateBookSerializer,
+    UserSerializer,
+    ReadingGoalSerializer,
+    ReadingGoalBookSerializer,
+)
+
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+    def enforce_csrf(self, request):
+        return  # To not perform the csrf check previously happening
 
 
 # Create your views here.
@@ -16,6 +30,7 @@ def main(request):
     return HttpResponse({"message": "Hello API"})
 
 
+# Book Views
 class ListBooksView(generics.ListAPIView):
     # Return all the approved books
     queryset = Book.objects.filter(approved=True).all()
@@ -36,6 +51,7 @@ class SingleBookView(generics.RetrieveAPIView):
 
 @method_decorator(csrf_exempt, name="dispatch")
 class CreateBookView(generics.CreateAPIView):
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
     serializer_class = CreateBookSerializer
 
     def create(self, request, *args, **kwargs):
@@ -95,6 +111,70 @@ class LikeBook(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# Goals Views
+class ReadingGoalView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        current_year = now().year
+        goal = ReadingGoal.objects.filter(user=request.user, year=current_year).first()
+        if goal:
+            serializer = ReadingGoalSerializer(goal)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"has_goal": False}, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        current_year = now().year
+        goal = ReadingGoal.objects.filter(user=request.user, year=current_year).first()
+        if goal:
+            serializer = ReadingGoalSerializer(
+                goal, data=request.data, partial=True
+            )  # set partial=True to update a data partially
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(
+                {"error": "No ReadingGoal found for this year"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+
+class CreateReadingGoalView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        current_year = now().year
+        goal, created = ReadingGoal.objects.get_or_create(
+            user=request.user, year=current_year
+        )
+        serializer = ReadingGoalSerializer(goal)
+        if created:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserReadingGoalBooksView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        current_year = now().year
+        goal = ReadingGoal.objects.filter(user=request.user, year=current_year).first()
+        if goal:
+            serializer = ReadingGoalBookSerializer(goal.books_read.all(), many=True)
+            return Response(serializer.data)
+        else:
+            return Response(
+                {"error": "No ReadingGoal found for this year"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+
+# Authentication Views
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
 
