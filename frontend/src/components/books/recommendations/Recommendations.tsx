@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useQuery, QueryObserverResult, UseQueryResult } from 'react-query';
+import { useLocation } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
@@ -25,12 +26,54 @@ type Book = {
 };
 
 function Recommendations() {
-	const [bookSource, setBookSource] = useState('ATRIOC');
-	const [sortKey, setSortKey] = useState('title');
-	const [searchKey, setSearchKey] = useState('title');
-	const [searchValue, setSearchValue] = useState('');
-
+	const [bookSource, setBookSource] = useState(
+		localStorage.getItem('bookSource') || 'ATRIOC'
+	);
+	const [sortKey, setSortKey] = useState(
+		localStorage.getItem('sortKey') || 'title'
+	);
+	const [searchKey, setSearchKey] = useState(
+		localStorage.getItem('searchKey') || 'title'
+	);
+	const [searchValue, setSearchValue] = useState(
+		localStorage.getItem('searchValue') || ''
+	);
 	const { isAuthenticated } = useContext(AuthContext);
+
+	// Add a new state variable for the scroll position
+	const [scrollPosition, setScrollPosition] = useState(
+		parseInt(localStorage.getItem('scrollPosition') || '0')
+	);
+
+	// Save scroll position
+	useEffect(() => {
+		const handleScroll = () => {
+			setScrollPosition(window.scrollY);
+		};
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []); // Empty dependency array so this effect only runs on mount and unmount
+
+	// Scroll to saved position
+	useEffect(() => {
+		window.scrollTo(0, scrollPosition);
+	}, []);
+
+	useEffect(() => {
+		// Save the scroll position in localStorage whenever it changes
+		localStorage.setItem('scrollPosition', scrollPosition.toString());
+	}, [scrollPosition]);
+
+	useEffect(() => {
+		localStorage.setItem('bookSource', bookSource);
+		localStorage.setItem('sortKey', sortKey);
+		localStorage.setItem('searchKey', searchKey);
+		localStorage.setItem('searchValue', searchValue);
+	}, [bookSource, sortKey, searchKey, searchValue]);
 
 	const fetchBooks = async () => {
 		const res = await fetch(`/api/books/`);
@@ -51,7 +94,7 @@ function Recommendations() {
 	if (isLoading) {
 		return (
 			<div className='container-xxl'>
-				<Row className='justify-content-center mb-3'>
+				<Row className='text-center justify-content-center mb-3'>
 					<h3 className='display-6 fw-bold text-body-emphasis mb-3'>
 						Getting the Books off the Shelf... Please Wait
 					</h3>
