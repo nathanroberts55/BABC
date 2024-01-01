@@ -149,6 +149,7 @@ function SubmissionForm() {
 			title: titleInput,
 			author: authorInput,
 			isbn: isbnInput,
+			source: bookSource,
 			submitter: submitterName,
 			stream_link: streamLink,
 		};
