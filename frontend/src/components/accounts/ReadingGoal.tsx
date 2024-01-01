@@ -68,7 +68,7 @@ function ReadingGoals() {
 						/>
 					)
 				) : (
-					<GoalDescription handleClick={handleSetReadingGoal} />
+					<GoalDescription />
 				))}
 		</Container>
 	);

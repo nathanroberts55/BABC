@@ -16,7 +16,9 @@ const fetchUser = async () => {
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	const { data, isLoading, isError } = useQuery('user', fetchUser);
+	const { data, isLoading, isError } = useQuery('user', fetchUser, {
+		staleTime: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
+	});
 
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [user, setUser] = useState(null);
