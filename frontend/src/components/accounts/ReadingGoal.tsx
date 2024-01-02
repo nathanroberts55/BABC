@@ -4,11 +4,16 @@ import Container from 'react-bootstrap/Container';
 import GoalDetails from './partials/GoalDetails';
 
 export interface ReadingGoalBooks {
+	id: number;
+	date_created: string;
+	date_modified: string;
 	title: string;
 	author: string;
 	isbn: number;
 }
 interface GoalData {
+	date_created: string;
+	date_modified: string;
 	year?: number;
 	goal?: number;
 	books_read?: ReadingGoalBooks[];
@@ -45,6 +50,21 @@ function ReadingGoals() {
 			});
 	}, []);
 
+	// Add this useEffect hook
+	useEffect(() => {
+		if (goalData?.has_goal) {
+			// If goalData has been updated and has_goal is true, re-fetch goal details
+			fetch('/api/goals/details/')
+				.then((response) => response.json())
+				.then((data) => {
+					setGoalData(data);
+				})
+				.catch((error) => {
+					console.error('Error fetching goal details:', error);
+				});
+		}
+	}, [goalData?.has_goal]); // This dependency array ensures the effect runs whenever goalData?.has_goal changes
+
 	return (
 		<Container
 			className='px-4 p-5 my-5'
@@ -55,11 +75,15 @@ function ReadingGoals() {
 			}}
 		>
 			{goalData &&
-				(goalData.has_goal ? (
-					goalData?.year &&
-					goalData?.goal &&
-					goalData?.books_read &&
-					goalData?.num_books_read && (
+				(goalData.has_goal !== false ? (
+					'year' in goalData &&
+					'goal' in goalData &&
+					'books_read' in goalData &&
+					'num_books_read' in goalData &&
+					goalData.year !== undefined &&
+					goalData.goal !== undefined &&
+					goalData.books_read !== undefined &&
+					goalData.num_books_read !== undefined && (
 						<GoalDetails
 							year={goalData.year}
 							goal={goalData.goal}
@@ -68,7 +92,7 @@ function ReadingGoals() {
 						/>
 					)
 				) : (
-					<GoalDescription />
+					<GoalDescription onclick={handleSetReadingGoal} />
 				))}
 		</Container>
 	);

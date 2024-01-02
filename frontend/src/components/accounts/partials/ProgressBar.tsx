@@ -7,7 +7,7 @@ interface ReadingProgressProps {
 }
 
 function ReadingProgress({ current, goal }: ReadingProgressProps) {
-	const progress = (current / goal) * 100;
+	const progress = goal === 0 ? 0 : (current / goal) * 100;
 
 	return (
 		<div>
@@ -15,7 +15,7 @@ function ReadingProgress({ current, goal }: ReadingProgressProps) {
 			<ProgressBar
 				animated
 				now={progress}
-				label={progress}
+				label={`${progress}%`}
 			/>
 		</div>
 	);

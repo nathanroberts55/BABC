@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class ReadingGoalBook(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=50)
     isbn = models.CharField(max_length=50, blank=True)
@@ -15,6 +17,8 @@ class ReadingGoalBook(models.Model):
 
 
 class ReadingGoal(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     year = models.PositiveIntegerField(default=now().year)
     goal = models.PositiveIntegerField(default=0)

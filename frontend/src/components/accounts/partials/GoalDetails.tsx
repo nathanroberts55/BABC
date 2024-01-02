@@ -1,6 +1,8 @@
 import React from 'react';
 import { ReadingGoalBooks } from '../ReadingGoal';
 import ReadingProgress from './ProgressBar';
+import BookListItem from '../../common/BookListItem';
+import RGBookListItem from '../../common/RGBookListItem';
 
 interface GoalDataProps {
 	year: number;
@@ -17,12 +19,15 @@ function GoalDetails({
 	return (
 		<div>
 			<p className='display-6 fw-bold text-body-emphasis lh-1 mb-3'>
-				Get Smarter: Reading Goal Progress
+				Reading Resolution Progress
 			</p>
-			{/* <ReadingProgress
+			<ReadingProgress
 				current={num_books_read}
 				goal={goal}
-			/> */}
+			/>
+			{books_read.map((book, index) => (
+				<RGBookListItem book={book} />
+			))}
 		</div>
 	);
 }
