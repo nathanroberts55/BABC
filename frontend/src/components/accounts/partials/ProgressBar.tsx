@@ -13,9 +13,12 @@ function ReadingProgress({ current, goal }: ReadingProgressProps) {
 		<div>
 			<p className='lead'>Reading Complete</p>
 			<ProgressBar
+				className='mb-3'
 				animated
 				now={progress}
 				label={`${progress}%`}
+				min={0}
+				max={goal}
 			/>
 		</div>
 	);

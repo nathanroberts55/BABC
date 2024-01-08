@@ -11,7 +11,7 @@ export interface ReadingGoalBooks {
 	author: string;
 	isbn: number;
 }
-interface GoalData {
+export interface GoalData {
 	date_created: string;
 	date_modified: string;
 	year?: number;
@@ -65,6 +65,24 @@ function ReadingGoals() {
 		}
 	}, [goalData?.has_goal]); // This dependency array ensures the effect runs whenever goalData?.has_goal changes
 
+	async function updateResolution(dataToUpdate: Partial<GoalData>) {
+		fetch('/api/goals/update_goal/', {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(dataToUpdate),
+		})
+			.then(async (response) => {
+				if (response.status === 204) {
+					setGoalData(await response.json());
+				}
+			})
+			.catch((error) => {
+				console.log('Error Updating Resolution:', error);
+			});
+	}
+
 	return (
 		<Container
 			className='px-4 p-5 my-5'
@@ -89,6 +107,7 @@ function ReadingGoals() {
 							goal={goalData.goal}
 							books_read={goalData.books_read}
 							num_books_read={goalData.num_books_read}
+							onUpdateResolution={updateResolution}
 						/>
 					)
 				) : (

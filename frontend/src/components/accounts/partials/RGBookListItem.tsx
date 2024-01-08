@@ -1,14 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { ReadingGoalBooks } from '../accounts/ReadingGoal';
-// import Button from 'react-bootstrap/Button';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faThumbsUp as fasThumbsUp } from '@fortawesome/free-solid-svg-icons';
-// import { faThumbsUp as farThumbsUp } from '@fortawesome/free-regular-svg-icons';
-// import AuthContext from '../../contexts/authContext';
-// import getCookie from '../../utils/csrftokens';
-// import { Link } from 'react-router-dom';
+import { ReadingGoalBooks } from '../ReadingGoal';
 
 interface BookListProps {
 	book: ReadingGoalBooks;

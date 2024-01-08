@@ -14,7 +14,9 @@ urlpatterns = [
     # Reading Goal Endpoints
     path("goals/has_goal/", views.ReadingGoalView.as_view(), name="has_accepted"),
     path("goals/details/", views.ReadingGoalView.as_view(), name="goal_details"),
-    path("goals/update_goal/", views.ReadingGoalView.as_view(), name="update_goal"),
+    path(
+        "goals/update_goal/", views.UpdateReadingGoalView.as_view(), name="update_goal"
+    ),
     path(
         "goals/create_goal/", views.CreateReadingGoalView.as_view(), name="create_goal"
     ),

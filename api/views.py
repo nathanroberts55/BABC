@@ -117,6 +117,11 @@ class ReadingGoalView(APIView):
         else:
             return Response({"has_goal": False}, status=status.HTTP_200_OK)
 
+
+class UpdateReadingGoalView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
     def patch(self, request):
         current_year = now().year
         goal = ReadingGoal.objects.filter(user=request.user, year=current_year).first()
@@ -126,7 +131,7 @@ class ReadingGoalView(APIView):
             )  # set partial=True to update a data partially
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response(
