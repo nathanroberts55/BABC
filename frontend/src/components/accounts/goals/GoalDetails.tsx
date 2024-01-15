@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Collapse from 'react-bootstrap/Collapse';
-import { GoalData, ReadingGoalBooks } from '../ReadingGoal';
+import { GoalData, ReadingGoalBook } from '../ReadingGoal';
 import ReadingProgress from './ProgressBar';
 import RGBookListItem from './RGBookListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,7 @@ import EditGoalModal from './EditGoalModal';
 interface GoalDataProps {
 	year: number;
 	goal: number;
-	books_read: ReadingGoalBooks[];
+	books_read: ReadingGoalBook[];
 	num_books_read: number;
 	onUpdateResolution: (dataToUpdate: Partial<GoalData>) => void;
 }

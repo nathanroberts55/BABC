@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import GoalDescription from './partials/GoalDescription';
+import GoalDescription from './goals/GoalDescription';
 import Container from 'react-bootstrap/Container';
-import GoalDetails from './partials/GoalDetails';
+import GoalDetails from './goals/GoalDetails';
 
-export interface ReadingGoalBooks {
+export interface ReadingGoalBook {
 	id: number;
 	date_created: string;
 	date_modified: string;
@@ -16,7 +16,7 @@ export interface GoalData {
 	date_modified: string;
 	year?: number;
 	goal?: number;
-	books_read?: ReadingGoalBooks[];
+	books_read?: ReadingGoalBook[];
 	num_books_read?: number;
 	has_goal?: boolean;
 }
@@ -76,6 +76,34 @@ function ReadingGoals() {
 			.then(async (response) => {
 				if (response.status === 204) {
 					setGoalData(await response.json());
+				}
+			})
+			.catch((error) => {
+				console.log('Error Adding Book:', error);
+			});
+	}
+
+	async function saveBook(bookToSave: ReadingGoalBook) {
+		fetch('api/goals/add_book/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(bookToSave),
+		})
+			.then(async (response) => {
+				if (response.status === 201) {
+					const newBook = await response.json();
+					setGoalData((prevGoalData) => {
+						if (prevGoalData) {
+							return {
+								...prevGoalData,
+								books_read: [...(prevGoalData.books_read || []), newBook],
+							};
+						} else {
+							return prevGoalData;
+						}
+					});
 				}
 			})
 			.catch((error) => {

@@ -172,6 +172,28 @@ class UserReadingGoalBooksView(APIView):
             )
 
 
+class AddReadingGoalBookView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def post(self, request):
+        serializer = ReadingGoalBookSerializer(data=request.data)
+        if serializer.is_valid():
+            book = serializer.save()
+            goal = ReadingGoal.objects.filter(
+                user=request.user, year=now().year
+            ).first()
+            if goal:
+                goal.add_book(book)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(
+                    {"error": "No ReadingGoal found for this year"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 # Authentication Views
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
