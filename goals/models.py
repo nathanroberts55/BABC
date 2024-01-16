@@ -14,6 +14,8 @@ class ReadingGoalBook(models.Model):
 
     class Meta:
         unique_together = ("title", "author")
+        verbose_name = "Reading Goal Book"
+        verbose_name_plural = "Reading Goal Books"
 
 
 class ReadingGoal(models.Model):
@@ -27,6 +29,8 @@ class ReadingGoal(models.Model):
 
     class Meta:
         unique_together = ("user", "year")
+        verbose_name = "Reading Goal"
+        verbose_name_plural = "Reading Goals"
 
     def add_book(self, book):
         self.books_read.add(book)

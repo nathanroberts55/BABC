@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { ReadingGoalBooks } from '../ReadingGoal';
+import { ReadingGoalBook } from '../ReadingGoal';
 
 interface BookListProps {
-	book: ReadingGoalBooks;
+	book: ReadingGoalBook;
 }
 
 function BookListItem(props: BookListProps) {
