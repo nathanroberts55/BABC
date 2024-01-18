@@ -50,10 +50,9 @@ function ReadingGoals() {
 			});
 	}, []);
 
-	// Add this useEffect hook
 	useEffect(() => {
-		if (goalData?.has_goal) {
-			// If goalData has been updated and has_goal is true, re-fetch goal details
+		if (goalData?.has_goal || goalData?.num_books_read || goalData?.goal) {
+			// If goalData has been updated and has_goal is true, or num_books_read or goal changes, re-fetch goal details
 			fetch('/api/goals/details/')
 				.then((response) => response.json())
 				.then((data) => {
@@ -63,7 +62,7 @@ function ReadingGoals() {
 					console.error('Error fetching goal details:', error);
 				});
 		}
-	}, [goalData?.has_goal]); // This dependency array ensures the effect runs whenever goalData?.has_goal changes
+	}, [goalData?.has_goal, goalData?.num_books_read, goalData?.goal]); // This dependency array ensures the effect runs whenever goalData?.has_goal, goalData?.num_books_read, or goalData?.goal changes
 
 	async function updateResolution(dataToUpdate: Partial<GoalData>) {
 		fetch('/api/goals/update_goal/', {
@@ -74,16 +73,18 @@ function ReadingGoals() {
 			body: JSON.stringify(dataToUpdate),
 		})
 			.then(async (response) => {
-				if (response.status === 204) {
-					setGoalData(await response.json());
+				if (response.ok) {
+					// Check if response status is 200-299
+					const updatedGoalData = await response.json();
+					setGoalData(updatedGoalData);
 				}
 			})
 			.catch((error) => {
-				console.log('Error Adding Book:', error);
+				console.log('Error Updating Goal:', error);
 			});
 	}
 
-	async function saveBook(bookToSave: ReadingGoalBook) {
+	async function saveBook(bookToSave: Partial<ReadingGoalBook>) {
 		fetch('api/goals/add_book/', {
 			method: 'POST',
 			headers: {
@@ -99,6 +100,9 @@ function ReadingGoals() {
 							return {
 								...prevGoalData,
 								books_read: [...(prevGoalData.books_read || []), newBook],
+								num_books_read: prevGoalData.num_books_read
+									? prevGoalData.num_books_read + 1
+									: 1,
 							};
 						} else {
 							return prevGoalData;
@@ -136,6 +140,7 @@ function ReadingGoals() {
 							books_read={goalData.books_read}
 							num_books_read={goalData.num_books_read}
 							onUpdateResolution={updateResolution}
+							onSaveBook={saveBook}
 						/>
 					)
 				) : (

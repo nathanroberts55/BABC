@@ -17,8 +17,6 @@ function ReadingProgress({ current, goal }: ReadingProgressProps) {
 				animated
 				now={progress}
 				label={`${progress}%`}
-				min={0}
-				max={goal}
 			/>
 		</div>
 	);

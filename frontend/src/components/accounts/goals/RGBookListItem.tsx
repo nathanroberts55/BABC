@@ -19,13 +19,8 @@ function BookListItem(props: BookListProps) {
 				lg={9}
 				className='mx-auto'
 			>
-				<p className='lead display-6'>
-					{/* <Link
-						style={{ textDecoration: 'none', color: 'inherit' }}
-						to={`/books/details/${book.id}`}
-					> */}
+				<p className='display-6'>
 					{book.title}
-					{/* </Link> */}
 					<small className='fs-5'> by {book.author}</small>
 				</p>
 				<hr />

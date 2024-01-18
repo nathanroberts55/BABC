@@ -16,6 +16,7 @@ interface GoalDataProps {
 	books_read: ReadingGoalBook[];
 	num_books_read: number;
 	onUpdateResolution: (dataToUpdate: Partial<GoalData>) => void;
+	onSaveBook: (bookToSave: Partial<ReadingGoalBook>) => void;
 }
 function GoalDetails({
 	year,
@@ -23,6 +24,7 @@ function GoalDetails({
 	books_read,
 	num_books_read,
 	onUpdateResolution,
+	onSaveBook,
 }: GoalDataProps) {
 	const [open, setOpen] = useState(false);
 	const addBookModal = useModal();
@@ -77,7 +79,10 @@ function GoalDetails({
 					Add Book
 				</Button>
 			</div>
-			<AddBookModal {...addBookModal} />
+			<AddBookModal
+				{...addBookModal}
+				onSaveBook={onSaveBook}
+			/>
 			<EditGoalModal
 				{...editModal}
 				onUpdateResolution={onUpdateResolution}
@@ -85,7 +90,6 @@ function GoalDetails({
 			/>
 			<Collapse in={open}>
 				<div>
-					<p>Testing Collapse</p>
 					{books_read.map((book, index) => (
 						<RGBookListItem book={book} />
 					))}
