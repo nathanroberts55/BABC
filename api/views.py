@@ -196,6 +196,7 @@ class AddReadingGoalBookView(APIView):
 
 class DeleteReadingGoalBookView(APIView):
     permission_classes = [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def get_object(self, pk):
         try:

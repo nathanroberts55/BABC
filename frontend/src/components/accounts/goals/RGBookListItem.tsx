@@ -13,6 +13,7 @@ interface BookListProps {
 }
 
 function BookListItem({ book, onDeleteBook }: BookListProps) {
+	console.log(book);
 	return (
 		<Container fluid>
 			<Row

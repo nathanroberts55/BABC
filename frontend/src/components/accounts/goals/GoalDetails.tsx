@@ -4,7 +4,11 @@ import { GoalData, ReadingGoalBook } from '../ReadingGoal';
 import ReadingProgress from './ProgressBar';
 import RGBookListItem from './RGBookListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import {
+	faChevronDown,
+	faChevronUp,
+	faPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { Button, Modal } from 'react-bootstrap';
 import AddBookModal from './AddBookModal';
 import useModal from '../../../hooks/useModal';
@@ -78,7 +82,7 @@ function GoalDetails({
 					className='mx-3 mb-3'
 					onClick={addBookModal.toggle}
 				>
-					Add Book
+					Add <FontAwesomeIcon icon={faPlus} />
 				</Button>
 			</div>
 			<AddBookModal

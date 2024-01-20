@@ -54,6 +54,9 @@ class ReadingGoalBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReadingGoalBook
         fields = (
+            "id",
+            "date_created",
+            "date_modified",
             "title",
             "author",
             "isbn",
