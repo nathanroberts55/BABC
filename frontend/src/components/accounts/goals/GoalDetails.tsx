@@ -89,7 +89,7 @@ function GoalDetails({
 				goal={goal}
 			/>
 			<Collapse in={open}>
-				<div>
+				<div className='scrollable-content'>
 					{books_read.map((book, index) => (
 						<RGBookListItem book={book} />
 					))}

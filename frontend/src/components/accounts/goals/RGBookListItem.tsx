@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 import { ReadingGoalBook } from '../ReadingGoal';
 
 interface BookListProps {
@@ -11,21 +12,23 @@ function BookListItem(props: BookListProps) {
 	const { book } = props;
 
 	return (
-		<Row
-			className='align-items-center book-recommendation'
-			key={book.id}
-		>
-			<Col
-				lg={9}
-				className='mx-auto'
+		<Container fluid>
+			<Row
+				className='align-items-center book-recommendation'
+				key={book.id}
 			>
-				<p className='display-6'>
-					{book.title}
-					<small className='fs-5'> by {book.author}</small>
-				</p>
-				<hr />
-			</Col>
-		</Row>
+				<Col
+					lg={12}
+					className='mx-auto'
+				>
+					<p className='display-6'>
+						{book.title}
+						<small className='fs-5'> by {book.author}</small>
+					</p>
+					<hr />
+				</Col>
+			</Row>
+		</Container>
 	);
 }
 
