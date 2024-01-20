@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import logout
 from django.utils.timezone import now
 from rest_framework import generics, status
@@ -192,6 +192,39 @@ class AddReadingGoalBookView(APIView):
                     status=status.HTTP_404_NOT_FOUND,
                 )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteReadingGoalBookView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return ReadingGoalBook.objects.get(pk=pk)
+        except ReadingGoalBook.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        book = self.get_object(pk)
+        goal = ReadingGoal.objects.filter(user=request.user, year=now().year).first()
+        if goal:
+            if book in goal.books_read.all():
+                goal.books_read.remove(book)  # remove the association
+                goal.save()
+                if (
+                    not book.readinggoal_set.exists()
+                ):  # if no other user has read this book
+                    book.delete()  # delete the book
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(
+                    {"error": "The book is not in the user's reading goal"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        else:
+            return Response(
+                {"error": "No ReadingGoal found for this year"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
 
 # Authentication Views

@@ -115,6 +115,38 @@ function ReadingGoals() {
 			});
 	}
 
+	async function deleteBook(bookId: number) {
+		fetch(`api/goals/delete_book/${bookId}/`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(async (response) => {
+				if (response.status === 204) {
+					setGoalData((prevGoalData) => {
+						if (prevGoalData?.books_read) {
+							const updatedBooks = prevGoalData.books_read.filter(
+								(book) => book.id !== bookId
+							);
+							return {
+								...prevGoalData,
+								books_read: updatedBooks,
+								num_books_read: prevGoalData.num_books_read
+									? prevGoalData.num_books_read - 1
+									: 0,
+							};
+						} else {
+							return prevGoalData;
+						}
+					});
+				}
+			})
+			.catch((error) => {
+				console.log('Error Deleting Book:', error);
+			});
+	}
+
 	return (
 		<Container
 			className='px-4 p-5 my-5'
@@ -141,6 +173,7 @@ function ReadingGoals() {
 							num_books_read={goalData.num_books_read}
 							onUpdateResolution={updateResolution}
 							onSaveBook={saveBook}
+							onDeleteBook={deleteBook}
 						/>
 					)
 				) : (

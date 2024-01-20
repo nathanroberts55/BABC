@@ -22,6 +22,11 @@ urlpatterns = [
     ),
     path("goals/books/", views.UserReadingGoalBooksView.as_view(), name="goal_books"),
     path("goals/add_book/", views.AddReadingGoalBookView.as_view(), name="add_book"),
+    path(
+        "goals/delete_book/<int:pk>/",
+        views.DeleteReadingGoalBookView.as_view(),
+        name="delete_book",
+    ),
     # Authentication Endpoints
     path("logout/", views.LogoutView, name="logout"),
     path("user/", views.UserView.as_view(), name="user"),

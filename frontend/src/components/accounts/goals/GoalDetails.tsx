@@ -17,6 +17,7 @@ interface GoalDataProps {
 	num_books_read: number;
 	onUpdateResolution: (dataToUpdate: Partial<GoalData>) => void;
 	onSaveBook: (bookToSave: Partial<ReadingGoalBook>) => void;
+	onDeleteBook: (bookId: number) => void;
 }
 function GoalDetails({
 	year,
@@ -25,6 +26,7 @@ function GoalDetails({
 	num_books_read,
 	onUpdateResolution,
 	onSaveBook,
+	onDeleteBook,
 }: GoalDataProps) {
 	const [open, setOpen] = useState(false);
 	const addBookModal = useModal();
@@ -91,7 +93,10 @@ function GoalDetails({
 			<Collapse in={open}>
 				<div className='scrollable-content'>
 					{books_read.map((book, index) => (
-						<RGBookListItem book={book} />
+						<RGBookListItem
+							book={book}
+							onDeleteBook={onDeleteBook}
+						/>
 					))}
 				</div>
 			</Collapse>
