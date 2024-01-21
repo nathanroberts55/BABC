@@ -165,3 +165,31 @@ const ReadingProgress: React.FC<ReadingProgressProps> = ({ current, goal }) => {
 export default ReadingProgress;
 
 ```
+
+
+# Reading Resolution Feature Instructions
+1. Go to [Big A Book Club Website](https://bigabookclub.com) and click login using your discord account and authorize access.
+![Login Image-Desktop](LoginDesktop_BABC.png)
+![Login Image-Mobile](LoginMobile_BABC.png)
+2. Click on your username to access the dropdown that gives you access to your profile, click profile
+![Profile-Desktop](ProfileDesktop_BABC.png)
+![Profile-Mobile](ProfileMobile_BABC.png)
+1. Under Account Details will be a new section with a description of the Book Club Reading Resolution
+2. Click the "Set Reading Goal" button to start with a resolution and get ability to set your goal
+![SetReadingGoal](SetReadingGoal_BABC.png)
+3. To set your resolution for the year, click the "Edit Goal". 
+![ResolutionUI](ResolutionUI_BABC.png)
+   1. An Edit Modal will popup that will allow you to set your Goal, when done click "Update Goal". Otherwise click the cancel, X, or outside of the modal to cancel.
+![EditModal](EditModal_BABC.png)
+4. When you complete reading a book, click on the "Add +" button next to the "2024 Books Read" to open the Add Modal.
+   ![AddModal](AddModal_BABC.png)
+   1. This modal works the same as the submission page, you can search by title, author, or ISBN. Enter the search value into the box (then give it as second as it searches for the book) before selecting a book in the dropdown to enable the "Add Book" button. When done click "Add Book", otherwise click the cancel, X, or outside of the modal to cancel.
+   ![BookSearch](BookSearch_BABC.png)
+5. To access the books that you have read this year, click the upward arrow to the left of the "2024 Books Read" to access the dropdown. To collapse the dropdown, click the arrow again. 
+6. To Delete a Book, click the trash next to/under the book title.
+![BooksRead](BooksRead_BABC.png)
+7.  To Delete your resolution, click the "Delete Goal" Button under the progress bar to open the Delete Modal.
+   1.  An Delete Modal will popup that will allow you to delete your Goal, when done click "Delete Resolution". Otherwise click the cancel, X, or outside of the modal to cancel.
+   ![DeleteResolution](DeleteResolutionModal_BABC.png)
+   2.  A successfully deleted resolution will bring you back to the resolution description. 
+   ![ReadingResolutionDescription](SetReadingGoal_BABC-1.png)
