@@ -2,13 +2,25 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from rest_framework.test import force_authenticate
 from books.models import Book
+from django.utils.timezone import now
+from rest_framework.test import APIClient
+from rest_framework import status
 from api.views import (
+    AddReadingGoalBookView,
     CreateBookView,
+    CreateReadingGoalView,
+    DeleteReadingGoalBookView,
+    DeleteReadingGoalView,
     FavoriteBook,
     ListBookmarks,
     ListBooksView,
     SingleBookView,
+    ReadingGoalView,
+    UpdateReadingGoalView,
+    UserReadingGoalBooksView,
 )
+from goals.models import ReadingGoal, ReadingGoalBook
+import json
 
 
 class ListBooksViewTestCase(TestCase):
@@ -203,3 +215,189 @@ class FavoriteBookTestCase(TestCase):
         response = view(request, id=self.book.id)
         self.assertEqual(response.status_code, 204)
         self.assertTrue(self.book.favorites.filter(id=self.user.id).exists())
+
+
+class ReadingGoalViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = ReadingGoalView.as_view()
+        self.client = APIClient()
+        ReadingGoal.objects.create(user=self.user, year=now().year)  # Add this line
+
+    def test_get_reading_goal(self):
+        self.client.login(username="testuser", password="testpass")
+        request = self.factory.get("/api/goals/details/")
+        force_authenticate(request, user=self.user)
+        response = self.view(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("num_books_read", response.data)
+        self.assertIn("books_read", response.data)
+
+    def test_no_reading_goal(self):
+        self.client.login(username="testuser", password="testpass")
+        ReadingGoal.objects.filter(
+            user=self.user, year=now().year
+        ).delete()  # Add this line
+        request = self.factory.get("/api/goals/has_goal/")
+        force_authenticate(request, user=self.user)
+        response = self.view(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, {"has_goal": False})
+
+
+class UpdateReadingGoalViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = UpdateReadingGoalView.as_view()
+        self.client = APIClient()
+        ReadingGoal.objects.create(
+            user=self.user, year=now().year, goal=10
+        )  # Add a goal
+
+    def test_patch_reading_goal(self):
+        self.client.login(username="testuser", password="testpass")
+        data = {"goal": 20}  # Update the goal
+        request = self.factory.patch(
+            "/api/goals/update_goal/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )  # Specify content type and convert data to JSON
+        force_authenticate(request, user=self.user)
+        response = self.view(request)
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(
+            response.data["goal"], data["goal"]
+        )  # Check if the goal is updated
+
+
+class CreateReadingGoalViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = CreateReadingGoalView.as_view()
+        self.client = APIClient()
+
+    def test_post_reading_goal(self):
+        self.client.login(username="testuser", password="testpass")
+        request = self.factory.post(
+            "/api/goals/create_goal/",
+            content_type="application/json",
+        )
+        force_authenticate(request, user=self.user)
+        response = self.view(request)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["goal"], 0)  # Check if the goal is created
+
+
+class DeleteReadingGoalViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = DeleteReadingGoalView.as_view()
+        self.client = APIClient()
+        self.goal = ReadingGoal.objects.create(
+            user=self.user, year=now().year, goal=10
+        )  # Add a goal
+
+    def test_delete_reading_goal(self):
+        self.client.login(username="testuser", password="testpass")
+        request = self.factory.delete(f"/api/goals/delete_goal/{self.goal.pk}/")
+        force_authenticate(request, user=self.user)
+        response = self.view(request, pk=self.goal.pk)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data, {"has_goal": False}
+        )  # Check if the goal is deleted
+
+
+class UserReadingGoalBooksViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = UserReadingGoalBooksView.as_view()
+        self.client = APIClient()
+        self.goal = ReadingGoal.objects.create(
+            user=self.user, year=now().year, goal=10
+        )  # Add a goal
+
+    def test_get_reading_goal_books(self):
+        self.client.login(username="testuser", password="testpass")
+        request = self.factory.get("/api/goals/books/")
+        force_authenticate(request, user=self.user)
+        response = self.view(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data, []
+        )  # Expect an empty list as no books are added yet
+
+
+class AddReadingGoalBookViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = AddReadingGoalBookView.as_view()
+        self.client = APIClient()
+        self.goal = ReadingGoal.objects.create(
+            user=self.user, year=now().year, goal=10
+        )  # Add a goal
+
+    def test_post_reading_goal_book(self):
+        self.client.login(username="testuser", password="testpass")
+        data = {
+            "title": "Test Book",
+            "author": "Test Author",
+            "isbn": "9783161484100",
+        }  # Set a book with an ISBN
+        request = self.factory.post(
+            "/api/goals/add_book/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
+        force_authenticate(request, user=self.user)
+        response = self.view(request)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            response.data["title"], data["title"]
+        )  # Check if the book is added
+        self.assertEqual(response.data["author"], data["author"])
+        self.assertEqual(
+            response.data["isbn"], data["isbn"]
+        )  # Check if the ISBN is correct
+
+
+class DeleteReadingGoalBookViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = get_user_model().objects.create_user(
+            username="testuser", password="testpass"
+        )
+        self.view = DeleteReadingGoalBookView.as_view()
+        self.client = APIClient()
+        self.goal = ReadingGoal.objects.create(
+            user=self.user, year=now().year, goal=10
+        )  # Add a goal
+        self.book = ReadingGoalBook.objects.create(
+            title="Test Book", author="Test Author", isbn="978-3-16-148410-0"
+        )  # Add a book
+        self.goal.books_read.add(self.book)  # Add the book to the goal
+
+    def test_delete_reading_goal_book(self):
+        self.client.login(username="testuser", password="testpass")
+        request = self.factory.delete(f"/api/goals/delete_book/{self.book.pk}/")
+        force_authenticate(request, user=self.user)
+        response = self.view(request, pk=self.book.pk)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
