@@ -156,6 +156,40 @@ class CreateReadingGoalView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class DeleteReadingGoalView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
+
+    def get_object(self, pk):
+        try:
+            return ReadingGoal.objects.get(pk=pk)
+        except ReadingGoal.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        goal = self.get_object(pk)
+        if goal.user != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        # Get the books associated with the goal
+        books = goal.books_read.all()
+
+        # Create a list of books that are only associated with this goal
+        books_to_delete = [book for book in books if book.readinggoal_set.count() == 1]
+
+        # Remove the associations between the goal and the books
+        goal.books_read.clear()
+
+        # Delete the goal
+        goal.delete()
+
+        # Delete the books that are only associated with this goal
+        for book in books_to_delete:
+            book.delete()
+
+        return Response({"has_goal": False}, status=status.HTTP_200_OK)
+
+
 class UserReadingGoalBooksView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -177,21 +211,28 @@ class AddReadingGoalBookView(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
 
     def post(self, request):
-        serializer = ReadingGoalBookSerializer(data=request.data)
-        if serializer.is_valid():
-            book = serializer.save()
-            goal = ReadingGoal.objects.filter(
-                user=request.user, year=now().year
-            ).first()
-            if goal:
-                goal.add_book(book)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        title = request.data.get("title")
+        author = request.data.get("author")
+        book, created = ReadingGoalBook.objects.get_or_create(
+            title=title, author=author
+        )
+        if created:
+            serializer = ReadingGoalBookSerializer(book, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
             else:
-                return Response(
-                    {"error": "No ReadingGoal found for this year"},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        goal = ReadingGoal.objects.filter(user=request.user, year=now().year).first()
+        if goal:
+            goal.add_book(book)
+            return Response(
+                ReadingGoalBookSerializer(book).data, status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {"error": "No ReadingGoal found for this year"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
 
 class DeleteReadingGoalBookView(APIView):

@@ -12,6 +12,7 @@ export interface ReadingGoalBook {
 	isbn: number;
 }
 export interface GoalData {
+	id: number;
 	date_created: string;
 	date_modified: string;
 	year?: number;
@@ -147,6 +148,24 @@ function ReadingGoals() {
 			});
 	}
 
+	async function deleteGoal(goalId: number) {
+		fetch(`api/goals/delete_goal/${goalId}/`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then(async (response) => {
+				if (response.status === 200) {
+					const data = await response.json();
+					setGoalData(data);
+				}
+			})
+			.catch((error) => {
+				console.log('Error Deleting Goal:', error);
+			});
+	}
+
 	return (
 		<Container
 			className='px-4 p-5 my-5'
@@ -167,6 +186,7 @@ function ReadingGoals() {
 					goalData.books_read !== undefined &&
 					goalData.num_books_read !== undefined && (
 						<GoalDetails
+							id={goalData.id}
 							year={goalData.year}
 							goal={goalData.goal}
 							books_read={goalData.books_read}
@@ -174,6 +194,7 @@ function ReadingGoals() {
 							onUpdateResolution={updateResolution}
 							onSaveBook={saveBook}
 							onDeleteBook={deleteBook}
+							onDeleteGoal={deleteGoal}
 						/>
 					)
 				) : (

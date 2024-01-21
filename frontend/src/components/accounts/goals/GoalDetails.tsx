@@ -13,8 +13,10 @@ import { Button, Modal } from 'react-bootstrap';
 import AddBookModal from './AddBookModal';
 import useModal from '../../../hooks/useModal';
 import EditGoalModal from './EditGoalModal';
+import DeleteGoalModal from './DeleteGoalModal';
 
 interface GoalDataProps {
+	id: number;
 	year: number;
 	goal: number;
 	books_read: ReadingGoalBook[];
@@ -22,8 +24,10 @@ interface GoalDataProps {
 	onUpdateResolution: (dataToUpdate: Partial<GoalData>) => void;
 	onSaveBook: (bookToSave: Partial<ReadingGoalBook>) => void;
 	onDeleteBook: (bookId: number) => void;
+	onDeleteGoal: (goalId: number) => void;
 }
 function GoalDetails({
+	id,
 	year,
 	goal,
 	books_read,
@@ -31,10 +35,12 @@ function GoalDetails({
 	onUpdateResolution,
 	onSaveBook,
 	onDeleteBook,
+	onDeleteGoal,
 }: GoalDataProps) {
 	const [open, setOpen] = useState(false);
 	const addBookModal = useModal();
 	const editModal = useModal();
+	const deleteModal = useModal();
 
 	return (
 		<div>
@@ -56,8 +62,8 @@ function GoalDetails({
 				<Button
 					className='mb-3 mx-1'
 					variant='outline-danger'
+					onClick={deleteModal.toggle}
 				>
-					{' '}
 					Delete Goal
 				</Button>
 			</div>
@@ -93,6 +99,11 @@ function GoalDetails({
 				{...editModal}
 				onUpdateResolution={onUpdateResolution}
 				goal={goal}
+			/>
+			<DeleteGoalModal
+				{...deleteModal}
+				onDeleteGoal={onDeleteGoal}
+				id={id}
 			/>
 			<Collapse in={open}>
 				<div className='scrollable-content'>

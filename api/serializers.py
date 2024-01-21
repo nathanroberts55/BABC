@@ -70,6 +70,7 @@ class ReadingGoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReadingGoal
         fields = (
+            "id",
             "year",
             "goal",
             "num_books_read",
