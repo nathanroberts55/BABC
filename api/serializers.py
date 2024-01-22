@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from books.models import Book
+from goals.models import ReadingGoal, ReadingGoalBook
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -47,6 +48,37 @@ class CreateBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ("title", "author", "isbn", "source", "submitter", "stream_link")
+
+
+class ReadingGoalBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadingGoalBook
+        fields = (
+            "id",
+            "date_created",
+            "date_modified",
+            "title",
+            "author",
+            "isbn",
+        )
+
+
+class ReadingGoalSerializer(serializers.ModelSerializer):
+    num_books_read = serializers.SerializerMethodField()
+    books_read = ReadingGoalBookSerializer(many=True, read_only=True)  # Add this line
+
+    class Meta:
+        model = ReadingGoal
+        fields = (
+            "id",
+            "year",
+            "goal",
+            "num_books_read",
+            "books_read",
+        )  # Add "books_read" here
+
+    def get_num_books_read(self, obj):
+        return obj.books_read.count()
 
 
 class UserSerializer(serializers.ModelSerializer):

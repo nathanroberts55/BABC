@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Hero from '../accounts/Hero';
 import Bookmarks from '../accounts/Bookmarks';
 import AuthContext from '../../contexts/authContext';
+import Container from 'react-bootstrap/Container';
+import ReadingGoals from '../accounts/ReadingGoal';
 
 type Book = {
 	id: number;
@@ -44,10 +46,11 @@ function AccountsPage() {
 	}, []);
 
 	return (
-		<>
+		<Container fluid>
 			<Hero />
+			<ReadingGoals />
 			<Bookmarks books={bookmarks} />
-		</>
+		</Container>
 	);
 }
 
