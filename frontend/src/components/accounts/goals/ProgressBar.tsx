@@ -16,7 +16,7 @@ function ReadingProgress({ current, goal }: ReadingProgressProps) {
 				className='mb-3'
 				animated
 				now={progress}
-				label={`${progress}%`}
+				label={`${current}/${goal}`}
 			/>
 		</div>
 	);
