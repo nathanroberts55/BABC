@@ -47,6 +47,16 @@ function GoalDetails({
 			<p className='display-6 fw-bold text-body-emphasis lh-1 mb-3'>
 				Reading Resolution Progress
 			</p>
+			<p>
+				Reach out to AZ in the{' '}
+				<a
+					href='https://discord.com/channels/1159391121999413310/1173808374266212412'
+					target='_blank'
+				>
+					discord
+				</a>{' '}
+				to receive/update your certificate!
+			</p>
 			<ReadingProgress
 				current={num_books_read}
 				goal={goal}
