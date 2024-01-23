@@ -17,6 +17,9 @@ class ReadingGoalBook(models.Model):
         verbose_name = "Reading Goal Book"
         verbose_name_plural = "Reading Goal Books"
 
+    def __str__(self) -> str:
+        return f"{self.title} by {self.author}"
+
 
 class ReadingGoal(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
@@ -38,3 +41,6 @@ class ReadingGoal(models.Model):
 
     def is_goal_reached(self):
         return self.books_read.count() >= self.goal
+
+    def __str__(self) -> str:
+        return f"{self.user}'s Reading Goal"
