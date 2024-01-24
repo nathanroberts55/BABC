@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -28,6 +30,7 @@ class Book(models.Model):
         User, related_name="favorite", default=None, blank=True
     )
     likes = models.ManyToManyField(User, related_name="like", default=None, blank=True)
+    currently_reading = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("title", "author")
@@ -48,3 +51,15 @@ class Book(models.Model):
 
     def __str__(self) -> str:
         return f"Approval Status: {self.approved} | {self.title} by {self.author}"
+
+
+@receiver(post_save, sender=Book)
+def update_currently_reading(sender, instance, **kwargs):
+    # if the instance has currently_reading set to True
+    if instance.currently_reading:
+        # get the model class
+        model_class = instance.__class__
+        # filter the queryset by the field value and exclude the instance
+        qs = model_class.objects.filter(currently_reading=True).exclude(pk=instance.pk)
+        # update the field value to False for the queryset
+        qs.update(currently_reading=False)
