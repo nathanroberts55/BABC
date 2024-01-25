@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner';
 import InputGroup from 'react-bootstrap/InputGroup';
 import AuthContext from '../../../contexts/authContext';
 import BookListItem from '../../common/BookListItem';
@@ -93,15 +94,21 @@ function Recommendations() {
 
 	if (isLoading) {
 		return (
-			<div className='container-xxl'>
-				<Row className='text-center justify-content-center mb-3'>
-					<h3 className='display-6 fw-bold text-body-emphasis mb-3'>
-						Getting the Books off the Shelf... Please Wait
-					</h3>
-				</Row>
-			</div>
+			<Col
+				xxl={8}
+				className='container px-4 py-5 mb-5 d-flex justify-content-center align-items-center'
+			>
+				<Spinner
+					animation='border'
+					role='status'
+				>
+					<span className='visually-hidden'>Loading...</span>
+				</Spinner>
+				<p className='mx-3'>Loading Currently Reading...</p>
+			</Col>
 		);
 	}
+
 	if (error) return 'An error has occurred: ' + error.message;
 
 	const handleBookSourceChange = (
