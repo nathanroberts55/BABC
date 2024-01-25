@@ -11,6 +11,11 @@ urlpatterns = [
     path("books/bookmarks", views.ListBookmarks.as_view(), name="bookmarks"),
     path("books/favorite/<int:id>/", views.FavoriteBook.as_view(), name="favorite"),
     path("books/like/<int:id>/", views.LikeBook.as_view(), name="like"),
+    path(
+        "books/currently_reading",
+        views.CurrentlyReadingBook.as_view(),
+        name="currently_reading",
+    ),
     # Reading Goal Endpoints
     path("goals/has_goal/", views.ReadingGoalView.as_view(), name="has_accepted"),
     path("goals/details/", views.ReadingGoalView.as_view(), name="goal_details"),

@@ -104,6 +104,27 @@ class LikeBook(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class CurrentlyReadingBook(generics.RetrieveAPIView):
+    queryset = Book.objects.filter(approved=True, currently_reading=True)
+    serializer_class = BookSerializer
+
+    def get_object(self):
+        # return the first book in the queryset, or raise a 404 error if empty
+        return self.get_queryset().first()
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance is None:
+            return Response(
+                {
+                    "detail": "The Book Club does not currently have a Book they are reading as a group"
+                },
+                status=204,
+            )
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
 # Goals Views
 class ReadingGoalView(APIView):
     permission_classes = [IsAuthenticated]
