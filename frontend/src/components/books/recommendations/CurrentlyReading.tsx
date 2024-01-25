@@ -9,6 +9,9 @@ import Spinner from 'react-bootstrap/Spinner';
 async function fetchCurrentlyReadingBookDetails() {
 	// Fetch the currently read book from your API
 	const currentBookResponse = await fetch('/api/books/currently_reading');
+	if (currentBookResponse.status === 204) {
+		return null;
+	}
 	if (!currentBookResponse.ok) {
 		throw new Error('Network response was not ok');
 	}
@@ -44,26 +47,8 @@ function CurrentlyReading() {
 		}
 	);
 
-	if (isLoading) {
-		return (
-			<Col
-				xxl={8}
-				className='container px-4 py-5 mb-5 d-flex justify-content-center align-items-center'
-				style={{
-					backgroundColor: 'rgba(111, 66, 193, 0.4)', // Replace with your site's primary color
-					borderRadius: '35px',
-					padding: '20px',
-				}}
-			>
-				<Spinner
-					animation='border'
-					role='status'
-				>
-					<span className='visually-hidden'>Loading...</span>
-				</Spinner>
-				<p className='mx-3'>Loading Currently Reading...</p>
-			</Col>
-		);
+	if (isLoading || data === null) {
+		return null;
 	}
 
 	return (

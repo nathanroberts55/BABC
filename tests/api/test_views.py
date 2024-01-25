@@ -1,6 +1,8 @@
+from django.http import Http404
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from rest_framework.test import force_authenticate
+from unittest.mock import Mock
 from books.models import Book
 from django.utils.timezone import now
 from rest_framework.test import APIClient
@@ -9,6 +11,7 @@ from api.views import (
     AddReadingGoalBookView,
     CreateBookView,
     CreateReadingGoalView,
+    CurrentlyReadingBook,
     DeleteReadingGoalBookView,
     DeleteReadingGoalView,
     FavoriteBook,
@@ -217,6 +220,43 @@ class FavoriteBookTestCase(TestCase):
         self.assertTrue(self.book.favorites.filter(id=self.user.id).exists())
 
 
+class CurrentlyReadingBookTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_currently_reading_book(self):
+        book = Book.objects.create(
+            title="Test Book",
+            author="Test Author",
+            submitter="Test User",
+            approved=True,
+            currently_reading=True,
+            isbn="1234567890",
+            source="Test Source",
+            stream_link="http://teststreamlink.com",
+            amazon_link="http://testamazonlink.com",
+        )
+
+        request = self.factory.get("/api/books/currently_reading/")
+        view = CurrentlyReadingBook.as_view()
+        response = view(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["title"], "Test Book")
+
+        book.currently_reading = False
+        book.save()
+
+        request = self.factory.get("/api/books/currently_reading/")
+        view = CurrentlyReadingBook.as_view()
+        response = view(request)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(
+            response.data["detail"],
+            "The Book Club does not currently have a Book they are reading as a group",
+        )
+
+
+# Reading Goals
 class ReadingGoalViewTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()

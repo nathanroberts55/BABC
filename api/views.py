@@ -112,6 +112,18 @@ class CurrentlyReadingBook(generics.RetrieveAPIView):
         # return the first book in the queryset, or raise a 404 error if empty
         return self.get_queryset().first()
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance is None:
+            return Response(
+                {
+                    "detail": "The Book Club does not currently have a Book they are reading as a group"
+                },
+                status=204,
+            )
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
 # Goals Views
 class ReadingGoalView(APIView):
