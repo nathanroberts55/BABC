@@ -9,19 +9,28 @@ type AuthProviderProps = {
 
 const fetchUser = async () => {
   const response = await fetch(`/api/user/`);
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
+  if (response.ok) {
+    return response.json();
   }
-  return response.json();
+
+  if (response.status === 403) {
+    return null;
+  }
+
+  throw new Error(response.status.toString());
 };
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { data, isLoading, isError } = useQuery("user", fetchUser, {
-    staleTime: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
-  });
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+
+  const { data } = useQuery("user", fetchUser, {
+    staleTime: 2 * 60 * 60 * 1000, // 2 hours in milliseconds
+    retry: false,
+    onError: (error: Error) => {
+      console.log(error.message);
+    },
+  });
 
   useEffect(() => {
     if (data) {
