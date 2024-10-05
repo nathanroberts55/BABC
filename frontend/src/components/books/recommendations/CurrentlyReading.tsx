@@ -17,15 +17,19 @@ async function fetchCurrentlyReadingBookDetails() {
 	}
 	const book = await currentBookResponse.json();
 
-	// Use the ISBN from the first response to fetch the book details from the Google API
-	const bookDetailsResponse = await fetch(
-		`https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn}`
-	);
-	if (!bookDetailsResponse.ok) {
-		throw new Error('Network response was not ok');
+	let bookDetails;
+	try {
+		// Use the ISBN from the first response to fetch the book details from the Google API
+		const bookDetailsResponse = await fetch(
+			`https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn}`
+		);
+		bookDetails = await bookDetailsResponse.json();
+
+	} catch(e) {
+		// maybe you want to do some error handling here?
+		console.error('Google API call failed');
 	}
-	const bookDetails = await bookDetailsResponse.json();
-	const items = bookDetails.items || [];
+	const items = bookDetails?.items || [];
 	if (items.length > 0) {
 		const bookInfo = items[0];
 		const volumeInfo = bookInfo.volumeInfo || {};
