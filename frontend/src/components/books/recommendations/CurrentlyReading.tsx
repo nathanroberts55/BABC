@@ -27,7 +27,7 @@ async function fetchCurrentlyReadingBookDetails() {
 	} catch (e) {
 		// maybe you want to do some error handling here?
 		console.error('Google API call failed');
-		return;
+		return <></>;
 	}
 	const items = bookDetails?.items || [];
 	if (items.length > 0) {
