@@ -24,10 +24,10 @@ async function fetchCurrentlyReadingBookDetails() {
 			`https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn}`
 		);
 		bookDetails = await bookDetailsResponse.json();
-
-	} catch(e) {
+	} catch (e) {
 		// maybe you want to do some error handling here?
 		console.error('Google API call failed');
+		return <></>;
 	}
 	const items = bookDetails?.items || [];
 	if (items.length > 0) {
