@@ -9,24 +9,16 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-from django.contrib.messages import constants as messages
+
 from dotenv import load_dotenv
 from pathlib import Path
 import os
 
-MESSAGE_TAGS = {
-    messages.DEBUG: "alert-secondary",
-    messages.INFO: "alert-info",
-    messages.SUCCESS: "alert-success",
-    messages.WARNING: "alert-warning",
-    messages.ERROR: "alert-danger",
-}
+# Load environment vairables
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load environment vairables
-load_dotenv(BASE_DIR / ".env")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -34,35 +26,16 @@ load_dotenv(BASE_DIR / ".env")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t")
-
-RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
-RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
-
-# Configure the domain name using the environment variable
-# that Azure automatically creates for us.
-ALLOWED_HOSTS = (
-    [os.environ["WEBSITE_HOSTNAME"], ".azurewebsites.net"]
-    if "WEBSITE_HOSTNAME" in os.environ
-    else []
-)
-CSRF_TRUSTED_ORIGINS = (
-    ["https://" + os.environ["SITE_HOSTNAME"]] if "SITE_HOSTNAME" in os.environ else []
-)
-
 # Authentication Options
-
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.discord.DiscordOAuth2",
     "django.contrib.auth.backends.ModelBackend",
 )
 
+# Social Auth Settings
 SOCIAL_AUTH_DISCORD_KEY = os.getenv("SOCIAL_AUTH_DISCORD_KEY")
 SOCIAL_AUTH_DISCORD_SECRET = os.getenv("SOCIAL_AUTH_DISCORD_SECRET")
-
 SOCIAL_AUTH_DISCORD_SCOPE = ["identify"]
-
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/"
 
 # Application definition
@@ -74,16 +47,18 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_browser_reload",
+    "rest_framework",
+    "social_django",
     "compressor",
     "captcha",
-    "home",
+    "tailwind",
+    "theme",
     "books",
     "accounts",
     "api",
     "frontend",
     "goals",
-    "social_django",
-    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -95,6 +70,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "BigABookClub.urls"
@@ -120,29 +96,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "BigABookClub.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
-}
-
-# Settings to use when using local PostgreSQL container as backend
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("POSTGRES_NAME"),
-#         "USER": os.getenv("POSTGRES_USER"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-#         "HOST": os.getenv("POSTGRES_HOST"),
-#         "PORT": os.getenv("POSTGRES_PORT"),
-#     },
-# }
 
 
 # Password validation
@@ -197,8 +150,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 COMPRESS_PRECOMPILERS = (("text/css", "django_libsass.SassCompiler"),)
 COMPRESS_ROOT = STATIC_ROOT
 
-# AMAZON API
-# AMAZON_API_ACCESS_KEY = os.getenv("AMAZON_API_ACCESS_KEY")
-# AMAZON_API_SECRET_KEY = os.getenv("AMAZON_API_SECRET_KEY")
-# AMAZON_API_PARTNER_TAG = os.getenv("AMAZON_API_PARTNER_TAG")
-# AMAZON_API_COUNTRY = "US"
+# Django Tailwind Configuration
+TAILWIND_APP_NAME = "theme"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+NPM_BIN_PATH = "C:\Program Files\\nodejs\\npm.cmd"

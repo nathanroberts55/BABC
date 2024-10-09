@@ -1,0 +1,24 @@
+<form class="grid my-10 mx-auto grid-cols-4 max-md:grid-cols-1 gap-x-4 max-md:gap-y-4 form-control" id="filter-form"
+    hx-target="#recommendation-list" hx-swap="outerHTML" hx-include="#filter-form">
+    <select class="select select-bordered w-full max-w-xs" name="source" hx-get="{% url 'recommendations' %}">
+        <option disabled selected value="FROM">From</option>
+        <option value="ATRIOC">Atrioc</option>
+        <option value="CHAT">Chat</option>
+    </select>
+    <select class="select select-bordered w-full max-w-xs" name="sort-key" hx-get="{% url 'recommendations' %}">
+        <option disabled selected>Sort By</option>
+        <option value="TITLE">Title</option>
+        {% if user.is_authenticated %}
+        <option value="LIKES">Likes</option>
+        {% endif %}
+    </select>
+    <select class="select select-bordered w-full max-w-xs" name="search-key" hx-get="{% url 'recommendations' %}">
+        <option disabled selected>Search By</option>
+        <option value="TITLE">Title</option>
+        <option value="AUTHOR">Author</option>
+        <option value="ISBN">ISBN</option>
+        <option value="SUBMITTER">Submitter</option>
+    </select>
+    <input type="text" placeholder="Enter Search Term" class="input input-bordered w-full max-w-xs" name="search-value"
+        hx-get="{% url 'recommendations' %}" hx-trigger="keyup changed delay:1s" />
+</form>
