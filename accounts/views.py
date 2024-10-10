@@ -31,27 +31,3 @@ def account_profile(request) -> None:
     books = Book.objects.filter(favorites=request.user)
     context["books"] = books
     return render(request, "accounts/profile.html", context=context)
-
-
-@login_required
-def favorite_book(request, id) -> None:
-    book = get_object_or_404(Book, id=id)
-
-    if book.favorites.filter(id=request.user.id).exists():
-        book.favorites.remove(request.user)
-    else:
-        book.favorites.add(request.user)
-
-    return HttpResponseRedirect(request.META["HTTP_REFERER"])
-
-
-@login_required
-def like_book(request, id) -> None:
-    book = get_object_or_404(Book, id=id)
-
-    if book.likes.filter(id=request.user.id).exists():
-        book.likes.remove(request.user)
-    else:
-        book.likes.add(request.user)
-
-    return HttpResponseRedirect(request.META["HTTP_REFERER"])

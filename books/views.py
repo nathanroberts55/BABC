@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, render
 from django.db.models import Count
-from datetime import datetime
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
-from django.http import HttpResponse
-from django.shortcuts import render
+from datetime import datetime
 from .models import Book
 
 # from .forms import BookForm
@@ -75,3 +76,52 @@ def details(request, id):
     context["book"] = book
 
     return render(request, "books/details.html", context=context)
+
+
+@login_required
+def favorite_book(request, id) -> None:
+    context = {}
+
+    book = get_object_or_404(Book, id=id)
+
+    if book.favorites.filter(id=request.user.id).exists():
+        book.favorites.remove(request.user)
+    else:
+        book.favorites.add(request.user)
+
+    book = Book.objects.filter(id=id).annotate(likes_count=Count("likes")).first()
+
+    context["book"] = book
+
+    referer = request.META.get("HTTP_REFERER", "")
+
+    if "/books/recommendations/" in referer:
+        return render(request, "partials/_recommendation.html", context=context)
+    elif "/books/details/" in referer:
+        return render(request, "details_template.html", context=context)
+
+
+@login_required
+def like_book(request, id) -> None:
+    context = {}
+
+    book = get_object_or_404(Book, id=id)
+
+    # Associate the User to the Book
+    if book.likes.filter(id=request.user.id).exists():
+        book.likes.remove(request.user)
+    else:
+        book.likes.add(request.user)
+
+    book = Book.objects.filter(id=id).annotate(likes_count=Count("likes")).first()
+
+    context["book"] = book
+
+    # Update the components
+
+    referer = request.META.get("HTTP_REFERER", "")
+
+    if "/books/recommendations/" in referer:
+        return render(request, "partials/_recommendation.html", context=context)
+    elif "/books/details/" in referer:
+        return render(request, "details_template.html", context=context)

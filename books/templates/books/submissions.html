@@ -1,6 +1,53 @@
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Big A Book Club | Recommendations{% endblock title %}
+{% block title %}Big A Book Club | Submissions{% endblock title %}
 
 {% block content %}
+<div class="container flex flex-col mx-auto">
+    <!-- #region Hero Section -->
+    <section class="w-1/2 flex flex-col mx-auto text-center my-10">
+        <p class="mb-8 text-5xl font-bold">Submissions</p>
+        <p class="text-xl font-light text-center">Use the form below to submit books that you have seen from stream or
+            have read yourself and want to share with the community.</p>
+    </section>
+    <!-- #endregion Hero Section -->
+    <!-- #region Instructions Section -->
+    <section class="flex flex-col mx-auto my-10 space-y-12">
+        <div class="flex flex-row justify-between gap-10">
+            <div class="flex flex-row w-1/2 justify-center">
+                <img class="w-[300] h-[300] rounded-full" src="{% static '/img/book-collection-submissions.jpg' %}"
+                    alt="People at a Library">
+            </div>
+            <div class="w-1/2 my-auto">
+                <p class='font-light text-xl'>
+                    Select then type in Book Title, Author, or ISBN then press "Enter"
+                    to get dropdown of matching books. If no results, click in the
+                    search box to reveal drop down or please try again.
+                </p>
+            </div>
+        </div>
+        <div class="flex flex-row-reverse justify-between gap-10">
+            <div class="flex flex-row w-1/2 justify-center">
+                <img class="w-[300] h-[300] rounded-full" src="{% static '/img/book-return-submissions.jpg' %}"
+                    alt="People at a Library">
+            </div>
+            <div class="w-1/2 my-auto">
+                <p class='font-light text-xl'>
+                    Then select whether the book is a recommendation from
+                    <strong>Chat</strong> or <strong>Atrioc</strong>. If from
+                    <strong>Chat include your username</strong>, and if from
+                    <strong>Atrioc include a clip from stream</strong> of him talking
+                    about the book.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- #endregion Instructions Section -->
+    <!-- #region Submissions Section -->
+    <section class="flex flex-col mx-auto my-10">
+
+    </section>
+    <!-- #endregion Submissions Section -->
+</div>
 {% endblock content %}
