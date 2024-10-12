@@ -6,9 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from datetime import datetime
 from .models import Book
-
-# from .forms import BookForm
-# import requests
+from .forms import BookForm
+from .utils.google_api import get_book_details
 
 
 # Create your views here.
@@ -65,15 +64,40 @@ def recommendations(request):
 
 def submissions(request):
     context = {}
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            print("Successful Form Submission Content:")
+            print(f'title: {form.cleaned_data["title"]}'),
+            print(f'author: {form.cleaned_data["author"]}'),
+            print(f'isbn: {form.cleaned_data["isbn"]}'),
+            print(f'source: {form.cleaned_data["source"]}'),
+            print(
+                f'submitter: {form.cleaned_data["submitter"] if form.cleaned_data["submitter"] else None}'
+            ),
+            print(
+                f'stream_link: {form.cleaned_data["stream_link"] if form.cleaned_data["stream_link"] else None}'
+            ),
+            form.save()
+            messages.success(request=request, message="Successfully Submitted Book")
+            form = BookForm()
+    else:
+        form = BookForm()
 
-    return render(request, "books/submissions.html")
+    context["form"] = form
+    return render(request, "books/submissions.html", context=context)
 
 
 def details(request, id):
     context = {}
 
     book = Book.objects.filter(id=id).annotate(likes_count=Count("likes")).first()
+
+    description, image_url = get_book_details(book)
+
     context["book"] = book
+    context["description"] = description
+    context["image_url"] = image_url
 
     return render(request, "books/details.html", context=context)
 
@@ -98,7 +122,7 @@ def favorite_book(request, id) -> None:
     if "/books/recommendations/" in referer:
         return render(request, "partials/_recommendation.html", context=context)
     elif "/books/details/" in referer:
-        return render(request, "details_template.html", context=context)
+        return render(request, "partials/_details_buttons.html", context=context)
 
 
 @login_required
@@ -124,4 +148,4 @@ def like_book(request, id) -> None:
     if "/books/recommendations/" in referer:
         return render(request, "partials/_recommendation.html", context=context)
     elif "/books/details/" in referer:
-        return render(request, "details_template.html", context=context)
+        return render(request, "partials/_details_buttons.html", context=context)

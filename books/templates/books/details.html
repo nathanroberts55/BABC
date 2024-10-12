@@ -1,8 +1,35 @@
 {% extends "base.html" %}
+{% load custom_filters %}
 {% load static %}
 
 {% block title %}Big A Book Club | {{ book.title }} by {{ book.author }}{% endblock title %}
 
 {% block content %}
-
+<div class="flex flex-col my-10 mx-auto w-full">
+    <!-- #region Navigation Buttons -->
+    <div class="flex flex-row justify-between mb-8 w-full">
+        <a class="btn btn-primary" href="{% url 'recommendations' %}"><svg xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Recommendations</a>
+        <a class="btn btn-primary" href="{% url 'account' %}">Account <svg xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+        </a>
+    </div>
+    <!-- #endregion Navigation Buttons -->
+    <div class="flex flex-col items-center">
+        {% if image_url %}
+        <img class="w-[250px] mb-8" src="{{ image_url }}" alt="{{book.title}} by {{book.author}} Book Cover Image">
+        {% endif %}
+        <p class="text-5xl font-bold mb-3 text-center">{{ book.title }}</p>
+        <p class="font-light mb-3">by {{ book.author | format_authors }}</p>
+        {% include 'partials/_details_buttons.html' %}
+        {% if description %}
+        <p class="text-justify">{{ description }}</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}

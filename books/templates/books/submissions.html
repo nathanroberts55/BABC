@@ -13,7 +13,7 @@
     </section>
     <!-- #endregion Hero Section -->
     <!-- #region Instructions Section -->
-    <section class="flex flex-col mx-auto my-10 space-y-12">
+    <section class="flex flex-col mx-auto my-10 space-y-12 w-4/6">
         <div class="flex flex-row justify-between gap-10">
             <div class="flex flex-row w-1/2 justify-center">
                 <img class="w-[300] h-[300] rounded-full" src="{% static '/img/book-collection-submissions.jpg' %}"
@@ -46,7 +46,8 @@
     <!-- #endregion Instructions Section -->
     <!-- #region Submissions Section -->
     <section class="flex flex-col mx-auto my-10">
-
+        {% include 'partials/_submission_search.html' %}
+        {% include 'partials/_submission_form.html' %}
     </section>
     <!-- #endregion Submissions Section -->
 </div>

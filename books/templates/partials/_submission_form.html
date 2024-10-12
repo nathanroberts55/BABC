@@ -1,0 +1,42 @@
+<form hx-post="post" class="w-full">
+    {% csrf_token %}
+    <input type="text" id="form-book-title" class="my-1 hidden">
+    <input type="text" id="form-book-author" class="my-1 hidden">
+    <input type="text" id="form-book-isbn" class="my-1 hidden">
+    <select type="text" id="form-book-source" class="my-1 select select-bordered w-full"
+        onchange="handleSourceChange()">
+        <option value="CHAT">Chatter</option>
+        <option value="ATRIOC">Atrioc</option>
+    </select>
+    <input type="text" id="form-book-submitter" class="my-1 input input-bordered w-full" placeholder="Twitch Username">
+    <input type="text" id="form-book-streamlink" class="my-1 input input-bordered w-full" placeholder="Stream VOD Link">
+</form>
+
+<script>
+    function handleSourceChange() {
+        const source = document.getElementById('form-book-source').value;
+        const submitterInput = document.getElementById('form-book-submitter');
+        const streamlinkInput = document.getElementById('form-book-streamlink');
+
+        if (source === 'CHAT') {
+            streamlinkInput.style.display = 'none';
+            streamlinkInput.required = false;
+            submitterInput.style.display = 'block';
+            submitterInput.required = true;
+        } else if (source === 'ATRIOC') {
+            submitterInput.style.display = 'none';
+            submitterInput.required = false;
+            streamlinkInput.style.display = 'block';
+            streamlinkInput.required = true;
+        } else {
+            submitterInput.style.display = 'block';
+            submitterInput.required = true;
+            streamlinkInput.style.display = 'block';
+            streamlinkInput.required = true;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        handleSourceChange();
+    });
+</script>
