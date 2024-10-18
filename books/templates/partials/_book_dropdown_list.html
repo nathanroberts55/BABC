@@ -1,0 +1,20 @@
+{% if books %}
+{% for book in books %}
+<li class="menu-item" data-title="{{ book.title }}" data-author="{{ book.author_name|join:' , ' }}"
+    data-isbn="{% if book.isbn %}{{ book.isbn|first }}{% else %}N/A{% endif %}">
+    {{ book.title|truncatechars:20 }} by {{ book.author_name|join:", "|truncatechars:20 }} |
+    {{ book.publish_year|first }}
+</li>
+{% endfor %}
+{% endif %}
+{% if messages %}
+{% for message in messages %}
+<div role="alert" class="alert alert-{{ message.tags  }}w-full">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span>{{ message }}</span>
+</div>
+{% endfor %}
+{% endif %}

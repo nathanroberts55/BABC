@@ -7,7 +7,8 @@ from django.contrib import messages
 from datetime import datetime
 from .models import Book
 from .forms import BookForm
-from .utils.google_api import get_book_details
+from .utils.google_api import google_book_details
+from .utils.openlib_api import openlib_book_details
 
 
 # Create your views here.
@@ -33,7 +34,7 @@ def recommendations(request):
         if sort_by == "TITLE":
             books = books.order_by("title")
         if sort_by == "LIKES":
-            books = books.order_by("likes_count")
+            books = books.order_by("-likes_count", "title")
     # Searching
     if (search_by and search_value) and search_value != "":
         if search_by == "TITLE":
@@ -88,12 +89,32 @@ def submissions(request):
     return render(request, "books/submissions.html", context=context)
 
 
+def book_search(request):
+    context = {}
+
+    search_term = request.GET.get("search-value", "")
+    search_key = request.GET.get("search-key", "")
+    encoded_search_term = search_term.replace(" ", "+")
+
+    books = openlib_book_details(encoded_search_term, search_key)
+
+    if books:
+        context["books"] = books
+    else:
+        messages.error(
+            request=request,
+            message="Something went wrong with the search API, please try again later.",
+        )
+
+    return render(request, "partials/_book_dropdown_list.html", context=context)
+
+
 def details(request, id):
     context = {}
 
     book = Book.objects.filter(id=id).annotate(likes_count=Count("likes")).first()
 
-    description, image_url = get_book_details(book)
+    description, image_url = google_book_details(book)
 
     context["book"] = book
     context["description"] = description
@@ -121,6 +142,8 @@ def favorite_book(request, id) -> None:
 
     if "/books/recommendations/" in referer:
         return render(request, "partials/_recommendation.html", context=context)
+    elif "/accounts/profile" in referer:
+        return render(request, "partials/_recommendation.html", context=context)
     elif "/books/details/" in referer:
         return render(request, "partials/_details_buttons.html", context=context)
 
@@ -146,6 +169,8 @@ def like_book(request, id) -> None:
     referer = request.META.get("HTTP_REFERER", "")
 
     if "/books/recommendations/" in referer:
+        return render(request, "partials/_recommendation.html", context=context)
+    elif "/accounts/profile" in referer:
         return render(request, "partials/_recommendation.html", context=context)
     elif "/books/details/" in referer:
         return render(request, "partials/_details_buttons.html", context=context)

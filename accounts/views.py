@@ -1,19 +1,9 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponseRedirect
+from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from books.models import Book
-
-
-def account_login(request) -> None:
-    context = {}
-
-    if request.user.is_authenticated:
-        print("User is Already Authenticated, sending to Home...")
-        messages.info(request, "Already Logged In, Welcome Back!")
-        return redirect("home")
-
-    return render(request, "accounts/login.html", context=context)
 
 
 def account_logout(request) -> None:
@@ -21,7 +11,7 @@ def account_logout(request) -> None:
 
     logout(request=request)
     messages.success(request, "You have successfully logged out.")
-    return redirect("home")
+    return redirect("/")
 
 
 # Create your views here.
@@ -29,5 +19,20 @@ def account_logout(request) -> None:
 def account_profile(request) -> None:
     context = {}
     books = Book.objects.filter(favorites=request.user)
+
+    paginator = Paginator(books, 25)
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context["page_obj"] = page_obj
+
+    if "HX-Request" in request.headers:
+        return render(
+            request,
+            "partials/_recommendation_list.html",
+            context=context,
+        )
+
     context["books"] = books
     return render(request, "accounts/profile.html", context=context)

@@ -2,20 +2,20 @@ import requests
 import logging
 
 
-def get_book_details(book):
+def google_book_details(book):
     try:
         url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{book.isbn}"
         try:
             logging.info(f"Making Request for Book Details for {book.title} at: {url}")
             response = requests.get(url=url)
             data = response.json()
-        except e:
+        except Exception as e:
             logging.error(f"Unable to get Book data from request: {e}")
             return None, None
         try:
             logging.info("Getting Books")
             items = data.get("items", [])
-        except e:
+        except Exception as e:
             logging.error(f"Unable to get `item` from reponse data because error: {e}")
             return None, None
 
@@ -24,7 +24,7 @@ def get_book_details(book):
             try:
                 logging.info("Get the volumeInfo dictionary")
                 volume_info = book_info.get("volumeInfo", {})
-            except e:
+            except Exception as e:
                 logging.error(f"Error getting the volumeInfo dictionary: {e}")
 
             try:

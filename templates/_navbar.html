@@ -61,14 +61,14 @@
                 <details>
                     <summary>{{ user.username }}</summary>
                     <ul class="p-2">
-                        <li><a href="{% url 'recommendations' %}">Profile</a></li>
-                        <li><a href="{% url 'submissions' %}">Logout</a></li>
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                 </details>
             </li>
         </ul>
         {% else %}
-        <div class="btn btn-primary">Login</div>
+        <a href="{% url 'social:begin' 'discord' %}" class="btn btn-primary">Login</a>
         {% endif %}
     </div>
 </div>
