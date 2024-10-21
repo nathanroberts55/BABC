@@ -42,7 +42,9 @@ def google_book_details(book):
                 logging.info(f"Unable to get Image or Description: {e}")
                 return None, None
         else:
-            logging.info("No Book Data Returned")
+            logging.info(
+                f"No Book Data Returned: Status Code - {response.status_code} | Message: {response.json().get('error', None).get('message')}"
+            )
             return None, None
 
     except Exception as e:

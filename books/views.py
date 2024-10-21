@@ -138,14 +138,7 @@ def favorite_book(request, id) -> None:
 
     context["book"] = book
 
-    referer = request.META.get("HTTP_REFERER", "")
-
-    if "/books/recommendations/" in referer:
-        return render(request, "partials/_recommendation.html", context=context)
-    elif "/accounts/profile" in referer:
-        return render(request, "partials/_recommendation.html", context=context)
-    elif "/books/details/" in referer:
-        return render(request, "partials/_details_buttons.html", context=context)
+    return render(request, "partials/_book_buttons.html", context=context)
 
 
 @login_required
@@ -164,13 +157,4 @@ def like_book(request, id) -> None:
 
     context["book"] = book
 
-    # Update the components
-
-    referer = request.META.get("HTTP_REFERER", "")
-
-    if "/books/recommendations/" in referer:
-        return render(request, "partials/_recommendation.html", context=context)
-    elif "/accounts/profile" in referer:
-        return render(request, "partials/_recommendation.html", context=context)
-    elif "/books/details/" in referer:
-        return render(request, "partials/_details_buttons.html", context=context)
+    return render(request, "partials/_book_buttons.html", context=context)

@@ -13,7 +13,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
             Recommendations</a>
-        <a class="btn btn-primary" href="{% url 'account' %}">Account <svg xmlns="http://www.w3.org/2000/svg"
+        <a class="btn btn-primary" href="{% url 'profile' %}">Account <svg xmlns="http://www.w3.org/2000/svg"
                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
@@ -26,7 +26,9 @@
         {% endif %}
         <p class="text-5xl font-bold mb-3 text-center">{{ book.title }}</p>
         <p class="font-light mb-3">by {{ book.author | format_authors }}</p>
-        {% include 'partials/_details_buttons.html' %}
+        <div class="mb-10">
+            {% include 'partials/_book_buttons.html' %}
+        </div>
         {% if description %}
         <p class="text-justify">{{ description }}</p>
         {% endif %}
