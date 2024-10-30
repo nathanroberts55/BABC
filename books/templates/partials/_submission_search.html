@@ -1,21 +1,23 @@
 <div class="mb-8 w-full">
-    <form class="relative mt-2 rounded-md shadow-sm w-full" id="submission-search-form"
-        hx-include="#submission-search-form">
-        <div class="absolute inset-y-0 left-0 flex items-center z-10">
-            <select hx-get="{% url 'book_search' %}" id="search-key" name="search-key"
-                class="select select-bordered w-full">
+    <form
+        class="flex flex-row items-start mt-2 rounded-md shadow-sm w-full border-solid border-2 border-neutral rounded-lg"
+        id="submission-search-form" hx-include="#submission-search-form">
+        <div class="flex items-center">
+            <select id="search-key" name="search-key" class="select w-full">
                 <option value="title">Title</option>
                 <option value="author">Author</option>
                 <option value="isbn">ISBN</option>
             </select>
         </div>
-        <div class="dropdown w-full">
-            <input type="text" name="search-value" id="search-value" class="input input-bordered w-full pl-28"
+        <div class="flex flex-col dropdown dropdown-bottom w-full">
+            <input type="text" name="search-value" id="search-value" class="input" tabindex="0"
                 placeholder="Enter To Search for Book" hx-get="{% url 'book_search' %}"
                 hx-trigger="keyup changed delay:1s" hx-target="#book-dropdown">
-            <ul id="book-dropdown" tabindex="0"
-                class="dropdown-content menu p-2 shadow bg-base-100 rounded-box max-h-52 overflow-y-auto">
+            <ul id="book-dropdown"
+                class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2  shadow overflow-y-auto flex flex-col"
+                tabindex="0">
                 <!-- Dynamic list items will be populated here -->
+                {% include 'partials/_book_dropdown_list.html' %}
             </ul>
         </div>
     </form>

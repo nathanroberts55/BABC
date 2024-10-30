@@ -1,15 +1,19 @@
-{% if books %}
+{% load custom_filters %}
+
+{% if books|length > 0 %}
 {% for book in books %}
-<li class="menu-item" data-title="{{ book.title }}" data-author="{{ book.author_name|join:' , ' }}"
-    data-isbn="{% if book.isbn %}{{ book.isbn|first }}{% else %}N/A{% endif %}">
-    {{ book.title|truncatechars:20 }} by {{ book.author_name|join:", "|truncatechars:20 }} |
-    {{ book.publish_year|first }}
+<li id="menu-item" data-title="{{ book.title }}" data-author="{{ book.authors|join:' , ' }}"
+    data-isbn="{% if book.isbn %}{{ book.isbn }}{% else %}N/A{% endif %}"><a>
+        {{ book.title|truncatechars:30 }} by {{ book.authors|join:", "|truncatechars:30 }} |
+        {{ book.publish_year|format_date }}</a>
 </li>
 {% endfor %}
+{% else %}
+<li id="menu-item"><a>No Books Returned from Search</a></li>
 {% endif %}
 {% if messages %}
 {% for message in messages %}
-<div role="alert" class="alert alert-{{ message.tags  }}w-full">
+<div role="alert" class="alert alert-{{ message.tags }} w-full">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />

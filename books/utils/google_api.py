@@ -1,5 +1,9 @@
+import os
 import requests
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def google_book_details(book):
@@ -46,6 +50,60 @@ def google_book_details(book):
                 f"No Book Data Returned: Status Code - {response.status_code} | Message: {response.json().get('error', None).get('message')}"
             )
             return None, None
+
+    except Exception as e:
+        logging.error(f"Exception getting book details: {e}")
+        return None, None
+
+
+def google_book_search(encoded_search_term, search_key):
+    api_key = os.getenv("GOOGLE_API_KEY")
+    try:
+        url = f"https://www.googleapis.com/books/v1/volumes?fields=items(volumeInfo(title,authors,industryIdentifiers,publishedDate))&q={search_key}:{encoded_search_term}&key={api_key}"
+        try:
+            logging.info(
+                f"Making request for term = {encoded_search_term} in {search_key} at: {url}"
+            )
+            response = requests.get(url=url)
+            data = response.json()
+        except Exception as e:
+            logging.error(f"Unable to get Book data from request: {e}")
+            return None, None
+        try:
+            logging.info("Getting Books")
+            items = data.get("items", [])
+            if len(items) == 0:
+                logging.warning("No books returned from request")
+        except Exception as e:
+            logging.error(f"Unable to get `item` from reponse data because error: {e}")
+            return None, None
+
+        books = []
+        for item in items:
+            volume_info = item.get("volumeInfo", {})
+            title = volume_info.get("title", "No Title")
+            publish_year = volume_info.get("publishedDate", [])
+            authors = volume_info.get("authors", [])
+            industry_identifiers = volume_info.get("industryIdentifiers", [])
+            isbn13 = next(
+                (
+                    identifier["identifier"]
+                    for identifier in industry_identifiers
+                    if identifier["type"] == "ISBN_13"
+                ),
+                "N/A",
+            )
+
+            books.append(
+                {
+                    "title": title,
+                    "authors": authors,
+                    "isbn": isbn13,
+                    "publish_year": publish_year,
+                }
+            )
+
+        return books
 
     except Exception as e:
         logging.error(f"Exception getting book details: {e}")

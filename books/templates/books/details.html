@@ -26,11 +26,21 @@
         {% endif %}
         <p class="text-5xl font-bold mb-3 text-center">{{ book.title }}</p>
         <p class="font-light mb-3">by {{ book.author | format_authors }}</p>
-        <div class="mb-10">
+        <div class="mb-4">
             {% include 'partials/_book_buttons.html' %}
+        </div>
+        <div class="flex flex-row gap-4 mb-10">
+            {% if book.amazon_link %}
+            <a href="{{ book.amazon_link }}" class="btn btn-outline btn-primary btn-sm">Buy on Amazon</a>
+            {% endif %}
+            {% if book.stream_link %}
+            <a href="{{ book.stream_link }}" class="btn btn-outline btn-primary btn-sm">View Stream Clip</a>
+            {% endif %}
         </div>
         {% if description %}
         <p class="text-justify">{{ description }}</p>
+        {% else %}
+        <p>No Summary/Description Available. Please feel free to checkout the Amazon Link for more details.</p>
         {% endif %}
     </div>
 </div>

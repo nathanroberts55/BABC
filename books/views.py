@@ -7,8 +7,8 @@ from django.contrib import messages
 from datetime import datetime
 from .models import Book
 from .forms import BookForm
-from .utils.google_api import google_book_details
-from .utils.openlib_api import openlib_book_details
+from .utils.google_api import google_book_details, google_book_search
+from .utils.openlib_api import openlib_book_search
 
 
 # Create your views here.
@@ -18,6 +18,15 @@ def recommendations(request):
     sort_by = request.GET.get("sort-key")
     search_by = request.GET.get("search-key")
     search_value = request.GET.get("search-value")
+
+    currently_reading = Book.objects.filter(
+        approved=True, currently_reading=True
+    ).first()
+    cr_description, cr_image_url = google_book_details(currently_reading)
+
+    context["currently_reading"] = currently_reading
+    context["cr_description"] = cr_description
+    context["cr_image_url"] = cr_image_url
 
     books = (
         Book.objects.filter(approved=True)
@@ -63,10 +72,10 @@ def recommendations(request):
     return render(request, "books/recommendations.html", context=context)
 
 
-def submissions(request):
+def submissions(request, *args, **kwargs):
     context = {}
+    form = BookForm(request.POST or None)
     if request.method == "POST":
-        form = BookForm(request.POST)
         if form.is_valid():
             print("Successful Form Submission Content:")
             print(f'title: {form.cleaned_data["title"]}'),
@@ -82,21 +91,41 @@ def submissions(request):
             form.save()
             messages.success(request=request, message="Successfully Submitted Book")
             form = BookForm()
+        else:
+            print(f"Form not valid: {form.errors}")
     else:
         form = BookForm()
 
     context["form"] = form
+
+    if "HX-Request" in request.headers:
+        return render(
+            request,
+            "partials/_submission_form.html",
+            context=context,
+        )
     return render(request, "books/submissions.html", context=context)
 
 
 def book_search(request):
     context = {}
 
-    search_term = request.GET.get("search-value", "")
-    search_key = request.GET.get("search-key", "")
-    encoded_search_term = search_term.replace(" ", "+")
+    search_term_param = request.GET.get("search-value", "")
+    search_key_param = request.GET.get("search-key", "")
+    encoded_search_term = search_term_param.replace(" ", "+")
 
-    books = openlib_book_details(encoded_search_term, search_key)
+    if search_key_param == "title":
+        search_key = "intitle"
+    elif search_key_param == "author":
+        search_key = "inauthor"
+    elif search_key_param == "isbn":
+        search_key = "isbn"
+
+    books = google_book_search(encoded_search_term, search_key)
+
+    # books = openlib_book_search(
+    #     encoded_search_term=encoded_search_term, search_key=search_key_param
+    # )
 
     if books:
         context["books"] = books
