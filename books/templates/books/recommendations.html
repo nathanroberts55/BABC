@@ -16,8 +16,8 @@
     <section class="flex flex-col mx-auto my-10 space-y-12">
         <div class="flex flex-row justify-between gap-10">
             <div class="flex flex-row w-1/2 justify-center">
-                <img class="w-[500] h-[500] rounded-full"
-                    src="{% static '/img/coffee-cows-reading-recommendations.jpg' %}" alt="People at a Library">
+                <img class="w-96 h-96 rounded-full" src="{% static '/img/coffee-cows-reading-recommendations.jpg' %}"
+                    alt="People at a Library">
             </div>
             <div class="w-1/2 my-auto">
                 <p class='font-light text-xl'>
@@ -29,7 +29,7 @@
         </div>
         <div class="flex flex-row-reverse justify-between gap-10">
             <div class="flex flex-row w-1/2 justify-center">
-                <img class="w-[500] h-[500] rounded-full" src="{% static '/img/frogs-reading-recommendations.jpg' %}"
+                <img class="w-96 h-96 rounded-full" src="{% static '/img/frogs-reading-recommendations.jpg' %}"
                     alt="People at a Library">
             </div>
             <div class="w-1/2 my-auto">
@@ -52,7 +52,7 @@
     {% include 'partials/_currently_reading.html' %}
     <!-- #endregion Currently Reading Section -->
     <!-- #region Recommendations List Section -->
-    <section class="flex flex-col mx-auto my-10">
+    <section class="flex flex-col mx-auto my-10 min-w-full">
         {% include 'partials/_searchbar.html' %}
         {% include 'partials/_recommendation_list.html' %}
     </section>

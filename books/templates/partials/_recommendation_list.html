@@ -1,4 +1,4 @@
-<div class="flex flex-col space-y-11" id="recommendation-list">
+<div class="flex flex-col space-y-11 min-w-full" id="recommendation-list">
     {% for book in page_obj %}
     {% include 'partials/_recommendation.html' with book=book %}
     {% if not forloop.last %}

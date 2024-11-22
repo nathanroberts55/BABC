@@ -1,3 +1,4 @@
+import logging
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
@@ -19,14 +20,17 @@ def recommendations(request):
     search_by = request.GET.get("search-key")
     search_value = request.GET.get("search-value")
 
-    currently_reading = Book.objects.filter(
-        approved=True, currently_reading=True
-    ).first()
-    cr_description, cr_image_url = google_book_details(currently_reading)
+    # So it's not making the request during pagination
+    if "HX-Request" not in request.headers:
+        currently_reading = Book.objects.filter(
+            approved=True, currently_reading=True
+        ).first()
 
-    context["currently_reading"] = currently_reading
-    context["cr_description"] = cr_description
-    context["cr_image_url"] = cr_image_url
+        cr_description, cr_image_url = google_book_details(currently_reading)
+
+        context["currently_reading"] = currently_reading
+        context["cr_description"] = cr_description
+        context["cr_image_url"] = cr_image_url
 
     books = (
         Book.objects.filter(approved=True)
@@ -77,22 +81,22 @@ def submissions(request, *args, **kwargs):
     form = BookForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
-            print("Successful Form Submission Content:")
-            print(f'title: {form.cleaned_data["title"]}'),
-            print(f'author: {form.cleaned_data["author"]}'),
-            print(f'isbn: {form.cleaned_data["isbn"]}'),
-            print(f'source: {form.cleaned_data["source"]}'),
-            print(
+            logging.debug("Successful Form Submission Content:")
+            logging.debug(f'title: {form.cleaned_data["title"]}'),
+            logging.debug(f'author: {form.cleaned_data["author"]}'),
+            logging.debug(f'isbn: {form.cleaned_data["isbn"]}'),
+            logging.debug(f'source: {form.cleaned_data["source"]}'),
+            logging.debug(
                 f'submitter: {form.cleaned_data["submitter"] if form.cleaned_data["submitter"] else None}'
             ),
-            print(
+            logging.debug(
                 f'stream_link: {form.cleaned_data["stream_link"] if form.cleaned_data["stream_link"] else None}'
             ),
             form.save()
             messages.success(request=request, message="Successfully Submitted Book")
             form = BookForm()
         else:
-            print(f"Form not valid: {form.errors}")
+            logging.debug(f"Form not valid: {form.errors}")
     else:
         form = BookForm()
 

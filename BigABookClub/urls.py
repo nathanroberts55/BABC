@@ -33,6 +33,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="index"),
     path("books/", include("books.urls")),
+    path("goals/", include("goals.urls")),
     path("accounts/", include("accounts.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", include("social_django.urls", namespace="social")),

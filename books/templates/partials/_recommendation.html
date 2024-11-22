@@ -1,6 +1,6 @@
 {% load custom_filters %}
 
-<div class="flex flex-col" id="recommendation-{{book.id}}">
+<div class="flex flex-col min-w-full" id="recommendation-{{book.id}}">
     <a href="{% url 'book_details' book.id %}">
         <p class="text-4xl font-bold">{{ book.title }}<span class="text-sm font-light"> by
                 {{ book.author|format_authors}}</span>
