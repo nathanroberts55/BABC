@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container flex flex-col mx-auto">
     <!-- #region Hero Section -->
-    <section class="w-1/2 flex flex-col mx-auto text-center my-10">
+    <section class="w-1/2 max-md:w-10/12 flex flex-col mx-auto text-center my-10">
         <img class="w-48 h-48 mx-auto" src="{% static '/img/logo-purple.png' %}" alt="purple big a book club logo">
         <p class='font-light text-xl mb-4'>
             A website designed to help chatters, vod frogs, discord degens, reddit
@@ -26,9 +26,9 @@
     </section>
     <!-- #endregion Hero Section -->
     <!-- #region Reaction Section -->
-    <section class="flex flex-col mx-auto my-10 space-y-12">
+    <section class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
         <div class="flex bg-[#6f42c166] rounded-3xl">
-            <div class="flex flex-row max-md:flex-col justify-evenly space-x-10 m-16">
+            <div class="flex flex-row max-md:flex-col justify-evenly space-x-10 max-md:space-x-0 m-16">
                 <div class="w-1/2 max-md:w-full my-auto">
                     <iframe class="w-full aspect-[16/9]"
                         src='https://www.youtube.com/embed/yy2ACeR_vRI?si=G_mq2oWnI-m35WD2&amp;clip=UgkxXUSV6EegzgRj-8g4tsVACr2VBT30ZiaU&amp;clipt=EMCNHBiTqh8'
@@ -36,10 +36,10 @@
                     </iframe>
                 </div>
                 <div class="w-1/2 max-md:w-full my-auto">
-                    <h1 class='text-center text-4xl font-bold mb-3'>
+                    <h1 class='text-center text-4xl max-md:text-2xl font-bold mb-3'>
                         Reaction with Raving Reviews!
                     </h1>
-                    <p class='font-light text-xl'>
+                    <p class='font-light text-xl max-md:text-center'>
                         In a live on stream first reaction, Atrioc praises the website and
                         the work being done by the community for cataloging his reads even
                         giving a thumbs up to a book suggested by chatters!
@@ -51,8 +51,8 @@
     <!-- #endregion Reaction Section -->
     <!-- #region About Section -->
     <section class="flex flex-col mx-auto my-10 space-y-12">
-        <div class="flex flex-row justify-between gap-5">
-            <div class="w-1/2 my-auto">
+        <div class="flex flex-row max-md:flex-col justify-between gap-5 mx-auto">
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
                 <h1 class='text-center text-4xl font-bold mb-3'>
                     What the Book Club Is
                 </h1>
@@ -65,13 +65,13 @@
                     consolidation of that information.
                 </p>
             </div>
-            <div class="flex flex-row w-1/2 justify-center">
+            <div class="flex flex-row max-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
                 <img class="w-[700] h-[700] rounded-full" src="{% static '/img/people-at-library-home.jpg' %}"
                     alt="People at a Library">
             </div>
         </div>
-        <div class="flex flex-row-reverse justify-between gap-5">
-            <div class="w-1/2 my-auto">
+        <div class="flex flex-row-reverse max-md:flex-col justify-between gap-5 mx-auto">
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
                 <h1 class='text-center text-4xl font-bold mb-3'>
                     Why the Book Club
                 </h1>
@@ -83,13 +83,13 @@
                     this site shall unleash that access.
                 </p>
             </div>
-            <div class="flex flex-row w-1/2 justify-center">
+            <div class="flex flex-rowmax-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
                 <img class="w-[700] h-[700] rounded-full" src="{% static '/img/people-sharing-home.jpg' %}"
                     alt="People at a Library">
             </div>
         </div>
-        <div class="flex flex-row justify-between gap-5">
-            <div class="w-1/2 my-auto">
+        <div class="flex flex-row max-md:flex-col justify-between gap-5 mx-auto">
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
                 <h1 class='text-center text-4xl font-bold mb-3'>
                     How Book Club Works
                 </h1>
@@ -104,7 +104,7 @@
                     community.
                 </p>
             </div>
-            <div class="flex flex-row w-1/2 justify-center">
+            <div class="flex flex-rowmax-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
                 <img class="w-[700] h-[700] rounded-full" src="{% static '/img/people-reading-home.jpg' %}"
                     alt="People at a Library">
             </div>
