@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container flex flex-col mx-auto">
     <!-- #region Hero Section -->
-    <section class="w-1/2 flex flex-col mx-auto text-center my-10">
+    <section class="w-1/2 max-md:w-10/12 flex flex-col mx-auto text-center my-10">
         <p class="mb-8 text-5xl font-bold">Submissions</p>
         <p class="text-xl font-light text-center">Use the form below to submit books that you have seen from stream or
             have read yourself and want to share with the community.</p>
@@ -14,12 +14,12 @@
     <!-- #endregion Hero Section -->
     <!-- #region Instructions Section -->
     <section class="flex flex-col mx-auto my-10 space-y-12">
-        <div class="flex flex-row justify-between gap-10">
-            <div class="flex flex-row w-1/2 justify-center">
+        <div class="flex flex-row max-md:flex-col justify-between gap-10 mx-auto">
+            <div class="flex flex-row max-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
                 <img class="w-96 h-96 rounded-full" src="{% static '/img/book-collection-submissions.jpg' %}"
                     alt="People at a Library">
             </div>
-            <div class="w-1/2 my-auto">
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
                 <p class='font-light text-xl'>
                     Select then type in Book Title, Author, or ISBN then press "Enter"
                     to get dropdown of matching books. If no results, click in the
@@ -27,12 +27,12 @@
                 </p>
             </div>
         </div>
-        <div class="flex flex-row-reverse justify-between gap-10">
-            <div class="flex flex-row w-1/2 justify-center">
+        <div class="flex flex-row-reverse max-md:flex-col justify-between gap-10 mx-auto">
+            <div class="flex flex-row max-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
                 <img class="w-96 h-96 rounded-full" src="{% static '/img/book-return-submissions.jpg' %}"
                     alt="People at a Library">
             </div>
-            <div class="w-1/2 my-auto">
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
                 <p class='font-light text-xl'>
                     Then select whether the book is a recommendation from
                     <strong>Chat</strong> or <strong>Atrioc</strong>. If from
@@ -45,7 +45,7 @@
     </section>
     <!-- #endregion Instructions Section -->
     <!-- #region Submissions Section -->
-    <section class="flex flex-col mx-auto my-10 w-4/6">
+    <section class="flex flex-col max-md:w-10/12 mx-auto my-10 w-4/6">
         {% include 'partials/_submission_search.html' %}
         {% include 'partials/_submission_form.html' %}
     </section>
