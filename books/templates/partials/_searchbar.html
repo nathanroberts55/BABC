@@ -1,5 +1,5 @@
-<form class="grid my-10 mx-auto grid-cols-4 max-md:grid-cols-1 gap-x-4 max-md:gap-y-4 form-control" id="filter-form"
-    hx-target="#recommendation-list" hx-swap="outerHTML" hx-include="#filter-form">
+<form class="grid my-10 mx-auto grid-cols-4 max-md:grid-cols-1 gap-x-4 max-md:gap-y-4 max-md:w-10/12 form-control"
+    id="filter-form" hx-target="#recommendation-list" hx-swap="outerHTML" hx-include="#filter-form">
     <select class="select select-bordered w-full max-w-xs" name="source" hx-get="{% url 'recommendations' %}">
         <option disabled selected value="FROM">From</option>
         <option value="ATRIOC">Atrioc</option>

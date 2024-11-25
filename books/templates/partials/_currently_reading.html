@@ -1,10 +1,12 @@
 {% if currently_reading %}
-<section class="flex flex-col mx-auto my-10 space-y-12 w-full">
+<section class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
     <div class="flex flex-col bg-[#6f42c166] rounded-3xl">
         <div class="flex flex-col m-8">
-            <p class="text-5xl font-bold my-2 mb-5">Currently Reading in Book Club</p>
-            <p class="text-2xl font-light mb-4">{{ currently_reading.title }} by {{ currently_reading.author }}</p>
-            <div class="flex flex-row gap-4 items-center">
+            <p class="text-5xl max-md:text-3xl max-md:text-center font-bold my-2 mb-5">Currently Reading in Book Club
+            </p>
+            <p class="text-2xl max-md:text-xl max-md:text-center font-light mb-4">{{ currently_reading.title }} by
+                {{currently_reading.author }}</p>
+            <div class="flex flex-row max-md:flex-col-reverse gap-4 items-center">
                 {% if cr_description %}
                 <p>{{ cr_description }}</p>
                 {% endif %}

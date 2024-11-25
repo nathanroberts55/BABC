@@ -11,13 +11,15 @@
     {% endif %}
 
     {% if book.amazon_link or book.stream_link%}
-    <div class="flex flex-row mt-4 gap-4">
-        {% if book.amazon_link %}
-        <a href="{{ book.amazon_link }}" class="btn btn-outline btn-primary btn-sm">Buy on Amazon</a>
-        {% endif %}
-        {% if book.stream_link %}
-        <a href="{{ book.stream_link }}" class="btn btn-outline btn-primary btn-sm">View Stream Clip</a>
-        {% endif %}
+    <div class="flex flex-row max-md:flex-col mt-4 gap-4">
+        <div class="flex flex-row gap-2">
+            {% if book.amazon_link %}
+            <a href="{{ book.amazon_link }}" class="btn btn-outline btn-primary btn-sm">Buy on Amazon</a>
+            {% endif %}
+            {% if book.stream_link %}
+            <a href="{{ book.stream_link }}" class="btn btn-outline btn-primary btn-sm">View Stream Clip</a>
+            {% endif %}
+        </div>
         {% include 'partials/_book_buttons.html' %}
     </div>
     {% endif %}
