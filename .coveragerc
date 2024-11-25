@@ -8,3 +8,6 @@ omit =
     */wsgi.py
     */migrations/*
     */tests/*
+    */frontend/*
+    */api/*
+    */home/*
