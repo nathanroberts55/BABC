@@ -1,9 +1,9 @@
 {% load static %}
 {% if goal %}
 <!-- Reading Resolution -->
-<section id="reading_goal_section" class="flex flex-col mx-auto my-10 space-y-12 w-full">
+<section id="reading_goal_section" class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
     <div class="flex flex-col bg-[#6f42c166] rounded-3xl">
-        <div class="flex flex-row m-8">
+        <div class="flex flex-row max-md:flex-col justify-evenly space-x-10 max-md:space-x-0 gap-4 m-8">
             <div class="flex flex-col">
                 <p class="text-5xl font-bold my-2 mb-5">Reading Resolution Progress</p>
                 <p>Reach out to AZ in the <a href="https://discord.com/channels/1159391121999413310/1173808374266212412"
@@ -14,7 +14,7 @@
                         Resolution</button>
                 </div>
             </div>
-            <div class="mx-auto my-auto">
+            <div class="flex justify-center">
                 <div class="radial-progress" style="--value:{{ goal.progress }}; --size:12rem; --thickness: .75rem;"
                     role="progressbar">
                     {{ goal.books_read_count }}/{{ goal.goal }}</div>
@@ -23,8 +23,8 @@
         <div class="flex flex-col m-8">
             <details class="collapse collapse-arrow bg-base-200 bg-opacity-20">
                 <summary class="collapse-title">
-                    <div class="flex flex-row justify-between">
-                        <p class="text-2xl font-bold">{% now "Y" %} Books Read</p>
+                    <div class="flex flex-row justify-between items-center">
+                        <p class="text-2xl max-md:text-base font-bold">{% now "Y" %} Books Read</p>
                         <button class="btn btn-ghost btn-outline btn-sm" onclick="add_modal.showModal()">Add <svg
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
@@ -122,7 +122,7 @@
 </section>
 {% else %}
 <!-- No Reading Resolution -->
-<section id="reading_goal_section" class="flex flex-col mx-auto my-10 space-y-12 w-full">
+<section id="reading_goal_section" class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
     <div class="flex flex-col bg-[#6f42c166] rounded-3xl">
         <div class="flex flex-col m-8">
             <p class="text-5xl font-bold my-2 mb-5">Book Club Reading Resolution!</p>
