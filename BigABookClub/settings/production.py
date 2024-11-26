@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 import logging
+from .base import *
 
 LOGGING = {
     "version": 1,
