@@ -37,7 +37,7 @@ jobs:
 
       - name: Install Node.js dependencies
         run: |
-          cd theme
+          cd theme/static_src
           npm install
 
       - name: Build Tailwind CSS
