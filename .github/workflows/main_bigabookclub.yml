@@ -33,7 +33,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install Node.js dependencies
         run: |
@@ -41,7 +41,9 @@ jobs:
           npm install
 
       - name: Build Tailwind CSS
-        run: python manage.py tailwind build
+        run: |
+          cd ..  
+          python manage.py tailwind build
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
