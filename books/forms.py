@@ -6,7 +6,6 @@ from .models import Book
 
 
 class BookForm(forms.ModelForm):
-    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def clean_title(self):
         if self.cleaned_data["title"] == "":

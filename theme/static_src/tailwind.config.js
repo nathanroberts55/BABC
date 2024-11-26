@@ -44,7 +44,11 @@ module.exports = {
 		// '../../**/*.py'
 	],
 	theme: {
-		extend: {},
+		extend: {
+			colors: {
+				atriocPurple: '#6f42c166',
+			},
+		},
 	},
 	plugins: [
 		/**

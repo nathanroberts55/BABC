@@ -158,7 +158,7 @@ INTERNAL_IPS = [
 ]
 
 NPM_BIN_PATH = (
-    "C:\Program Files\\nodejs\\npm.cmd"
-    if os.getenv("DEBUG") == 1
+    "C:\\Program Files\\nodejs\\npm.cmd"
+    if os.getenv("DEBUG") == "1"
     else "/usr/local/bin/npm"
 )

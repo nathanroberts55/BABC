@@ -11,17 +11,13 @@ from goals.models import ReadingGoal
 
 
 def account_logout(request) -> None:
-    context = {}
-
     logout(request=request)
-    # messages.success(request, "You have successfully logged out.")
     return redirect("/")
 
 
 # Create your views here.
 @login_required
 def account_profile(request) -> None:
-
     current_year = now().year
     context = {}
 
