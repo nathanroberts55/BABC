@@ -41,9 +41,7 @@ jobs:
           npm install
 
       - name: Build Tailwind CSS
-        run: |
-          cd ..  
-          python manage.py tailwind build
+        run: python manage.py tailwind build
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment

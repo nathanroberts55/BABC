@@ -43,9 +43,7 @@ jobs:
           npm install
 
       - name: Build Tailwind CSS
-        run: |
-          cd ..
-          python manage.py tailwind build
+        run: python manage.py tailwind build
 
       - name: Run Django tests
         run: |
