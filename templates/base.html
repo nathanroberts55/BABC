@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if description %}
-    <meta name="description" content="{% block description %}{% endblock description %}">
+    <meta name="description" content="{% if description %}{% block description %}{% endblock description %}{% endif %}">
     {% endif %}
     <link rel="icon" type="image/x-icon" href="{% static '/img/favicon.ico' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static '/img/apple-touch-icon.png' %}">
