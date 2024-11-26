@@ -1,0 +1,23 @@
+{% if currently_reading %}
+<section class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
+    <div class="flex flex-col bg-atriocPurple rounded-3xl">
+        <div class="flex flex-col m-8">
+            <p class="text-5xl max-md:text-3xl max-md:text-center font-bold my-2 mb-5">Currently Reading in Book Club
+            </p>
+            <p class="text-2xl max-md:text-xl max-md:text-center font-light mb-4">{{ currently_reading.title }} by
+                {{currently_reading.author }}</p>
+            <div class="flex flex-row max-md:flex-col-reverse gap-4 items-center">
+                {% if cr_description %}
+                <p>{{ cr_description }}</p>
+                {% endif %}
+                {% if cr_image_url %}
+                <img class="w-[250px] mb-8" src="{{ cr_image_url }}"
+                    alt="{{currently_reading.title}} by {{currently_reading.author}} Currently Reading Book Cover Image">
+                {% endif %}
+            </div>
+            <a href="https://discord.com/channels/1159391121999413310/1173808374266212412" target="_blank"
+                class="btn btn-wide btn-large btn-neutral my-6 mx-auto ">Join Us!</a>
+        </div>
+    </div>
+</section>
+{% endif %}

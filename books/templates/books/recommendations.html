@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Big A Book Club | Recommendations{% endblock title %}
+
+{% block content %}
+<div class="container flex flex-col mx-auto">
+    <!-- #region Hero Section -->
+    <section class="w-1/2 max-md:w-10/12 flex flex-col mx-auto text-center my-10">
+        <p class="mb-8 text-5xl max-md:text-4xl font-bold">Recommendations</p>
+        <p class="text-xl font-light text-center">Get Smarter ANYDAY by reading some of the great books suggested by
+            Chatters and the Glizlord himself below.</p>
+    </section>
+    <!-- #endregion Hero Section -->
+    <!-- #region Instructions Section -->
+    <section class="flex flex-col mx-auto my-10 space-y-12">
+        <div class="flex flex-row-reverse max-md:flex-col justify-between gap-10 mx-auto">
+            <div class="flex flex-row max-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
+                <img class="w-96 h-96 rounded-full" src="{% static '/img/coffee-cows-reading-recommendations.jpg' %}"
+                    alt="People at a Library">
+            </div>
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
+                <p class='font-light text-xl'>
+                    Use the drop down at the top to filter between books recommended by
+                    Atrioc and books recommended by chat. Books recommended by Atrioc
+                    will have a link to the stream clip where he talks about the book.
+                </p>
+            </div>
+        </div>
+        <div class="flex flex-row max-md:flex-col justify-between gap-10 mx-auto">
+            <div class="flex flex-row max-md:flex-col mx-auto w-1/2 max-md:w-10/12 justify-center">
+                <img class="w-96 h-96 rounded-full" src="{% static '/img/frogs-reading-recommendations.jpg' %}"
+                    alt="People at a Library">
+            </div>
+            <div class="flex flex-col mx-auto w-1/2 max-md:w-10/12 my-auto">
+                <p class='font-light text-xl'>
+                    I <strong>HIGHLY RECOMMEND</strong> that if you are interested in
+                    purchasing any of the books listed that you, as the Glarketer once
+                    said "Think GLOCAL, shop LOCAL", find a bookstore in your area to
+                    support. However, there will be affliate links to Amazon where you
+                    can purchase the book. The proceeds generated go towards the upkeep
+                    and maintenence of this site, and additional earnings will be spent
+                    supporting charitable causes (and building the
+                    <a href='https://atrioc.org' target='_blank'
+                        class="underline decoration-primary text-primary">ACLU</a> strike fund)
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- #endregion Instructions Section -->
+    <!-- #region Currently Reading Section -->
+    {% include 'partials/_currently_reading.html' %}
+    <!-- #endregion Currently Reading Section -->
+    <!-- #region Recommendations List Section -->
+    <section class="flex flex-col mx-auto my-10 min-w-full">
+        {% include 'partials/_searchbar.html' %}
+        {% include 'partials/_recommendation_list.html' %}
+    </section>
+    <!-- #endregion Recommendations List Section -->
+</div>
+
+<script src="{% static '/js/scroll_position.js' %}"></script>
+{% endblock content %}

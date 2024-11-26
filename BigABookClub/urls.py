@@ -14,10 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf.urls import handler404, handler403, handler500
+from . import views
 import home
 import books
 import accounts
@@ -29,12 +31,14 @@ handler500 = "frontend.views.custom_500"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("", include("home.urls")),
-    # path("books/", include("books.urls")),
-    # path("accounts/", include("accounts.urls")),
+    path("", views.index, name="index"),
+    path("books/", include("books.urls")),
+    path("goals/", include("goals.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("__reload__/", include("django_browser_reload.urls")),
     path("", include("social_django.urls", namespace="social")),
-    path("", include("frontend.urls")),
-    path("api/", include("api.urls")),
+    # path("", include("frontend.urls")),
+    # path("api/", include("api.urls")),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),

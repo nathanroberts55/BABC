@@ -1,0 +1,10 @@
+<div class="flex flex-col space-y-11 mx-auto min-w-full max-md:min-w-0 max-md:w-10/12" id="recommendation-list">
+    {% for book in page_obj %}
+    {% include 'partials/_recommendation.html' with book=book %}
+    {% if not forloop.last %}
+    <hr />
+    {% endif %}
+    {% endfor %}
+
+    {% include 'partials/_pagination.html' %}
+</div>

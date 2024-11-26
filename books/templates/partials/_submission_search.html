@@ -1,0 +1,24 @@
+<div class="mb-8 w-full">
+    <form
+        class="flex flex-row items-start mt-2 rounded-md shadow-sm w-full border-solid border-2 border-neutral rounded-lg"
+        id="submission-search-form" hx-include="#submission-search-form">
+        <div class="flex items-center max-md:w-5/12">
+            <select id="search-key" name="search-key" class="select w-full">
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="isbn">ISBN</option>
+            </select>
+        </div>
+        <div id="dropdown-options" class="flex flex-col dropdown dropdown-bottom w-full">
+            <input type="text" name="search-value" id="search-value" class="input" tabindex="0"
+                placeholder="Enter To Search for Book" hx-get="{% url 'book_search' %}"
+                hx-trigger="keyup changed delay:1s" hx-target="#book-dropdown">
+            <ul id="book-dropdown"
+                class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow overflow-y-auto max-h-96 max-md:max-h-48 flex flex-nowrap"
+                tabindex="0">
+                <!-- Dynamic list items will be populated here -->
+                {% include 'partials/_book_dropdown_list.html' %}
+            </ul>
+        </div>
+    </form>
+</div>

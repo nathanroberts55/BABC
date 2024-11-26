@@ -1,64 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}
-<div id="content">
-    {% if form.errors %}
-    {% for field,error in form.errors.items %}
-    <div class="my-2 alert alert-danger alert-dismissible fade show" role="alert">
-        Unable to Submit: {{ error|striptags }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {%endif%}
 
-    {% if messages %}
-    {% for message in messages %}
-    <div class="my-2 alert {{ message.tags }} alert-dismissible fade show text-center" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {%endif%}
-    <div class="px-4 p-5 my-5 text-center" id="header">
-        <p class="display-5 fw-bold text-body-emphasis">
-            Account Details
-        </p>
-    </div>
-    <div class="container px-4 pb-5">
-        <div class="col-lg-8 mx-auto text-center">
-            <div class="col-lg-6 mx-auto">
-                <p class="display-6 mb-4">
-                    Your Bookmarks
-                </p>
-            </div>
-        </div>
-        {% for book in books %}
-        <div class="row align-items-center book-recommendation" data-source="{{ book.source }}"
-            data-title="{{ book.title }}" data-author="{{ book.author }}" data-submitter="{{ book.submitter }}">
-            <div class="col-lg-9 mx-auto">
-                <p class="lead display-6"><a style="text-decoration: none; color: inherit;"
-                        href="{% url 'book_details' book.id %}">{{ book.title }}</a> <small class="fs-5"> by {{ book.author }}</small></p>
-                <p class="fw-lighter submitter">
-                    {% if book.source == 'CHAT' %}
-                    Submitted by: {{ book.submitter }}
-                    {% endif %}
-                </p>
-                {% if book.stream_link %}
-                <a href="{{book.stream_link}}" target="_blank"><button type='button'
-                        class=" btn btn-primary btn-sm">Twitch
-                        Stream</button></a>
-                {% endif %}
-                {% if book.amazon_link %}
-                <a href="{{book.amazon_link}}" target="_blank"><button type='button'
-                        class=" btn btn-outline-primary btn-sm">Buy on Amazon</button></a>
-                {% endif %}
-                {% if not forloop.last %}
-                <hr>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor%}
-    </div>
-    <script src="{% static 'js/scroll_position.js' %}"></script>
+{% block title %}Big A Book Club | {{ request.user }}'s Account{% endblock title %}
+
+
+{% block content %}
+<div class="container flex flex-col mx-auto">
+    <!-- #region Hero Section -->
+    <section class="w-1/2 max-md:w-10/12 flex flex-col mx-auto text-center my-10">
+        <p class="mb-8 text-5xl font-bold">Account</p>
+    </section>
+    <!-- #endregion Hero Section -->
+    <!-- #region Reading Resolution -->
+    {% include 'partials/_reading_goal.html' %}
+    <!-- #endregion Reading Resolution -->
+    <section class="flex flex-col mx-auto my-10">
+        <p class="mb-8 text-4xl font-bold text-center">Your Bookmarks</p>
+        {% if books %}
+        {% include 'partials/_recommendation_list.html' %}
+        {% endif %}
+    </section>
+    <script src="{% static '/js/scroll_position.js' %}"></script>
 </div>
 {% endblock content %}

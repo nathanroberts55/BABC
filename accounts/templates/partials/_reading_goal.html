@@ -1,0 +1,142 @@
+{% load static %}
+{% if goal %}
+<!-- Reading Resolution -->
+<section id="reading_goal_section" class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
+    <div class="flex flex-col bg-atriocPurple rounded-3xl">
+        <div class="flex flex-row max-md:flex-col justify-evenly space-x-10 max-md:space-x-0 gap-4 m-8">
+            <div class="flex flex-col">
+                <p class="text-5xl font-bold my-2 mb-5">Reading Resolution Progress</p>
+                <p>Reach out to AZ in the <a href="https://discord.com/channels/1159391121999413310/1173808374266212412"
+                        target="_blank">discord</a> to receive/update your certificate!</p>
+                <div class="flex flex-row my-4 gap-4">
+                    <button class="btn btn-primary" onclick="edit_modal.showModal()">Edit Resolution</button>
+                    <button class="btn btn-outline btn-error" onclick="delete_modal.showModal()">Delete
+                        Resolution</button>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="radial-progress" style="--value:{{ goal.progress }}; --size:12rem; --thickness: .75rem;"
+                    role="progressbar">
+                    {{ goal.books_read_count }}/{{ goal.goal }}</div>
+            </div>
+        </div>
+        <div class="flex flex-col m-8 w-11/12 mx-auto">
+            <details class="collapse collapse-arrow bg-base-200 bg-opacity-20">
+                <summary class="collapse-title">
+                    <div class="flex flex-row justify-between items-center">
+                        <p class="text-2xl max-md:text-base font-bold">{% now "Y" %} Books Read</p>
+                        <button class="btn btn-ghost btn-outline btn-sm" onclick="add_modal.showModal()">Add <svg
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </button>
+                    </div>
+                </summary>
+                <div class="collapse-content">
+                    {% include 'partials/_read_book_list.html' %}
+                </div>
+            </details>
+        </div>
+    </div>
+    <!-- #region Modals -->
+    <!-- #region Add Modal -->
+    <dialog id="add_modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="text-lg font-bold">Add Book</h3>
+            <p class="py-4">Search for the book you have read and select it from the dropdown to enable the add button
+                and add to your resolution. Otherwise, press ESC key or click on ✕ button to close</p>
+            <form id="update-form" class="flex flex-col gap-4" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-include="#update-form">
+                <div class="join">
+                    <div class="flex items-center max-md:w-5/12">
+                        <select id="search-key" name="search-key" class="select select-bordered w-full join-item">
+                            <option value="title">Title</option>
+                            <option value="author">Author</option>
+                            <option value="isbn">ISBN</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col dropdown dropdown-bottom w-full">
+                        <input type="text" name="search-value" id="search-value" class="input input-bordered join-item"
+                            tabindex="0" placeholder="Enter To Search for Book" hx-get="{% url 'goal_book_search' %}"
+                            hx-trigger="keyup changed delay:1s" hx-target="#book-dropdown">
+                        <ul id="book-dropdown"
+                            class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow overflow-y-auto max-h-96 max-md:max-h-48 flex flex-nowrap"
+                            tabindex="0">
+                            <!-- Dynamic list items will be populated here -->
+                            {% include 'partials/_book_results.html' %}
+                        </ul>
+                    </div>
+                </div>
+                <input type="text" name="title" id="form-book-title" class="my-1 hidden">
+                <input type="text" name="author" id="form-book-author" class="my-1 hidden">
+                <input type="text" name="isbn" id="form-book-isbn" class="my-1 hidden">
+                <button class="btn btn-primary btn-disabled" id="submit-button" type="submit"
+                    hx-post="{% url 'add_book' %}" hx-target="#reading_goal_section" hx-include="#update-form"
+                    hx-swap="outerHTML">Save Book</button>
+            </form>
+        </div>
+    </dialog>
+    <!-- #endregion Add Modals -->
+    <!-- #region Edit Modal -->
+    <dialog id="edit_modal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="text-lg font-bold">Update Resolution</h3>
+            <p class="py-4">Update your goal by entering the number of books you want to read and then hitting the
+                "Update" button. Otherwise, press ESC key or click on ✕ button to close</p>
+            <form id="update-form" class="flex flex-col gap-4" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                <input type="text" placeholder="Current Goal: {{ goal.goal }}" name="goal"
+                    class="input input-bordered w-full" required />
+                <button class="btn btn-primary" type="submit" hx-post="{% url 'update_goal' %}"
+                    hx-target="#reading_goal_section" hx-include="#update-form" hx-swap="outerHTML">Update
+                    Resolution</button>
+            </form>
+        </div>
+    </dialog>
+    <!-- #endregion Edit Modals -->
+    <!-- #region Delete Modal -->
+    <dialog id="delete_modal" class="modal">
+        <div class="flex flex-col modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="text-lg font-bold">Are you sure?</h3>
+            <p class="py-4">Pressing the confirm button will delete your Reading Resolution and ALL
+                associated books you
+                have read. Press CONFIRM to DELETE, otherwise press ESC key or click on ✕ button to close
+                and keep
+                going.</p>
+            <button class="btn btn-error" hx-get="{% url 'delete_goal' %}" hx-target="#reading_goal_section"
+                hx-swap="outerHTML">DELETE RESOLUTION</button>
+        </div>
+    </dialog>
+    <!-- #endregion Delete Modals -->
+    <!-- #endregion Modals -->
+    <script src="{% static '/js/goal_search.js' %}"></script>
+</section>
+{% else %}
+<!-- No Reading Resolution -->
+<section id="reading_goal_section" class="flex flex-col max-md:w-10/12 mx-auto my-10 space-y-12">
+    <div class="flex flex-col bg-atriocPurple rounded-3xl">
+        <div class="flex flex-col m-8">
+            <p class="text-5xl font-bold my-2 mb-5">Book Club Reading Resolution!</p>
+            <p>Get Smarter Everyday by joining the the Book Club Reading Resolution! The Book Club Reading Resolution is
+                a self-paced reading program designed to make reading fun, interactive, supportive. Set a goal for the
+                year and track each book you read, whether its with the book club or on your own! Each book you read
+                will earn yourself a 'Little A' sticker to go on a printable PDF Certificate and track your progress in
+                your profile in the Big A Book Club website. Reach your reading goal by the end of the year and earn a
+                special prize!</p>
+            <button hx-get="{% url 'create_goal' %}" hx-target="#reading_goal_section" hx-swap="outerHTML"
+                class="btn btn-wide btn-large btn-outline btn-neutral my-6 mx-auto text-lg">Start Reading
+                Resolution</button>
+        </div>
+    </div>
+    <script src="{% static '/js/goal_search.js' %}"></script>
+</section>
+{% endif %}
