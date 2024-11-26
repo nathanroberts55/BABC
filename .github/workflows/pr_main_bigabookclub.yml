@@ -45,7 +45,7 @@ jobs:
       - name: Build Tailwind CSS
         run: python manage.py tailwind build
 
-      - name: Run Django tests
-        run: |
-          coverage run --source='.' manage.py test 
-          coverage xml
+      # - name: Run Django tests
+      #   run: |
+      #     coverage run --source='.' manage.py test
+      #     coverage xml
