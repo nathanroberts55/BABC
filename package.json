@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "postcss-simple-vars": "^7.0.1"
+  }
+}
