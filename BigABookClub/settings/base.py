@@ -48,16 +48,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_browser_reload",
-    "rest_framework",
     "social_django",
-    "compressor",
     "captcha",
     "tailwind",
     "theme",
     "books",
     "accounts",
-    "api",
-    "frontend",
     "goals",
 ]
 
@@ -145,10 +141,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# SCSS/SASS Configuration Settings
-COMPRESS_PRECOMPILERS = (("text/css", "django_libsass.SassCompiler"),)
-COMPRESS_ROOT = STATIC_ROOT
 
 # Django Tailwind Configuration
 TAILWIND_APP_NAME = "theme"

@@ -20,14 +20,13 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf.urls import handler404, handler403, handler500
 from . import views
-import home
 import books
 import accounts
-import frontend
 
-handler404 = "frontend.views.custom_404"
-handler403 = "frontend.views.custom_403"
-handler500 = "frontend.views.custom_500"
+
+handler404 = "BigABookClub.views.custom_404"
+handler403 = "BigABookClub.views.custom_403"
+handler500 = "BigABookClub.views.custom_500"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -37,8 +36,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", include("social_django.urls", namespace="social")),
-    # path("", include("frontend.urls")),
-    # path("api/", include("api.urls")),
     path(
         "robots.txt",
         TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
