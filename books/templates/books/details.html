@@ -2,7 +2,15 @@
 {% load custom_filters %}
 {% load static %}
 
+<!-- #region Head Details -->
 {% block title %}Big A Book Club | {{ book.title }} by {{ book.author }}{% endblock title %}
+{% block primary_description %}{{ book.title }} by {{ book.author }} - {{ description | truncatechars:280 }}
+{% endblock primary_description %}
+{% block og_description %}{{ book.title }} by {{ book.author }} - {{ description | truncatechars:280 }}
+{% endblock og_description %}
+{% block tw_description %}{{ book.title }} by {{ book.author }} - {{ description | truncatechars:280 }}
+{% endblock tw_description %}
+<!-- #endregion Head Details -->
 
 {% block content %}
 <div class="flex flex-col my-10 mx-auto w-full max-md:w-10/12">

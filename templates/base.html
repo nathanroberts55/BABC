@@ -5,7 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{% block description %}{% endblock description %}">
+
+    <!-- Primary Meta Tags -->
+    <title>{% block title %}{% endblock title%}</title>
+    <meta name="title" content="Big A Book Club" />
+    <meta name="description" content="{% block primary_description %}{% endblock primary_description %}" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bigabookclub.com/" />
+    <meta property="og:title" content="Big A Book Club" />
+    <meta property="og:description" content="{% block og_description %}{% endblock og_description %}" />
+    <meta property="og:image" content="{% static 'img/android-chrome-192x192' %}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://bigabookclub.com/" />
+    <meta property="twitter:title" content="Big A Book Club" />
+    <meta property="twitter:description" content="{% block tw_description %}{% endblock tw_description %}" />
+    <meta property="twitter:image" content="{% static 'img/android-chrome-192x192' %}" />
+
+    <!-- Meta Tags Generated with https://metatags.io -->
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
@@ -14,7 +34,7 @@
     <script src="{% static 'js/htmx/htmx.min.js' %}" defer></script>
     <script src="{% static 'js/alpine/alpine.min.js' %}" defer></script>
     {% tailwind_css %}
-    <title>{% block title %}{% endblock %}</title>
+
 </head>
 
 <body class="flex flex-col h-screen">
