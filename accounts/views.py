@@ -1,13 +1,11 @@
-from django.contrib.auth import logout
-from django.shortcuts import render, redirect
-from django.db.models import Count, F, IntegerField, Value
-from django.db.models.functions import Coalesce
-from django.utils.timezone import now
-from django.core.paginator import Paginator
-from django.contrib import messages
+from django.db.models import Count, F, Case, When, IntegerField, Value
 from django.contrib.auth.decorators import login_required
-from books.models import Book
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
+from django.contrib.auth import logout
+from django.utils.timezone import now
 from goals.models import ReadingGoal
+from books.models import Book
 
 
 def account_logout(request) -> None:
@@ -25,9 +23,9 @@ def account_profile(request) -> None:
         ReadingGoal.objects.filter(user=request.user, year=current_year)
         .annotate(
             books_read_count=Count("books_read"),
-            progress=Coalesce(
-                F("books_read_count") * 100 / F("goal"),
-                Value(0),
+            progress=Case(
+                When(goal=0, then=Value(0)),
+                default=F("books_read_count") * 100 / F("goal"),
                 output_field=IntegerField(),
             ),
         )
