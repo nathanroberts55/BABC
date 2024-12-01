@@ -1,12 +1,12 @@
 import logging
+from django.db.models import Count, F, Case, When, IntegerField, Value
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count, F, IntegerField, Value
+from goals.models import ReadingGoal, ReadingGoalBook
+from books.utils.google_api import google_book_search
 from django.db.models.functions import Coalesce
+from django.utils.timezone import now
 from django.contrib import messages
 from django.shortcuts import render
-from django.utils.timezone import now
-from books.utils.google_api import google_book_search
-from goals.models import ReadingGoal, ReadingGoalBook
 
 
 @login_required
@@ -17,9 +17,9 @@ def create_goal(request, *args, **kwargs):
         ReadingGoal.objects.filter(user=request.user, year=now().year)
         .annotate(
             books_read_count=Count("books_read"),
-            progress=Coalesce(
-                F("books_read_count") * 100 / F("goal"),
-                Value(0),
+            progress=Case(
+                When(goal=0, then=Value(0)),
+                default=F("books_read_count") * 100 / F("goal"),
                 output_field=IntegerField(),
             ),
         )
