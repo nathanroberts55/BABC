@@ -41,9 +41,9 @@ def create_goal(request, *args, **kwargs):
         ReadingGoal.objects.filter(user=request.user, year=now().year)
         .annotate(
             books_read_count=Count("books_read"),
-            progress=Coalesce(
-                F("books_read_count") * 100 / F("goal"),
-                Value(0),
+            progress=Case(
+                When(goal=0, then=Value(0)),
+                default=F("books_read_count") * 100 / F("goal"),
                 output_field=IntegerField(),
             ),
         )
@@ -96,9 +96,9 @@ def update_goal(request, *args, **kwargs):
         ReadingGoal.objects.filter(user=request.user, year=now().year)
         .annotate(
             books_read_count=Count("books_read"),
-            progress=Coalesce(
-                F("books_read_count") * 100 / F("goal"),
-                Value(0),
+            progress=Case(
+                When(goal=0, then=Value(0)),
+                default=F("books_read_count") * 100 / F("goal"),
                 output_field=IntegerField(),
             ),
         )
@@ -142,9 +142,9 @@ def add_book(request, *args, **kawrgs):
         ReadingGoal.objects.filter(user=request.user, year=now().year)
         .annotate(
             books_read_count=Count("books_read"),
-            progress=Coalesce(
-                F("books_read_count") * 100 / F("goal"),
-                Value(0),
+            progress=Case(
+                When(goal=0, then=Value(0)),
+                default=F("books_read_count") * 100 / F("goal"),
                 output_field=IntegerField(),
             ),
         )
@@ -166,9 +166,9 @@ def add_book(request, *args, **kawrgs):
             ReadingGoal.objects.filter(user=request.user, year=now().year)
             .annotate(
                 books_read_count=Count("books_read"),
-                progress=Coalesce(
-                    F("books_read_count") * 100 / F("goal"),
-                    Value(0),
+                progress=Case(
+                    When(goal=0, then=Value(0)),
+                    default=F("books_read_count") * 100 / F("goal"),
                     output_field=IntegerField(),
                 ),
             )
@@ -205,9 +205,9 @@ def delete_book(request, id, *args, **kwargs):
         ReadingGoal.objects.filter(user=request.user, year=now().year)
         .annotate(
             books_read_count=Count("books_read"),
-            progress=Coalesce(
-                F("books_read_count") * 100 / F("goal"),
-                Value(0),
+            progress=Case(
+                When(goal=0, then=Value(0)),
+                default=F("books_read_count") * 100 / F("goal"),
                 output_field=IntegerField(),
             ),
         )
