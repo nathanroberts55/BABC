@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SECRET_KEY: '84b7361d2adb72d03b75427cf763fd85c8f16f932530ae7847'
-      RECAPTCHA_PRIVATE_KEY: ''
-      RECAPTCHA_PUBLIC_KEY: ''
 
     steps:
       - uses: actions/checkout@v4
