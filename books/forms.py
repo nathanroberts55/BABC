@@ -47,11 +47,13 @@ class BookForm(forms.ModelForm):
             for url in [
                 "https://clips.twitch.tv/",
                 "https://www.twitch.tv/atrioc/clip/",
+                "&t=",  # For Youtube Links that have timestamps
+                "https://www.youtube.com/clip",  # For Youtube Clip Links
             ]
         ):
             raise forms.ValidationError(
                 _(
-                    "Invalid stream link. The link must contain 'https://www.twitch.tv/atrioc/clip/' or 'https://clips.twitch.tv/'"
+                    "Invalid stream link. The link must contain a twitch VOD clip, Youtube Clip, or Video link with a timestamp"
                 )
             )
 
