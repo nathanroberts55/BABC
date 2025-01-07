@@ -34,7 +34,7 @@ def create_goal(request, *args, **kwargs):
             context=context,
         )
 
-    new_goal = ReadingGoal(user=request.user, goal=0)
+    new_goal = ReadingGoal(user=request.user, goal=0, year=now().year)
     new_goal.save()
 
     new_goal = (
