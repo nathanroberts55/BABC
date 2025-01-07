@@ -1,6 +1,4 @@
 from django.utils.translation import gettext_lazy as _
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
 from django import forms
 from .models import Book
 
@@ -178,5 +176,4 @@ class BookForm(forms.ModelForm):
                     "id": "form-book-streamlink",
                 },
             ),
-            "captcha": ReCaptchaField(widget=ReCaptchaV2Checkbox),
         }

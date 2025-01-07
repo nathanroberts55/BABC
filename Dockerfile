@@ -2,12 +2,24 @@
 
 # The first instruction is what image we want to base our container on
 # We Use an official Python runtime as a parent image
-FROM python:3.10
+FROM python:3.11
 
-# Allows docker to cache installed dependencies between builds
-COPY requirements.txt requirements.txt
-RUN pip3 install --no-cache-dir -r requirements.txt
+WORKDIR /app
 
-# Mounts the application code to the image
-COPY . code
-WORKDIR /code
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Copy the post.sh script into the container
+COPY ./scripts/post.sh /scripts/post.sh
+
+# Convert Windows line endings to Unix line endings
+RUN sed -i 's/\r$//' /scripts/post.sh
+
+# Make the script executable
+RUN chmod +x /scripts/post.sh
+
+EXPOSE 8000
+
