@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_browser_reload",
     "social_django",
-    "captcha",
     "tailwind",
     "theme",
     "books",
