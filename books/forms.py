@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from django import forms
 from .models import Book
+import re
 
 
 class BookForm(forms.ModelForm):
@@ -40,18 +41,21 @@ class BookForm(forms.ModelForm):
 
     def clean_stream_link(self):
         cleaned_data = self.cleaned_data
-
         stream_link = cleaned_data["stream_link"]
-        if stream_link != "" and not any(
-            url in stream_link
-            for url in [
-                "https://clips.twitch.tv/",
-                "https://www.twitch.tv/atrioc/clip/",
-            ]
+
+        twitch_pattern = re.compile(
+            r"https://(clips\.twitch\.tv/|www\.twitch\.tv/atrioc/clip/)"
+        )
+        youtube_pattern = re.compile(
+            r"https://(www\.)?youtube\.com/.*(\?t=|\&t=|/clip)|https://youtu\.be/.*(\?t=|\&t=|/clip)"
+        )
+
+        if stream_link != "" and not (
+            twitch_pattern.search(stream_link) or youtube_pattern.search(stream_link)
         ):
             raise forms.ValidationError(
                 _(
-                    "Invalid stream link. The link must contain 'https://www.twitch.tv/atrioc/clip/' or 'https://clips.twitch.tv/'"
+                    "Invalid stream link. The link must contain a twitch VOD clip, Youtube Clip, or Video link with a timestamp"
                 )
             )
 
