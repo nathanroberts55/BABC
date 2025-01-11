@@ -1,5 +1,4 @@
 function handleSourceChange() {
-	console.log('Running Script');
 	const source = document.getElementById('form-book-source').value;
 	const submitterInput = document.getElementById('form-book-submitter');
 	const streamlinkInput = document.getElementById('form-book-streamlink');
@@ -26,7 +25,8 @@ document.body.addEventListener('htmx:load', () => {
 });
 
 document.body.addEventListener('htmx:afterRequest', (event) => {
-	if (event.detail.successful) {
+	console.log('HTMX after request:', event.detail);
+	if (event.detail.successful && event.detail.requestConfig.verb === 'post') {
 		document.getElementById('search-value').value = '';
 	}
 });
