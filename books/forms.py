@@ -31,8 +31,14 @@ class BookForm(forms.ModelForm):
     def clean_source(self):
         source = self.cleaned_data["source"]
 
-        if not (source == Book.Sources.CHAT or source == Book.Sources.ATRIOC):
-            raise forms.ValidationError(_("Recommendation MUST be from CHAT or ATRIOC"))
+        if not (
+            source == Book.Sources.CHAT
+            or source == Book.Sources.ATRIOC
+            or source == Book.Sources.LEMONADE_STAND
+        ):
+            raise forms.ValidationError(
+                _("Recommendation MUST be from CHAT, ATRIOC, or LEMONADE STAND")
+            )
 
         return source
 

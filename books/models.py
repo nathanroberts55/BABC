@@ -10,6 +10,7 @@ class Book(models.Model):
     class Sources(models.TextChoices):
         CHAT = "CHAT", _("Chatter")
         ATRIOC = "ATRIOC", _("Atrioc")
+        LEMONADE_STAND = "LEMONADESTAND", _("Lemonade Stand")
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -17,10 +18,10 @@ class Book(models.Model):
     author = models.CharField(max_length=50)
     isbn = models.CharField(max_length=50)
     source = models.CharField(
-        max_length=6,
+        max_length=13,  # Changed from 6 to 13 to accommodate "LEMONADESTAND"
         choices=Sources.choices,
         default=Sources.CHAT,
-        help_text=_("Select Chatter or Atrioc Recommendation"),
+        help_text=_("Select Chatter, Atrioc, or Lemonade Stand Recommendation"),
     )
     submitter = models.CharField(max_length=50, blank=True)
     stream_link = models.URLField(max_length=500, blank=True)

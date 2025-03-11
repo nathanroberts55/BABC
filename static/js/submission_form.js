@@ -8,7 +8,7 @@ function handleSourceChange() {
 		streamlinkInput.required = false;
 		submitterInput.classList.remove('hidden');
 		submitterInput.required = true;
-	} else if (source === 'ATRIOC') {
+	} else if (source === 'ATRIOC' || source === 'LEMONADESTAND') {
 		submitterInput.classList.add('hidden');
 		submitterInput.required = false;
 		streamlinkInput.classList.remove('hidden');
