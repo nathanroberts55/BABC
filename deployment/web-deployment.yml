@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bigabookclub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bigabookclub
+  template:
+    metadata:
+      labels:
+        app: bigabookclub
+    spec:
+      containers:
+        - name: web
+          image: bigabookclub:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: app-config
+          command: ['/bin/sh', '-c']
+          args: ['/scripts/post.sh && python manage.py runserver 0.0.0.0:8000']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bigabookclub
+spec:
+  selector:
+    app: bigabookclub
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: LoadBalancer
